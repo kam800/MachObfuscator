@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="IosView" customModule="MachObfuscatorTests">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SxO-gu-aP8">
+                    <rect key="frame" x="20" y="40" width="42" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1CX-ku-d1a" customClass="CustomObjCButton">
+                    <rect key="frame" x="82" y="36" width="46" height="30"/>
+                    <state key="normal" title="Button"/>
+                    <connections>
+                        <action selector="actionWasTapped:" destination="iN0-l3-epB" eventType="touchUpInside" id="j61-1V-RZL"/>
+                        <outlet property="associatedLabel" destination="SxO-gu-aP8" id="jlW-uu-hIL"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="1CX-ku-d1a" firstAttribute="baseline" secondItem="SxO-gu-aP8" secondAttribute="baseline" id="0oP-sN-Bd7"/>
+                <constraint firstItem="SxO-gu-aP8" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="20" id="86R-19-VBL"/>
+                <constraint firstItem="1CX-ku-d1a" firstAttribute="leading" secondItem="SxO-gu-aP8" secondAttribute="trailing" constant="20" id="DGt-z9-g9S"/>
+                <constraint firstItem="SxO-gu-aP8" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="20" id="WMc-sq-brZ"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <connections>
+                <outlet property="actionButton" destination="1CX-ku-d1a" id="TkR-HT-NCV"/>
+                <outlet property="titleLabel" destination="SxO-gu-aP8" id="czT-gM-CfD"/>
+            </connections>
+        </view>
+    </objects>
+</document>

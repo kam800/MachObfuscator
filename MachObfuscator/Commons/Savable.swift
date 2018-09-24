@@ -1,0 +1,3 @@
+protocol Savable {
+    func save()
+}
