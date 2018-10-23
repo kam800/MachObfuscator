@@ -50,7 +50,7 @@ class Obfuscator {
             savable.append(nib)
         }
 
-        LOGGER.info("Saving...")
+        LOGGER.info("Saving all the files in place...")
         savable.forEach {
             $0.save()
         }

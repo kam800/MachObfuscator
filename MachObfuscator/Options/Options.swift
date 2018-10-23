@@ -51,7 +51,9 @@ extension Options {
 
     static var usage: String {
         return """
-        usage: \(CommandLine.arguments[0]) [-qvh] [-m mangler_key]
+        usage: \(CommandLine.arguments[0]) [-qvh] [-m mangler_key] APP_BUNDLE
+
+          Obfuscates application APP_BUNDLE in-place.
 
         Options:
           -h              help screen (this screen)

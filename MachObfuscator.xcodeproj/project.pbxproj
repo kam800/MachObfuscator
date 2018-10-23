@@ -223,6 +223,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		D403A4F1217FACB300285492 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		D410A6CC20CF1FC3006A31E5 /* Obfuscator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Obfuscator.swift; sourceTree = "<group>"; };
 		D410A6CE20CF2C30006A31E5 /* URL+NibLoading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+NibLoading.swift"; sourceTree = "<group>"; };
 		D412C67B214148FD00AA9A07 /* Words.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Words.swift; sourceTree = "<group>"; };
@@ -653,6 +654,7 @@
 		D48B8F3B1F7FEBC200E73BBD = {
 			isa = PBXGroup;
 			children = (
+				D403A4F1217FACB300285492 /* README.md */,
 				D48B8F461F7FEBC200E73BBD /* MachObfuscator */,
 				D4F792591FD74E4800EE6EBE /* MachObfuscatorTests */,
 				D48B8F451F7FEBC200E73BBD /* Products */,
