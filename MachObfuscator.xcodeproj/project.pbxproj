@@ -178,6 +178,7 @@
 		D4BACD6A2156845E009F6E34 /* Data+nullify_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BACD692156845E009F6E34 /* Data+nullify_Tests.swift */; };
 		D4BACD6C2156E109009F6E34 /* SymbolManglers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BACD6B2156E109009F6E34 /* SymbolManglers.swift */; };
 		D4BACD6D2156E5D5009F6E34 /* SymbolManglers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BACD6B2156E109009F6E34 /* SymbolManglers.swift */; };
+		D4C48E9421E2B5A700498A62 /* Image+updateMachs_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C48E9321E2B5A700498A62 /* Image+updateMachs_Tests.swift */; };
 		D4C95C021FD357D100B6F862 /* Trie+Loading.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C95C011FD357D100B6F862 /* Trie+Loading.swift */; };
 		D4C98AD22143249F008340B2 /* RealWordsMangler.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C98AD12143249F008340B2 /* RealWordsMangler.swift */; };
 		D4C98AD6214327AA008340B2 /* String+capitalizedOnFirstLetter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C98AD5214327AA008340B2 /* String+capitalizedOnFirstLetter.swift */; };
@@ -332,6 +333,7 @@
 		D4AAA5FF201C9A3B009BB8FA /* UnsafePointer+Structs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UnsafePointer+Structs.swift"; sourceTree = "<group>"; };
 		D4BACD692156845E009F6E34 /* Data+nullify_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+nullify_Tests.swift"; sourceTree = "<group>"; };
 		D4BACD6B2156E109009F6E34 /* SymbolManglers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolManglers.swift; sourceTree = "<group>"; };
+		D4C48E9321E2B5A700498A62 /* Image+updateMachs_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Image+updateMachs_Tests.swift"; sourceTree = "<group>"; };
 		D4C95C011FD357D100B6F862 /* Trie+Loading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Trie+Loading.swift"; sourceTree = "<group>"; };
 		D4C98AD12143249F008340B2 /* RealWordsMangler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealWordsMangler.swift; sourceTree = "<group>"; };
 		D4C98AD5214327AA008340B2 /* String+capitalizedOnFirstLetter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+capitalizedOnFirstLetter.swift"; sourceTree = "<group>"; };
@@ -619,6 +621,7 @@
 				D48161782125699B008671D8 /* Mach+Parsing_FatIos_Tests.swift */,
 				D4816122212334B4008671D8 /* Mach+Parsing_MachoMac_Tests.swift */,
 				D41FCFE42152FA5700BE3C7A /* Mach+Replacing_Tests.swift */,
+				D4C48E9321E2B5A700498A62 /* Image+updateMachs_Tests.swift */,
 			);
 			path = MachTests;
 			sourceTree = "<group>";
@@ -1012,6 +1015,7 @@
 				D41FCFEA2152FB1D00BE3C7A /* CezarMangler_Tests.swift in Sources */,
 				D44D732C2118876200DE002B /* URL+containsURL.swift in Sources */,
 				D481609821205D6C008671D8 /* SymbolsSourceLoader.swift in Sources */,
+				D4C48E9421E2B5A700498A62 /* Image+updateMachs_Tests.swift in Sources */,
 				D44D732F2118890100DE002B /* Sequence+uniq.swift in Sources */,
 				D432EAE3213DE02400C2ADA0 /* Image+machs.swift in Sources */,
 				D44D732B2118875700DE002B /* URL+containsURL_Tests.swift in Sources */,

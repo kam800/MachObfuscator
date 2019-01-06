@@ -5,8 +5,12 @@ extension Image {
         switch contents {
         case let .fat(fat):
             var mutableFat = fat
-            for var arch in mutableFat.architectures {
-                block(&arch.mach)
+            mutableFat.architectures = fat.architectures.map { arch in
+                var mutableArch = arch
+                block(&mutableArch.mach)
+                return mutableArch
+            }
+            for arch in mutableFat.architectures {
                 let archRangeInFat = Range(offset: Int(arch.offset), count: arch.mach.data.count)
                 mutableFat.data.replaceSubrange(archRangeInFat, with: arch.mach.data)
             }
