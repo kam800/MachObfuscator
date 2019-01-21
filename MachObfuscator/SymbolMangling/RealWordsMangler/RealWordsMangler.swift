@@ -4,6 +4,8 @@ class RealWordsMangler: SymbolMangling {
     static var key: String = "realWords"
     static let helpDescription: String = "replace objc symbols with random words (dyld info obfuscation not supported yet)"
 
+    private let exportTrieMangler = ExportTrieMangler()
+
     required init() {}
 
     func mangleSymbols(_ symbols: ObfuscationSymbols) -> SymbolManglingMap {
@@ -36,7 +38,7 @@ class RealWordsMangler: SymbolMangling {
         let identityManglingMap =
             symbols.exportTriesPerCpuIdPerURL
             .mapValues { exportTriesPerCpuId in
-                return exportTriesPerCpuId.mapValues { ($0, $0) }
+                return exportTriesPerCpuId.mapValues { ($0, exportTrieMangler.mangle(trie: $0)) }
             }
 
         return SymbolManglingMap(selectors: Dictionary(uniqueKeysWithValues: unmangledAndMangledSelectorPairs),
