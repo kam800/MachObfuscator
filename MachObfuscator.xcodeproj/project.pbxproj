@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		88A1F2AC21F5F15A00C8389E /* ExportTrieMangler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88A1F2AB21F5F15A00C8389E /* ExportTrieMangler.swift */; };
 		D410A6CD20CF1FC3006A31E5 /* Obfuscator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D410A6CC20CF1FC3006A31E5 /* Obfuscator.swift */; };
 		D410A6CF20CF2C30006A31E5 /* URL+NibLoading.swift in Sources */ = {isa = PBXBuildFile; fileRef = D410A6CE20CF2C30006A31E5 /* URL+NibLoading.swift */; };
 		D412C67A214076A200AA9A07 /* Options.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F9B818213F39BC00253065 /* Options.swift */; };
@@ -224,6 +225,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		88A1F2AB21F5F15A00C8389E /* ExportTrieMangler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportTrieMangler.swift; sourceTree = "<group>"; };
 		D403A4F1217FACB300285492 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		D410A6CC20CF1FC3006A31E5 /* Obfuscator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Obfuscator.swift; sourceTree = "<group>"; };
 		D410A6CE20CF2C30006A31E5 /* URL+NibLoading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+NibLoading.swift"; sourceTree = "<group>"; };
@@ -372,6 +374,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		88A1F2AA21F5F13300C8389E /* ExportTrieMangler */ = {
+			isa = PBXGroup;
+			children = (
+				88A1F2AB21F5F15A00C8389E /* ExportTrieMangler.swift */,
+			);
+			path = ExportTrieMangler;
+			sourceTree = "<group>";
+		};
 		D41FCFE62152FAC100BE3C7A /* SymbolManglingTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -448,6 +458,7 @@
 		D439AAC31F9152F100F9582D /* SymbolMangling */ = {
 			isa = PBXGroup;
 			children = (
+				88A1F2AA21F5F13300C8389E /* ExportTrieMangler */,
 				D4C98AD8214329AF008340B2 /* RealWordsMangler */,
 				D4C98AD9214329B7008340B2 /* CezarMangler */,
 				D44722661FABDBF1006B03AA /* SymbolManglingMap.swift */,
@@ -933,6 +944,7 @@
 				D48F19021FAFB75D00BAC63D /* Mach+Saving.swift in Sources */,
 				D48B8F481F7FEBC200E73BBD /* main.swift in Sources */,
 				D453DB701F9FF7F0006FE316 /* ObfuscationSymbols+Building.swift in Sources */,
+				88A1F2AC21F5F15A00C8389E /* ExportTrieMangler.swift in Sources */,
 				D43CF1BA21559F790055F482 /* SoutLogger+withOptions.swift in Sources */,
 				D432EAE5213DE03300C2ADA0 /* Savable.swift in Sources */,
 				D45B195F20CC8426008415FF /* Nib.swift in Sources */,
@@ -1240,7 +1252,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = F49C5VX3A6;
+				DEVELOPMENT_TEAM = 33H6Y6XY79;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 			};
@@ -1250,7 +1262,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = F49C5VX3A6;
+				DEVELOPMENT_TEAM = 33H6Y6XY79;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 			};
