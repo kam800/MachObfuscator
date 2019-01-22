@@ -18,9 +18,9 @@ class ExportTrieMangler_Tests: XCTestCase {
         childrenLayer0 = assignChildren(childrenLayer1, to: childrenLayer0)
 
         rootTrie = Trie(exportsSymbol: false,
-                            labelRange: 0..<UInt64(2),
-                            label: randomLabels(count: 2),
-                            children: childrenLayer0)
+                labelRange: 0..<0,
+                label: [],
+                children: childrenLayer0)
     }
 
     override func tearDown() {
@@ -29,23 +29,23 @@ class ExportTrieMangler_Tests: XCTestCase {
     }
 
     func test_exportTrieObfuscation() {
-        let obfusctedTrie = sut.mangle(trie: rootTrie, with: 0)
-        XCTAssertEqual(obfusctedTrie.label, [0, 0])
-        XCTAssertEqual(obfusctedTrie.children[0].label, [1, 1, 1])
-        XCTAssertEqual(obfusctedTrie.children[0].children[1].label, [2, 2])
-        XCTAssertEqual(obfusctedTrie.children[1].label, [2, 2, 2])
-        XCTAssertEqual(obfusctedTrie.children[2].label, [3, 3, 3])
-        XCTAssertEqual(obfusctedTrie.children[2].children[0].label, [1, 1])
-        XCTAssertEqual(obfusctedTrie.children[2].children[1].label, [2, 2])
+        let obfuscatedTrie = sut.mangle(trie: rootTrie, fillingRootLabelWith: 0)
+        XCTAssertEqual(obfuscatedTrie.label, [])
+        XCTAssertEqual(obfuscatedTrie.children[0].label, [1, 1, 1])
+        XCTAssertEqual(obfuscatedTrie.children[0].children[1].label, [2, 2])
+        XCTAssertEqual(obfuscatedTrie.children[1].label, [2, 2, 2])
+        XCTAssertEqual(obfuscatedTrie.children[2].label, [3, 3, 3])
+        XCTAssertEqual(obfuscatedTrie.children[2].children[0].label, [1, 1])
+        XCTAssertEqual(obfuscatedTrie.children[2].children[1].label, [2, 2])
     }
 
     private func trieChildren(number: Int) -> [Trie] {
         var children = [Trie]()
-        for index in 1...number {
+        _ = (1...number).map { index in
             let child = Trie(exportsSymbol: index % 2 == 0,
-                             labelRange: 0..<UInt64(number),
-                             label: randomLabels(count: number),
-                             children: [])
+                    labelRange: 0..<UInt64(number),
+                    label: randomLabels(count: number),
+                    children: [])
 
             children.append(child)
         }
@@ -55,8 +55,8 @@ class ExportTrieMangler_Tests: XCTestCase {
 
     private func randomLabels(count: Int) -> [UInt8] {
         var labels = [UInt8]()
-        for _ in 0..<count {
-            labels.append(UInt8.random(in: 0...255))
+        _ = (0..<count).map { _ in
+            labels.append(UInt8.random(in: 1...UInt8.max))
         }
 
         return labels
