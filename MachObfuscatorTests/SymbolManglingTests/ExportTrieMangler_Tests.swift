@@ -40,26 +40,18 @@ class ExportTrieMangler_Tests: XCTestCase {
     }
 
     private func trieChildren(number: Int) -> [Trie] {
-        var children = [Trie]()
-        _ = (1...number).map { index in
-            let child = Trie(exportsSymbol: index % 2 == 0,
+        return (1...number).map { index in
+            return Trie(exportsSymbol: index % 2 == 0,
                     labelRange: 0..<UInt64(number),
                     label: randomLabels(count: number),
                     children: [])
-
-            children.append(child)
         }
-
-        return children
     }
 
     private func randomLabels(count: Int) -> [UInt8] {
-        var labels = [UInt8]()
-        _ = (0..<count).map { _ in
-            labels.append(UInt8.random(in: 1...UInt8.max))
+        return  (0..<count).map { _ in
+           return (UInt8.random(in: 1...UInt8.max))
         }
-
-        return labels
     }
 
     private func assignChildren(_ children: [Trie], to parent: [Trie]) -> [Trie] {
