@@ -1,10 +1,10 @@
 import Foundation
 
-protocol ExportTrieMangling: AnyObject {
+protocol RealWordsExportTrieMangling: AnyObject {
     func mangle(trie: Trie, fillingRootLabelWith labelFill: UInt8) -> Trie
 }
 
-final class ExportTrieMangler: ExportTrieMangling {
+final class RealWordsExportTrieMangler: RealWordsExportTrieMangling {
     func mangle(trie: Trie, fillingRootLabelWith labelFill: UInt8) -> Trie {
         var trieCopy = trie
 

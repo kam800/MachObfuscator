@@ -7,9 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		88A1F2AC21F5F15A00C8389E /* ExportTrieMangler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88A1F2AB21F5F15A00C8389E /* ExportTrieMangler.swift */; };
 		88A1F2AE21F5F1FD00C8389E /* ExportTrieMangler_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88A1F2AD21F5F1FD00C8389E /* ExportTrieMangler_Tests.swift */; };
-		88A1F2AF21F5F3AA00C8389E /* ExportTrieMangler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88A1F2AB21F5F15A00C8389E /* ExportTrieMangler.swift */; };
 		D410A6CD20CF1FC3006A31E5 /* Obfuscator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D410A6CC20CF1FC3006A31E5 /* Obfuscator.swift */; };
 		D410A6CF20CF2C30006A31E5 /* URL+NibLoading.swift in Sources */ = {isa = PBXBuildFile; fileRef = D410A6CE20CF2C30006A31E5 /* URL+NibLoading.swift */; };
 		D412C67A214076A200AA9A07 /* Options.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F9B818213F39BC00253065 /* Options.swift */; };
@@ -149,7 +147,7 @@
 		D481609C2120A9D9008671D8 /* DependencyNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D481609B2120A9D9008671D8 /* DependencyNode.swift */; };
 		D481609D2120CF8C008671D8 /* DependencyNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D481609B2120A9D9008671D8 /* DependencyNode.swift */; };
 		D481609E2120CFD2008671D8 /* Obfuscator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D410A6CC20CF1FC3006A31E5 /* Obfuscator.swift */; };
-		D481609F2120CFF9008671D8 /* CezarMangler.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49C7C261FAD218600B4D03F /* CezarMangler.swift */; };
+		D481609F2120CFF9008671D8 /* CaesarMangler.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49C7C261FAD218600B4D03F /* CaesarMangler.swift */; };
 		D48160A02120D000008671D8 /* SymbolMangling.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49873791FB4FE6E00F33E84 /* SymbolMangling.swift */; };
 		D48160A12120D005008671D8 /* SymbolManglingMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = D44722661FABDBF1006B03AA /* SymbolManglingMap.swift */; };
 		D48160A22120D014008671D8 /* Mach+Replacing.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49C7C281FAE213400B4D03F /* Mach+Replacing.swift */; };
@@ -169,7 +167,7 @@
 		D49455401FC23C5600969202 /* Trie.swift in Sources */ = {isa = PBXBuildFile; fileRef = D494553F1FC23C5600969202 /* Trie.swift */; };
 		D498737A1FB4FE6E00F33E84 /* SymbolMangling.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49873791FB4FE6E00F33E84 /* SymbolMangling.swift */; };
 		D498737C1FB5056F00F33E84 /* ObfuscationPaths+Building.swift in Sources */ = {isa = PBXBuildFile; fileRef = D498737B1FB5056F00F33E84 /* ObfuscationPaths+Building.swift */; };
-		D49C7C271FAD218600B4D03F /* CezarMangler.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49C7C261FAD218600B4D03F /* CezarMangler.swift */; };
+		D49C7C271FAD218600B4D03F /* CaesarMangler.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49C7C261FAD218600B4D03F /* CaesarMangler.swift */; };
 		D49C7C291FAE213400B4D03F /* Mach+Replacing.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49C7C281FAE213400B4D03F /* Mach+Replacing.swift */; };
 		D49C7C2B1FAE6D8500B4D03F /* Data+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49C7C2A1FAE6D8500B4D03F /* Data+Mapping.swift */; };
 		D4A7E1801F8913E900646688 /* Data+Structs.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A7E17F1F8913E900646688 /* Data+Structs.swift */; };
@@ -202,6 +200,11 @@
 		D4FC25211FDBE84D005E351D /* UnsafePointer+CString_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4FC25201FDBE84D005E351D /* UnsafePointer+CString_Tests.swift */; };
 		D4FC25221FDBE98B005E351D /* UnsafePointer+CString.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4FC251E1FDBE72F005E351D /* UnsafePointer+CString.swift */; };
 		D4FC25241FDBF27C005E351D /* Trie+Parsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4FC25231FDBF27C005E351D /* Trie+Parsing.swift */; };
+		E4F471976103DD72E922AE4A /* CaesarExportTrieMangler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4F47C81529825A2DAB1FCAC /* CaesarExportTrieMangler.swift */; };
+		E4F4783DC2F72617745D27A5 /* CaesarStringMangler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4F4791FC538D665099F39E5 /* CaesarStringMangler.swift */; };
+		E4F4794533F6F1852D47ECCA /* RealWordsExportTrieMangler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4F471074E734A577931AFBA /* RealWordsExportTrieMangler.swift */; };
+		E4F47AC0EC6F411F58DC6904 /* CaesarCypher.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4F47D828D5B299A6471F1BA /* CaesarCypher.swift */; };
+		E4F47DC68C1269260D12D624 /* RealWordsExportTrieMangler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4F471074E734A577931AFBA /* RealWordsExportTrieMangler.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -227,7 +230,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		88A1F2AB21F5F15A00C8389E /* ExportTrieMangler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportTrieMangler.swift; sourceTree = "<group>"; };
 		88A1F2AD21F5F1FD00C8389E /* ExportTrieMangler_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportTrieMangler_Tests.swift; sourceTree = "<group>"; };
 		D403A4F1217FACB300285492 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		D410A6CC20CF1FC3006A31E5 /* Obfuscator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Obfuscator.swift; sourceTree = "<group>"; };
@@ -327,7 +329,7 @@
 		D494553F1FC23C5600969202 /* Trie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Trie.swift; sourceTree = "<group>"; };
 		D49873791FB4FE6E00F33E84 /* SymbolMangling.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SymbolMangling.swift; sourceTree = "<group>"; };
 		D498737B1FB5056F00F33E84 /* ObfuscationPaths+Building.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ObfuscationPaths+Building.swift"; sourceTree = "<group>"; };
-		D49C7C261FAD218600B4D03F /* CezarMangler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CezarMangler.swift; sourceTree = "<group>"; };
+		D49C7C261FAD218600B4D03F /* CaesarMangler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaesarMangler.swift; sourceTree = "<group>"; };
 		D49C7C281FAE213400B4D03F /* Mach+Replacing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Mach+Replacing.swift"; sourceTree = "<group>"; };
 		D49C7C2A1FAE6D8500B4D03F /* Data+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+Mapping.swift"; sourceTree = "<group>"; };
 		D4A7E17F1F8913E900646688 /* Data+Structs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+Structs.swift"; sourceTree = "<group>"; };
@@ -357,6 +359,10 @@
 		D4FC251E1FDBE72F005E351D /* UnsafePointer+CString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UnsafePointer+CString.swift"; sourceTree = "<group>"; };
 		D4FC25201FDBE84D005E351D /* UnsafePointer+CString_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UnsafePointer+CString_Tests.swift"; sourceTree = "<group>"; };
 		D4FC25231FDBF27C005E351D /* Trie+Parsing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Trie+Parsing.swift"; sourceTree = "<group>"; };
+		E4F471074E734A577931AFBA /* RealWordsExportTrieMangler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RealWordsExportTrieMangler.swift; sourceTree = "<group>"; };
+		E4F4791FC538D665099F39E5 /* CaesarStringMangler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CaesarStringMangler.swift; sourceTree = "<group>"; };
+		E4F47C81529825A2DAB1FCAC /* CaesarExportTrieMangler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CaesarExportTrieMangler.swift; sourceTree = "<group>"; };
+		E4F47D828D5B299A6471F1BA /* CaesarCypher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CaesarCypher.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -377,14 +383,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		88A1F2AA21F5F13300C8389E /* ExportTrieMangler */ = {
-			isa = PBXGroup;
-			children = (
-				88A1F2AB21F5F15A00C8389E /* ExportTrieMangler.swift */,
-			);
-			path = ExportTrieMangler;
-			sourceTree = "<group>";
-		};
 		D41FCFE62152FAC100BE3C7A /* SymbolManglingTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -462,7 +460,6 @@
 		D439AAC31F9152F100F9582D /* SymbolMangling */ = {
 			isa = PBXGroup;
 			children = (
-				88A1F2AA21F5F13300C8389E /* ExportTrieMangler */,
 				D4C98AD8214329AF008340B2 /* RealWordsMangler */,
 				D4C98AD9214329B7008340B2 /* CezarMangler */,
 				D44722661FABDBF1006B03AA /* SymbolManglingMap.swift */,
@@ -754,6 +751,7 @@
 				D4C98AD12143249F008340B2 /* RealWordsMangler.swift */,
 				D412C67B214148FD00AA9A07 /* Words.swift */,
 				D4C98ADA214329F1008340B2 /* SentenceGenerator.swift */,
+				E4F471074E734A577931AFBA /* RealWordsExportTrieMangler.swift */,
 			);
 			path = RealWordsMangler;
 			sourceTree = "<group>";
@@ -761,7 +759,10 @@
 		D4C98AD9214329B7008340B2 /* CezarMangler */ = {
 			isa = PBXGroup;
 			children = (
-				D49C7C261FAD218600B4D03F /* CezarMangler.swift */,
+				D49C7C261FAD218600B4D03F /* CaesarMangler.swift */,
+				E4F4791FC538D665099F39E5 /* CaesarStringMangler.swift */,
+				E4F47D828D5B299A6471F1BA /* CaesarCypher.swift */,
+				E4F47C81529825A2DAB1FCAC /* CaesarExportTrieMangler.swift */,
 			);
 			path = CezarMangler;
 			sourceTree = "<group>";
@@ -939,7 +940,7 @@
 				D45B195720CC1B82008415FF /* NibPlist+Loading.swift in Sources */,
 				D432EAD6213DDE3B00C2ADA0 /* SimpleImageLoader+DependencyNodeLoader.swift in Sources */,
 				D4C98ADB214329F1008340B2 /* SentenceGenerator.swift in Sources */,
-				D49C7C271FAD218600B4D03F /* CezarMangler.swift in Sources */,
+				D49C7C271FAD218600B4D03F /* CaesarMangler.swift in Sources */,
 				D4AAA600201C9A3B009BB8FA /* UnsafePointer+Structs.swift in Sources */,
 				D44D73FD211C637600DE002B /* FileRepository+DylibLocationResolving.swift in Sources */,
 				D432EADA213DDEB100C2ADA0 /* CpuId.swift in Sources */,
@@ -948,7 +949,6 @@
 				D48F19021FAFB75D00BAC63D /* Mach+Saving.swift in Sources */,
 				D48B8F481F7FEBC200E73BBD /* main.swift in Sources */,
 				D453DB701F9FF7F0006FE316 /* ObfuscationSymbols+Building.swift in Sources */,
-				88A1F2AC21F5F15A00C8389E /* ExportTrieMangler.swift in Sources */,
 				D43CF1BA21559F790055F482 /* SoutLogger+withOptions.swift in Sources */,
 				D432EAE5213DE03300C2ADA0 /* Savable.swift in Sources */,
 				D45B195F20CC8426008415FF /* Nib.swift in Sources */,
@@ -1005,6 +1005,10 @@
 				D439AAC71F916EB900F9582D /* Mach+SectionsLookup.swift in Sources */,
 				D432EAE8213DE06000C2ADA0 /* Image+Savable.swift in Sources */,
 				D410A6CD20CF1FC3006A31E5 /* Obfuscator.swift in Sources */,
+				E4F4783DC2F72617745D27A5 /* CaesarStringMangler.swift in Sources */,
+				E4F47AC0EC6F411F58DC6904 /* CaesarCypher.swift in Sources */,
+				E4F47DC68C1269260D12D624 /* RealWordsExportTrieMangler.swift in Sources */,
+				E4F471976103DD72E922AE4A /* CaesarExportTrieMangler.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1044,9 +1048,8 @@
 				D4816073211C69B1008671D8 /* Mach+Parsing.swift in Sources */,
 				D432EAE9213DE06900C2ADA0 /* Image+Savable.swift in Sources */,
 				D44D73812119E87300DE002B /* NibPlist+Loading_Tests.swift in Sources */,
-				D481609F2120CFF9008671D8 /* CezarMangler.swift in Sources */,
+				D481609F2120CFF9008671D8 /* CaesarMangler.swift in Sources */,
 				D41A66C020F0B87300FB19EB /* UnsafePointer+Leb128_readNibUleb128_Tests.swift in Sources */,
-				88A1F2AF21F5F3AA00C8389E /* ExportTrieMangler.swift in Sources */,
 				D481606D211C69AA008671D8 /* Trie+Parsing.swift in Sources */,
 				D481606A211C69A4008671D8 /* DependencyNodeLoader+isMachOExecutable.swift in Sources */,
 				D481609D2120CF8C008671D8 /* DependencyNode.swift in Sources */,
@@ -1130,6 +1133,7 @@
 				D481609E2120CFD2008671D8 /* Obfuscator.swift in Sources */,
 				D432EAE2213DE00300C2ADA0 /* SimpleImageLoader.swift in Sources */,
 				D432EADD213DDFA000C2ADA0 /* CpuId.swift in Sources */,
+				E4F4794533F6F1852D47ECCA /* RealWordsExportTrieMangler.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

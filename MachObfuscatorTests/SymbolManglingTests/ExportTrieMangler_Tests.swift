@@ -2,12 +2,12 @@ import XCTest
 
 class ExportTrieMangler_Tests: XCTestCase {
 
-    var sut: ExportTrieMangler!
+    var sut: RealWordsExportTrieMangler!
 
     var rootTrie: Trie!
 
     override func setUp() {
-        sut = ExportTrieMangler()
+        sut = RealWordsExportTrieMangler()
         var childrenLayer0 = trieChildren(number: 3)
         var childrenLayer1 = trieChildren(number: 2)
         var childrenLayer2 = trieChildren(number: 2)

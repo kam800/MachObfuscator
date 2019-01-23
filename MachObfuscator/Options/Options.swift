@@ -17,12 +17,12 @@ extension Options {
                          argv: CommandLine.arguments)
     }
 
-    init(argc: Int32, unsafeArgv: UnsafeArgv, argv: [String]) {
+    init(argc: Int32, unsafeArgv: UnsafeArgv, argv: [String], defaultManglerKey: String = "realWords") {
         optreset = 1
         var help = false
         var quiet = false
         var verbose = false
-        var manglerKey: String = RealWordsMangler.key
+        var manglerKey = defaultManglerKey
         while case let option = getopt(argc, unsafeArgv, "qvhm:"), option != -1 {
             let char = UnicodeScalar(CUnsignedChar(option))
             switch char {
@@ -43,9 +43,11 @@ extension Options {
         if optind < argc {
             appDirectory = argv[Int(optind)]
         }
+
         let appDirectoryURL = appDirectory
             .flatMap(URL.init(fileURLWithPath:))?
             .resolvingSymlinksInPath()
+
         self.init(help: help, quiet: quiet, verbose: verbose, manglerKey: manglerKey, appDirectory: appDirectoryURL)
     }
 

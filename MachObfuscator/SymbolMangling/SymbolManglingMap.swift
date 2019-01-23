@@ -1,7 +1,13 @@
 import Foundation
 
 struct SymbolManglingMap {
+    typealias ObfuscationTriePair = (unobfuscated: Trie, obfuscated: Trie)
+
+    typealias TriesPerCpu = [CpuId: ObfuscationTriePair]
+
     var selectors: [String: String]
+
     var classNames: [String: String]
-    var unobfuscatedObfuscatedTriePairPerCpuIdPerURL: [URL: [CpuId: (Trie, Trie)]]
+
+    var exportTrieObfuscationMap: [URL: TriesPerCpu]
 }

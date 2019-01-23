@@ -5,7 +5,6 @@ private func main() {
     guard !options.help,
         let appDirectory = options.appDirectory,
         let mangler = SymbolManglers.mangler(byKey: options.manglerKey) else {
-        print(Options.usage)
         return
     }
     LOGGER = SoutLogger(options: options)
