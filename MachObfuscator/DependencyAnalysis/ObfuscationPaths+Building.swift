@@ -26,7 +26,7 @@ extension ObfuscationPaths {
 
         while let nextImageURL = imagesQueue.popLast() {
             // TODO: create better exclusion mechanism
-            if obfuscableDirectory.contains(nextImageURL) {
+            if obfuscableDirectory.contains(nextImageURL) && !nextImageURL.path.contains("libswift") {
                 obfuscableImages.insert(nextImageURL)
             } else {
                 unobfuscableDependencies.insert(nextImageURL)

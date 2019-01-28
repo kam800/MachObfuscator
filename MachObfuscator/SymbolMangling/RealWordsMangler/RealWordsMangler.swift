@@ -12,9 +12,10 @@ class RealWordsMangler: SymbolMangling {
         let sentenceGenerator = SentenceGenerator()
         let mangledSelectorsBlacklist = (Array(symbols.blacklist.selectors) + Array(symbols.whitelist.selectors)).uniq
         let mangledClassesBlacklist = (Array(symbols.blacklist.classes) + Array(symbols.whitelist.classes)).uniq
-        let unmangledAndMangledSelectorPairs: [(String, String)] =
+        let unmangledAndMangledNonSetterPairs: [(String, String)] =
             symbols.whitelist
             .selectors
+            .filter { !$0.isSetter }
             .compactMap { selector in
                 while let randomSelector = sentenceGenerator.getUniqueSentence(length: selector.count) {
                     if !mangledSelectorsBlacklist.contains(randomSelector) {
@@ -23,6 +24,23 @@ class RealWordsMangler: SymbolMangling {
                 }
                 return nil
             }
+
+        let unmangledAndMangledSetterPairs: [(String, String)] =
+            symbols.whitelist
+            .selectors
+            .filter { $0.isSetter }
+            .compactMap { setter in
+                guard let getter = setter.getterFromSetter,
+                    let mangledGetter = unmangledAndMangledNonSetterPairs.first(where: { $0.0 == getter })?.1,
+                    let mangledSetter = mangledGetter.setterFromGetter else {
+                    return nil
+                }
+                return (setter, mangledSetter)
+            }
+
+        let unmangledAndMangledSelectorPairs: [(String, String)] =
+            unmangledAndMangledNonSetterPairs + unmangledAndMangledSetterPairs
+
         let unmangledAndMangledClassPairs: [(String, String)] =
             symbols.whitelist
             .classes
@@ -44,5 +62,30 @@ class RealWordsMangler: SymbolMangling {
         return SymbolManglingMap(selectors: Dictionary(uniqueKeysWithValues: unmangledAndMangledSelectorPairs),
                                  classNames: Dictionary(uniqueKeysWithValues: unmangledAndMangledClassPairs),
                                  unobfuscatedObfuscatedTriePairPerCpuIdPerURL: identityManglingMap)
+    }
+}
+
+extension String {
+    var isSetter: Bool {
+        let prefix = "set"
+        guard count >= 5,
+            hasPrefix(prefix),
+            hasSuffix(":") else {
+            return false
+        }
+        let firstGetterLetter = self[index(startIndex, offsetBy: 3)]
+        return ("A" ... "Z").contains(firstGetterLetter)
+    }
+
+    var getterFromSetter: String? {
+        guard isSetter else {
+            return nil
+        }
+        let getterPart = dropFirst(3).dropLast()
+        return getterPart.prefix(1).lowercased() + getterPart.dropFirst()
+    }
+
+    var setterFromGetter: String? {
+        return "set" + prefix(1).uppercased() + dropFirst(1) + ":"
     }
 }
