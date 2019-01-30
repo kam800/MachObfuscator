@@ -68,8 +68,7 @@ private extension Mach {
         data = data32
         type = header.filetype == MH_EXECUTE ? .executable : .other
         cpu = Mach.Cpu(type: header.cputype, subtype: header.cpusubtype)
-        // TODO
-        var platform: Platform? = .ios
+        var platform: Platform?
         rpaths = []
         dylibs = []
         segments = []
@@ -120,8 +119,7 @@ private extension Mach {
         data = data64
         type = header.filetype == MH_EXECUTE ? .executable : .other
         cpu = Mach.Cpu(type: header.cputype, subtype: header.cpusubtype)
-        // TODO
-        var platform: Platform? = .ios
+        var platform: Platform?
         rpaths = []
         dylibs = []
         segments = []
