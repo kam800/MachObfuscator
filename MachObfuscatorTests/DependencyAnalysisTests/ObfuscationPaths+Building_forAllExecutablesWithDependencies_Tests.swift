@@ -317,6 +317,57 @@ class ObfuscationPaths_Building_forAllExecutablesWithDependencies_Tests: XCTestC
                        runtimePrefixedExternalDependency2Path.asURL)
     }
 
+    func test_shouldCollectSwiftLibraries_AsUnobfuscable() {
+        // Given
+        let executablePath = "/tmp/SampleApp.app/MacOS/SampleApp"
+        let exeDyldEntry1 = "@rpath/lib"
+        let exeDyldEntry2 = "@rpath/libswiftMetal.dylib"
+        testRepository.addMachOPath(executablePath,
+                                    platform: .macos,
+                                    isExecutable: true,
+                                    dylibs: [ exeDyldEntry1, exeDyldEntry2 ],
+                                    rpaths: [ "@executable_path/../Frameworks" ])
+
+        let lib1Path = "/tmp/SampleApp.app/Frameworks/lib"
+        let lib1DyldEntry = "@rpath/libswiftFoundation.dylib"
+        testRepository.addMachOPath(lib1Path,
+                                    isExecutable: false,
+                                    dylibs: [ lib1DyldEntry ])
+
+        let lib2Path = "/tmp/SampleApp.app/Frameworks/libswiftFoundation.dylib"
+        testRepository.addMachOPath(lib2Path,
+                                    isExecutable: false)
+
+        let lib3Path = "/tmp/SampleApp.app/Frameworks/libswiftMetal.dylib"
+        let lib3DyldEntry = "@rpath/libswiftCore.dylib"
+        testRepository.addMachOPath(lib3Path,
+                                    isExecutable: false,
+                                    dylibs: [ lib3DyldEntry ])
+
+        let lib4Path = "/tmp/SampleApp.app/Frameworks/libswiftCore.dylib"
+        testRepository.addMachOPath(lib4Path,
+                                    isExecutable: false,
+                                    dylibs: [])
+
+        // When
+        let sut = buildSUT()
+
+        // Then
+        XCTAssertEqual(sut.unobfuscableDependencies,
+                       [ lib2Path.asURL, lib3Path.asURL, lib4Path.asURL ])
+        XCTAssertEqual(sut.resolvedDylibMapPerImageURL[executablePath.asURL],
+                       [ exeDyldEntry1: lib1Path.asURL,
+                         exeDyldEntry2: lib3Path.asURL ])
+        XCTAssertEqual(sut.resolvedDylibMapPerImageURL[lib1Path.asURL],
+                       [ lib1DyldEntry: lib2Path.asURL ])
+        XCTAssertEqual(sut.resolvedDylibMapPerImageURL[lib2Path.asURL],
+                       [:])
+        XCTAssertEqual(sut.resolvedDylibMapPerImageURL[lib3Path.asURL],
+                       [ lib3DyldEntry: lib4Path.asURL])
+        XCTAssertEqual(sut.resolvedDylibMapPerImageURL[lib4Path.asURL],
+                       [:])
+    }
+
     func test_shouldCollectAllNibs() {
         // Given
         let nib1Path = "/tmp/SampleApp.app/Resources/View1.nib"
