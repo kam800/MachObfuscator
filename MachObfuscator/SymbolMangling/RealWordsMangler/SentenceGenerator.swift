@@ -6,7 +6,11 @@ import Foundation
 // with
 // 1-* nouns https://www.talkenglish.com/vocabulary/top-1500-nouns.aspx
 
-class SentenceGenerator {
+protocol SentenceGenerator {
+    func getUniqueSentence(length: Int) -> String?
+}
+
+class EnglishSentenceGenerator: SentenceGenerator {
     private var previousSentences: Set<String> = []
 
     // Returns unique random sentence, or nil when unique sentence can not be generated.

@@ -9,7 +9,12 @@ class RealWordsMangler: SymbolMangling {
     required init() {}
 
     func mangleSymbols(_ symbols: ObfuscationSymbols) -> SymbolManglingMap {
-        let sentenceGenerator = SentenceGenerator()
+        return mangleSymbols(symbols,
+                             sentenceGenerator: EnglishSentenceGenerator())
+    }
+
+    func mangleSymbols(_ symbols: ObfuscationSymbols,
+                       sentenceGenerator: SentenceGenerator) -> SymbolManglingMap {
         let mangledSelectorsBlacklist = (Array(symbols.blacklist.selectors) + Array(symbols.whitelist.selectors)).uniq
         let mangledClassesBlacklist = (Array(symbols.blacklist.classes) + Array(symbols.whitelist.classes)).uniq
         let unmangledAndMangledNonSetterPairs: [(String, String)] =
