@@ -18,18 +18,18 @@ private func calculateCFRuntimeBaseSize() -> Int {
     var uuidRef = CFUUIDCreate(nil)!
     var bytes = CFUUIDGetUUIDBytes(uuidRef)
     let bytesCount = withUnsafeBytes(of: &bytes) { ptr in
-        return ptr.count
+        ptr.count
     }
     let bytesArray: [UInt8] = withUnsafePointer(to: &bytes) { ptr in
-        return ptr.getStructs(count: bytesCount)
+        ptr.getStructs(count: bytesCount)
     }
     let index: Int? =
         withUnsafePointer(to: &uuidRef) { ptr in
-            return ptr.withMemoryRebound(to: UnsafePointer<UInt8>.self,
-                                         capacity: 1) { ptr in
+            ptr.withMemoryRebound(to: UnsafePointer<UInt8>.self,
+                                  capacity: 1) { ptr in
                 ptr.pointee.withMemoryRebound(to: UInt8.self,
                                               capacity: bytesCount * 4) { ptr in
-                    return (0 ..< bytesCount * 3).first(where: { offset in
+                    (0 ..< bytesCount * 3).first(where: { offset in
                         let bytesAtCuror: [UInt8] = ptr.advanced(by: offset).getStructs(count: bytesCount)
                         return bytesAtCuror == bytesArray
                     })
@@ -51,7 +51,7 @@ func CFKeyedArchiverUIDGetValue(_ uid: Any) -> Int {
     var mutableUid = uid
     return withUnsafePointer(to: &mutableUid) { ptr in
         ptr.withMemoryRebound(to: UnsafePointer<UInt8>.self, capacity: 1) { ptr in
-            return ptr.pointee.advanced(by: CFRuntimeBaseSize).withMemoryRebound(to: UInt32.self, capacity: 1, { ptr in
+            ptr.pointee.advanced(by: CFRuntimeBaseSize).withMemoryRebound(to: UInt32.self, capacity: 1, { ptr in
                 Int(ptr.pointee)
             })
         }

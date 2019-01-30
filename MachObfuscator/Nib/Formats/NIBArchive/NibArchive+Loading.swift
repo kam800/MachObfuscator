@@ -85,7 +85,7 @@ private extension UnsafePointer where Pointee == UInt8 {
         let keyBytesCount = Int(readNibUleb128())
         let keyOffset = zeroPtr.distance(to: self)
         let keyBytes = withMemoryRebound(to: UInt8.self, capacity: keyBytesCount) { ptr in
-            return [UInt8](UnsafeBufferPointer(start: ptr, count: keyBytesCount))
+            [UInt8](UnsafeBufferPointer(start: ptr, count: keyBytesCount))
         }
         guard let key = String(bytes: keyBytes, encoding: .utf8) else {
             fatalError("NIBArchive key is not an UTF8 string")
@@ -143,7 +143,7 @@ private extension UnsafePointer where Pointee == UInt8 {
         let extraValuesBytesSize = 4 * Int(extraValues)
         self = advanced(by: extraValuesBytesSize)
         var nameBytes = withMemoryRebound(to: UInt8.self, capacity: Int(nameBytesCount)) { ptr in
-            return [UInt8](UnsafeBufferPointer(start: ptr, count: Int(nameBytesCount)))
+            [UInt8](UnsafeBufferPointer(start: ptr, count: Int(nameBytesCount)))
         }
         // TODO: remove?
         while nameBytes.last == 0 {

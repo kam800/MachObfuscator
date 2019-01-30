@@ -33,7 +33,7 @@ private extension Fat {
             let header: fat_header = data.getStruct(atOffset: 0)
             let archs: [fat_arch] = data.getStructs(atOffset: MemoryLayout<fat_header>.size, count: Int(header.nfat_arch.byteSwapped))
             architectures = archs.map { arch in
-                return Fat.Architecture(data: data, arch: arch, url: url)
+                Fat.Architecture(data: data, arch: arch, url: url)
             }
         default:
             fatalError("Unsupported fat binary magic \(String(data.magic ?? 0, radix: 0x10, uppercase: true))")
