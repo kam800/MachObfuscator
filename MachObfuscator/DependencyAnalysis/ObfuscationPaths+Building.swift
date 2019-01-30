@@ -26,6 +26,9 @@ extension ObfuscationPaths {
 
         while let nextImageURL = imagesQueue.popLast() {
             // TODO: create better exclusion mechanism
+            // > Swift apps no longer include dynamically linked libraries for the Swift standard library
+            // > and Swift SDK overlays in build variants for devices running iOS 12.2, watchOS 5.2, and tvOS 12.2.
+            // -- https://developer.apple.com/documentation/xcode_release_notes/xcode_10_2_beta_release_notes/swift_5_release_notes_for_xcode_10_2_beta
             if obfuscableDirectory.contains(nextImageURL),
                 !nextImageURL.lastPathComponent.starts(with: "libswift") {
                 obfuscableImages.insert(nextImageURL)
