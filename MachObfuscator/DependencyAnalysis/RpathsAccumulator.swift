@@ -66,7 +66,7 @@ class RpathsAccumulator {
 
 private extension Mach.Platform {
     func translated(path: String) -> String {
-        if self == .ios && path.starts(with: "/") {
+        if self == .ios, path.starts(with: "/") {
             // prefix ios root paths with ios runtime path
             return Paths.iosRuntimeRoot.appending(path)
         } else {
