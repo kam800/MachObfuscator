@@ -1,6 +1,6 @@
 import XCTest
 
-class ExportTrieMangler_Tests: XCTestCase {
+class RealWordsExportTrieMangler_Tests: XCTestCase {
 
     var sut: RealWordsExportTrieMangler!
 

@@ -11,7 +11,7 @@ final class CaesarExportTrieMangler: CaesarExportTrieMangling {
         var trieCopy = trie
 
         trieCopy.label = trieCopy.label.map {
-            return caesarCypher.cypher(element: $0, cypherKey: key)
+            return caesarCypher.encrypt(element: $0, key: key)
         }
 
         trieCopy.children = trieCopy.children.map { trie -> Trie in

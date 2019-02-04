@@ -14,6 +14,6 @@ final class CaesarStringMangler: CaesarStringMangling {
             return "set" + mangle(wordSubstring, usingCypherKey: cypherKey)
         }
 
-        return String(bytes: word.utf8.map { caesarCypher.cypher(element: $0, cypherKey: cypherKey) }, encoding: .utf8)!
+        return String(bytes: word.utf8.map { caesarCypher.encrypt(element: $0, key: cypherKey) }, encoding: .utf8)!
     }
 }

@@ -9,6 +9,7 @@ private func main() {
     }
     LOGGER = SoutLogger(options: options)
     let obfuscator = Obfuscator(directoryURL: appDirectory, mangler: mangler)
+    print(Options.usage)
     obfuscator.run()
 }
 

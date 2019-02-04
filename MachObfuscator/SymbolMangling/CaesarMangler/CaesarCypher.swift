@@ -3,13 +3,13 @@ import Foundation
 final class CaesarCypher {
     private let asciiRange = UInt8(33) ... UInt8(126)
 
-    func cypher(element: UInt8, cypherKey: UInt8) -> UInt8 {
+    func encrypt(element: UInt8, key: UInt8) -> UInt8 {
         if representsAsciiSemicolon(element) {
             return element
         }
 
         if asciiRange.contains(element) {
-            let elementShiftedByKey: UInt8 = element + cypherKey
+            let elementShiftedByKey: UInt8 = element + key
             return asciiRange.contains(elementShiftedByKey) ? elementShiftedByKey
                 : elementShiftedByKey - UInt8(asciiRange.count)
         }

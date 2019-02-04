@@ -3,7 +3,7 @@ import Foundation
 final class RealWordsMangler: SymbolMangling {
     var key: String = "realWords"
 
-    let helpDescription: String = "replace objc symbols with random words (dyld info obfuscation not supported yet)"
+    let helpDescription: String = "replace objc symbols with random words and fill dyld info symbols with numbers"
 
     private let exportTrieMangler: RealWordsExportTrieMangling
 

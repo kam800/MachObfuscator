@@ -58,8 +58,8 @@ Options:
   -m mangler_key  select mangler to generate obfuscated symbols
 
 Available manglers by mangler_key:
-  cezar - ROT13 all objc symbols and dyld info
-  realWords - replace objc symbols with random words (dyld info obfuscation not supported yet)
+  caesar - ROT13 all objc symbols and dyld info
+  realWords - replace objc symbols with random words (dyld info obfuscation supported)
 ```
 
 ## Under the hood 🔧

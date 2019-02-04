@@ -4,6 +4,8 @@ enum SymbolManglers {
     static let allManglers: [SymbolMangling] = [CaesarMangler(exportTrieMangler: CaesarExportTrieMangler()),
                                                 RealWordsMangler(exportTrieMangler: RealWordsExportTrieMangler())]
 
+    static let defaultManglerKey = "realWords"
+
     static func mangler(byKey key: String) -> SymbolMangling? {
         return allManglers.first { $0.key == key }
     }

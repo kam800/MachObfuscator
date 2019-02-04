@@ -1,8 +1,7 @@
 import Foundation
 
 final class CaesarMangler: SymbolMangling {
-    // todo: Probably should be changed to 'caesar'. Would require readme.md update
-    let key: String = "cezar"
+    let key: String = "caesar"
 
     let helpDescription: String = "ROT13 all objc symbols and dyld info"
 
@@ -31,7 +30,7 @@ final class CaesarMangler: SymbolMangling {
             fatalError("ReverseMangler clashed on symbol '\(clashedSymbol)'")
         }
 
-        let triesPerCpuAtUrl: [URL: SymbolManglingMap.TriesPerCpu] = symbols.exportTriesPerCpuIdPerURL.mapValues {
+        let triesPerCpuAtUrl: [URL: SymbolManglingMap.TriePerCpu] = symbols.exportTriesPerCpuIdPerURL.mapValues {
             $0.mapValues {
                 SymbolManglingMap.ObfuscationTriePair(unobfuscated: $0,
                                                       obfuscated: exportTrieMangler.mangle(trie: $0, withCaesarCypherKey: 13))

@@ -17,12 +17,12 @@ extension Options {
                          argv: CommandLine.arguments)
     }
 
-    init(argc: Int32, unsafeArgv: UnsafeArgv, argv: [String], defaultManglerKey: String = "realWords") {
+    init(argc: Int32, unsafeArgv: UnsafeArgv, argv: [String]) {
         optreset = 1
         var help = false
         var quiet = false
         var verbose = false
-        var manglerKey = defaultManglerKey
+        var manglerKey = SymbolManglers.defaultManglerKey
         while case let option = getopt(argc, unsafeArgv, "qvhm:"), option != -1 {
             let char = UnicodeScalar(CUnsignedChar(option))
             switch char {
