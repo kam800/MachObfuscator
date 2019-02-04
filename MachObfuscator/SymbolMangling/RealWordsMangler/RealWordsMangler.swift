@@ -38,7 +38,7 @@ class RealWordsMangler: SymbolMangling {
         let identityManglingMap =
             symbols.exportTriesPerCpuIdPerURL
             .mapValues { exportTriesPerCpuId in
-                return exportTriesPerCpuId.mapValues { ($0, exportTrieMangler.mangle(trie: $0, fillingRootLabelWith: 0)) }
+                exportTriesPerCpuId.mapValues { ($0, exportTrieMangler.mangle(trie: $0, fillingRootLabelWith: 0)) }
             }
 
         return SymbolManglingMap(selectors: Dictionary(uniqueKeysWithValues: unmangledAndMangledSelectorPairs),
