@@ -49,7 +49,7 @@ private extension NibArchive {
         guard let classNameKeyIndex = keys.index(where: { $0.value == "UIClassName" })
         else { return [] }
         let classNameValues = values.filter { value in
-            return value.keyIndex == classNameKeyIndex
+            value.keyIndex == classNameKeyIndex
         }
         return classNameValues.map { value in
             guard let rangedString = value.asString(nib: self)
