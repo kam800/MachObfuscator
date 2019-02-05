@@ -45,12 +45,20 @@ class RealWordsMangler_Tests: XCTestCase {
         let mangledSymbols = when(symbols: symbols)
 
         // Then
-        XCTAssertEqual(mangledSymbols.selectors,
-                       [ "user" : "bla1",
-                         "view" : "bla2",
-                         "setUser:" : "setBla1:",
-                         "setView:" : "setBla2:"
-                       ])
+        let firstVersion = [
+            "user" : "bla1",
+            "view" : "bla2",
+            "setUser:" : "setBla1:",
+            "setView:" : "setBla2:"
+        ]
+        let secondVersion = [
+            "user" : "bla2",
+            "view" : "bla1",
+            "setUser:" : "setBla2:",
+            "setView:" : "setBla1:"
+        ]
+        XCTAssert(mangledSymbols.selectors == firstVersion
+            || mangledSymbols.selectors == secondVersion)
     }
 
     func test_mangleSymbols_shouldSkipBlacklistedSettersAndGettersCoherently() {
@@ -65,11 +73,19 @@ class RealWordsMangler_Tests: XCTestCase {
         let mangledSymbols = when(symbols: symbols)
 
         // Then
-        XCTAssertEqual(mangledSymbols.selectors,
-                       [ "user" : "bla1",
-                         "view" : "bla3",
-                         "setUser:" : "setBla1:",
-                         "setView:" : "setBla3:"
-            ])
+        let firstVersion = [
+            "user" : "bla1",
+            "view" : "bla3",
+            "setUser:" : "setBla1:",
+            "setView:" : "setBla3:"
+        ]
+        let secondVersion = [
+            "user" : "bla1",
+            "view" : "bla3",
+            "setUser:" : "setBla1:",
+            "setView:" : "setBla3:"
+        ]
+        XCTAssert(mangledSymbols.selectors == firstVersion
+            || mangledSymbols.selectors == secondVersion)
     }
 }
