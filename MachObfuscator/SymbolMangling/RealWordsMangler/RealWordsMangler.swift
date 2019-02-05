@@ -70,7 +70,7 @@ class RealWordsMangler: SymbolMangling {
     }
 }
 
-extension String {
+private extension String {
     var isSetter: Bool {
         let prefix = "set"
         guard count >= 5,
