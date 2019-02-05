@@ -52,4 +52,24 @@ class RealWordsMangler_Tests: XCTestCase {
                          "setView:" : "setBla2:"
                        ])
     }
+
+    func test_mangleSymbols_shouldSkipBlacklistedSettersAndGettersCoherently() {
+        // Given
+        let whitelist = ObjCSymbols(selectors: [ "user", "view", "setUser:", "setView:" ], classes: [])
+        let blacklist = ObjCSymbols(selectors: [ "bla2" ], classes: [])
+        let symbols = ObfuscationSymbols(whitelist: whitelist,
+                                         blacklist: blacklist,
+                                         exportTriesPerCpuIdPerURL: [:])
+
+        // When
+        let mangledSymbols = when(symbols: symbols)
+
+        // Then
+        XCTAssertEqual(mangledSymbols.selectors,
+                       [ "user" : "bla1",
+                         "view" : "bla3",
+                         "setUser:" : "setBla1:",
+                         "setView:" : "setBla3:"
+            ])
+    }
 }
