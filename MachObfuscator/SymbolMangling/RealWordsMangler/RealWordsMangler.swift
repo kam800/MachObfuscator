@@ -15,58 +15,79 @@ class RealWordsMangler: SymbolMangling {
 
     func mangleSymbols(_ symbols: ObfuscationSymbols,
                        sentenceGenerator: SentenceGenerator) -> SymbolManglingMap {
-        let mangledSelectorsBlacklist = (Array(symbols.blacklist.selectors) + Array(symbols.whitelist.selectors)).uniq
-        let mangledClassesBlacklist = (Array(symbols.blacklist.classes) + Array(symbols.whitelist.classes)).uniq
-        let unmangledAndMangledNonSetterPairs: [(String, String)] =
-            symbols.whitelist
+        let nonSettersManglingMap: [(String, String)] =
+            symbols.nonSettersManglingMap(sentenceGenerator: sentenceGenerator)
+
+        let settersManglingMap: [(String, String)] =
+            symbols.settersManglingMap(matchingToNonSetterManglingMap: nonSettersManglingMap)
+
+        let selectorsManglingMap: [(String, String)] =
+            nonSettersManglingMap + settersManglingMap
+
+        let classManglingMap: [(String, String)] =
+            symbols.classManglingMap(sentenceGenerator: sentenceGenerator)
+
+        let exportTriesManglingMap =
+            symbols.exportTriesManglingMap(exportTrieMangler: exportTrieMangler)
+
+        return SymbolManglingMap(selectors: Dictionary(uniqueKeysWithValues: selectorsManglingMap),
+                                 classNames: Dictionary(uniqueKeysWithValues: classManglingMap),
+                                 unobfuscatedObfuscatedTriePairPerCpuIdPerURL: exportTriesManglingMap)
+    }
+}
+
+private extension ObfuscationSymbols {
+    func nonSettersManglingMap(sentenceGenerator: SentenceGenerator) -> [(String, String)] {
+        let mangledSelectorsBlacklist = (Array(blacklist.selectors) + Array(whitelist.selectors)).uniq
+        let nonSetterManglingEntryProvider: (String) -> (String, String)? = { selector in
+            while let randomSelector = sentenceGenerator.getUniqueSentence(length: selector.count) {
+                if !mangledSelectorsBlacklist.contains(randomSelector) {
+                    return (selector, randomSelector)
+                }
+            }
+            return nil
+        }
+        return whitelist
             .selectors
             .filter { !$0.isSetter }
-            .compactMap { selector in
-                while let randomSelector = sentenceGenerator.getUniqueSentence(length: selector.count) {
-                    if !mangledSelectorsBlacklist.contains(randomSelector) {
-                        return (selector, randomSelector)
-                    }
-                }
+            .compactMap(nonSetterManglingEntryProvider)
+    }
+
+    func settersManglingMap(matchingToNonSetterManglingMap nonSetterManglingMap: [(String, String)]) -> [(String, String)] {
+        let setterManglingEntryProvider: (String) -> (String, String)? = { setter in
+            guard let getter = setter.getterFromSetter,
+                let mangledGetter = nonSetterManglingMap.first(where: { $0.0 == getter })?.1,
+                let mangledSetter = mangledGetter.setterFromGetter else {
                 return nil
             }
-
-        let unmangledAndMangledSetterPairs: [(String, String)] =
-            symbols.whitelist
+            return (setter, mangledSetter)
+        }
+        return whitelist
             .selectors
             .filter { $0.isSetter }
-            .compactMap { setter in
-                guard let getter = setter.getterFromSetter,
-                    let mangledGetter = unmangledAndMangledNonSetterPairs.first(where: { $0.0 == getter })?.1,
-                    let mangledSetter = mangledGetter.setterFromGetter else {
-                    return nil
+            .compactMap(setterManglingEntryProvider)
+    }
+
+    func classManglingMap(sentenceGenerator: SentenceGenerator) -> [(String, String)] {
+        let mangledClassesBlacklist = (Array(blacklist.classes) + Array(whitelist.classes)).uniq
+        let classManglingEntryProvider: (String) -> (String, String)? = { className in
+            while let randomClassName = sentenceGenerator.getUniqueSentence(length: className.count)?.capitalizedOnFirstLetter {
+                if !mangledClassesBlacklist.contains(randomClassName) {
+                    return (className, randomClassName)
                 }
-                return (setter, mangledSetter)
             }
-
-        let unmangledAndMangledSelectorPairs: [(String, String)] =
-            unmangledAndMangledNonSetterPairs + unmangledAndMangledSetterPairs
-
-        let unmangledAndMangledClassPairs: [(String, String)] =
-            symbols.whitelist
+            return nil
+        }
+        return whitelist
             .classes
-            .compactMap { className in
-                while let randomClassName = sentenceGenerator.getUniqueSentence(length: className.count)?.capitalizedOnFirstLetter {
-                    if !mangledClassesBlacklist.contains(randomClassName) {
-                        return (className, randomClassName)
-                    }
-                }
-                return nil
-            }
+            .compactMap(classManglingEntryProvider)
+    }
 
-        let identityManglingMap =
-            symbols.exportTriesPerCpuIdPerURL
+    func exportTriesManglingMap(exportTrieMangler: ExportTrieMangling) -> [URL: [CpuId: (Trie, Trie)]] {
+        return exportTriesPerCpuIdPerURL
             .mapValues { exportTriesPerCpuId in
                 exportTriesPerCpuId.mapValues { ($0, exportTrieMangler.mangle(trie: $0, fillingRootLabelWith: 0)) }
             }
-
-        return SymbolManglingMap(selectors: Dictionary(uniqueKeysWithValues: unmangledAndMangledSelectorPairs),
-                                 classNames: Dictionary(uniqueKeysWithValues: unmangledAndMangledClassPairs),
-                                 unobfuscatedObfuscatedTriePairPerCpuIdPerURL: identityManglingMap)
     }
 }
 
