@@ -16,7 +16,7 @@ private extension Mach {
             data.replaceStrings(inRange: classNameSection.range.intRange, withMapping: map.classNames)
         }
         if let (_, obfuscatedTrie) = map
-            .unobfuscatedObfuscatedTriePairPerCpuIdPerURL[imageURL]?[cpu.asCpuId] {
+            .exportTrieObfuscationMap[imageURL]?[cpu.asCpuId] {
             for obfuscatedNode in obfuscatedTrie.flatNodes {
                 data.replaceBytes(inRange: obfuscatedNode.labelRange.intRange, withBytes: obfuscatedNode.label)
             }
@@ -28,7 +28,7 @@ private extension Mach {
             let resolvedDylibsMap = paths.resolvedDylibMapPerImageURL[imageURL] {
             let resolvedDylibs = dylibs.map { resolvedDylibsMap[$0]! }
             let obfuscatedSymbolPerUnobfuscatedSymbolPerImageURL: [URL: [String: String]] =
-                map.unobfuscatedObfuscatedTriePairPerCpuIdPerURL.mapValues {
+                map.exportTrieObfuscationMap.mapValues {
                     guard let (unobfuscatedTrie, obfuscatedTrie) = $0[cpu.asCpuId] else {
                         return [:]
                     }

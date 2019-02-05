@@ -3,6 +3,12 @@ import XCTest
 class RealWordsMangler_Tests: XCTestCase {
     // TODO: tests missing
 
+    private class IdentityRealWordsExportTrieMangling: RealWordsExportTrieMangling {
+        func mangle(trie: Trie, fillingRootLabelWith labelFill: UInt8) -> Trie {
+            return trie
+        }
+    }
+
     var sentenceGenerator: ArraySentenceGenerator!
     var sut: RealWordsMangler!
 
@@ -19,7 +25,7 @@ class RealWordsMangler_Tests: XCTestCase {
             "blaBla3",
         ]
 
-        sut = RealWordsMangler()
+        sut = RealWordsMangler(exportTrieMangler: IdentityRealWordsExportTrieMangling())
     }
 
     override func tearDown() {
@@ -80,10 +86,10 @@ class RealWordsMangler_Tests: XCTestCase {
             "setView:" : "setBla3:"
         ]
         let secondVersion = [
-            "user" : "bla1",
-            "view" : "bla3",
-            "setUser:" : "setBla1:",
-            "setView:" : "setBla3:"
+            "user" : "bla3",
+            "view" : "bla1",
+            "setUser:" : "setBla3:",
+            "setView:" : "setBla1:"
         ]
         XCTAssert(mangledSymbols.selectors == firstVersion
             || mangledSymbols.selectors == secondVersion)

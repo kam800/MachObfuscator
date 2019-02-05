@@ -1,12 +1,15 @@
 import Foundation
 
-class RealWordsMangler: SymbolMangling {
-    static var key: String = "realWords"
-    static let helpDescription: String = "replace objc symbols with random words (dyld info obfuscation not supported yet)"
+final class RealWordsMangler: SymbolMangling {
+    var key: String = "realWords"
 
-    private let exportTrieMangler: ExportTrieMangling = ExportTrieMangler()
+    let helpDescription: String = "replace objc symbols with random words and fill dyld info symbols with numbers"
 
-    required init() {}
+    private let exportTrieMangler: RealWordsExportTrieMangling
+
+    init(exportTrieMangler: RealWordsExportTrieMangling) {
+        self.exportTrieMangler = exportTrieMangler
+    }
 
     func mangleSymbols(_ symbols: ObfuscationSymbols) -> SymbolManglingMap {
         return mangleSymbols(symbols,
@@ -32,7 +35,7 @@ class RealWordsMangler: SymbolMangling {
 
         return SymbolManglingMap(selectors: Dictionary(uniqueKeysWithValues: selectorsManglingMap),
                                  classNames: Dictionary(uniqueKeysWithValues: classManglingMap),
-                                 unobfuscatedObfuscatedTriePairPerCpuIdPerURL: exportTriesManglingMap)
+                                 exportTrieObfuscationMap: exportTriesManglingMap)
     }
 }
 
@@ -83,10 +86,12 @@ private extension ObfuscationSymbols {
             .compactMap(classManglingEntryProvider)
     }
 
-    func exportTriesManglingMap(exportTrieMangler: ExportTrieMangling) -> [URL: [CpuId: (Trie, Trie)]] {
+    func exportTriesManglingMap(exportTrieMangler: RealWordsExportTrieMangling) -> [URL: SymbolManglingMap.TriePerCpu] {
         return exportTriesPerCpuIdPerURL
             .mapValues { exportTriesPerCpuId in
-                exportTriesPerCpuId.mapValues { ($0, exportTrieMangler.mangle(trie: $0, fillingRootLabelWith: 0)) }
+                exportTriesPerCpuId.mapValues {
+                    ($0, exportTrieMangler.mangle(trie: $0, fillingRootLabelWith: 0))
+                }
             }
     }
 }

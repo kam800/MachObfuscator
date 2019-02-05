@@ -1,6 +1,7 @@
 protocol SymbolMangling {
-    static var key: String { get }
-    static var helpDescription: String { get }
-    init()
+    var key: String { get }
+
+    var helpDescription: String { get }
+
     func mangleSymbols(_: ObfuscationSymbols) -> SymbolManglingMap
 }
