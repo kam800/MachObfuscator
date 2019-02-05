@@ -1,12 +1,15 @@
 import Foundation
 
-class RealWordsMangler: SymbolMangling {
-    static var key: String = "realWords"
-    static let helpDescription: String = "replace objc symbols with random words (dyld info obfuscation not supported yet)"
+final class RealWordsMangler: SymbolMangling {
+    var key: String = "realWords"
 
-    private let exportTrieMangler: ExportTrieMangling = ExportTrieMangler()
+    let helpDescription: String = "replace objc symbols with random words and fill dyld info symbols with numbers"
 
-    required init() {}
+    private let exportTrieMangler: RealWordsExportTrieMangling
+
+    init(exportTrieMangler: RealWordsExportTrieMangling) {
+        self.exportTrieMangler = exportTrieMangler
+    }
 
     func mangleSymbols(_ symbols: ObfuscationSymbols) -> SymbolManglingMap {
         let sentenceGenerator = SentenceGenerator()
@@ -38,11 +41,13 @@ class RealWordsMangler: SymbolMangling {
         let identityManglingMap =
             symbols.exportTriesPerCpuIdPerURL
             .mapValues { exportTriesPerCpuId in
-                exportTriesPerCpuId.mapValues { ($0, exportTrieMangler.mangle(trie: $0, fillingRootLabelWith: 0)) }
+                return exportTriesPerCpuId.mapValues {
+                    ($0, exportTrieMangler.mangle(trie: $0, fillingRootLabelWith: 0))
+                }
             }
 
         return SymbolManglingMap(selectors: Dictionary(uniqueKeysWithValues: unmangledAndMangledSelectorPairs),
                                  classNames: Dictionary(uniqueKeysWithValues: unmangledAndMangledClassPairs),
-                                 unobfuscatedObfuscatedTriePairPerCpuIdPerURL: identityManglingMap)
+                                 exportTrieObfuscationMap: identityManglingMap)
     }
 }

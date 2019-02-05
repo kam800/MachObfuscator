@@ -1,5 +1,5 @@
 import XCTest
 
-class CezarMangler_Tests: XCTestCase {
+class CaesarMangler_Tests: XCTestCase {
     // TODO: test missing
 }
