@@ -10,7 +10,7 @@ protocol SentenceGenerator {
     func getUniqueSentence(length: Int) -> String?
 }
 
-class EnglishSentenceGenerator: SentenceGenerator {
+final class EnglishSentenceGenerator: SentenceGenerator {
     private var previousSentences: Set<String> = []
 
     // Returns unique random sentence, or nil when unique sentence can not be generated.
