@@ -7,6 +7,7 @@ class RealWordsExportTrieMangler_Tests: XCTestCase {
     var rootTrie: Trie!
 
     override func setUp() {
+        super.setUp()
         sut = RealWordsExportTrieMangler(machOViewDoomEnabled: false)
         var childrenLayer0 = trieChildren(number: 3)
         var childrenLayer1 = trieChildren(number: 2)
@@ -18,8 +19,8 @@ class RealWordsExportTrieMangler_Tests: XCTestCase {
         childrenLayer0 = assignChildren(childrenLayer1, to: childrenLayer0)
 
         rootTrie = Trie(exportsSymbol: false,
-                labelRange: 0..<0,
-                label: [],
+                labelRange: 0..<1,
+                label: [0],
                 children: childrenLayer0)
     }
 
@@ -28,15 +29,27 @@ class RealWordsExportTrieMangler_Tests: XCTestCase {
         rootTrie = nil
     }
 
-    func test_exportTrieObfuscation() {
+    func test_exportTrieObfuscationWithoutMachoViewDoom() {
         let obfuscatedTrie = sut.mangle(trie: rootTrie, fillingRootLabelWith: 0)
-        XCTAssertEqual(obfuscatedTrie.label, [])
+        XCTAssertEqual(obfuscatedTrie.label, [0])
         XCTAssertEqual(obfuscatedTrie.children[0].label, [1, 1, 1])
         XCTAssertEqual(obfuscatedTrie.children[0].children[1].label, [2, 2])
         XCTAssertEqual(obfuscatedTrie.children[1].label, [2, 2, 2])
         XCTAssertEqual(obfuscatedTrie.children[2].label, [3, 3, 3])
         XCTAssertEqual(obfuscatedTrie.children[2].children[0].label, [1, 1])
         XCTAssertEqual(obfuscatedTrie.children[2].children[1].label, [2, 2])
+    }
+
+    func test_exportTrieObfuscationWithMachoViewDoom() {
+        sut = RealWordsExportTrieMangler(machOViewDoomEnabled: true)
+        let obfuscatedTrie = sut.mangle(trie: rootTrie, fillingRootLabelWith: 0)
+        XCTAssertEqual(obfuscatedTrie.label, [0])
+        XCTAssertEqual(obfuscatedTrie.children[0].label, [0, 0, 0])
+        XCTAssertEqual(obfuscatedTrie.children[0].children[1].label, [1, 1])
+        XCTAssertEqual(obfuscatedTrie.children[0].label, [0, 0, 0])
+        XCTAssertEqual(obfuscatedTrie.children[2].label, [2, 2, 2])
+        XCTAssertEqual(obfuscatedTrie.children[2].children[0].label, [0, 0])
+        XCTAssertEqual(obfuscatedTrie.children[2].children[1].label, [1, 1])
     }
 
     private func trieChildren(number: Int) -> [Trie] {
