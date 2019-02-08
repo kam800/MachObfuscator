@@ -23,10 +23,10 @@ enum SymbolManglers: String, CaseIterable {
         }
     }
 
-    func resolveMangler(machOViewDoom: Bool = false) -> SymbolMangling {
+    func resolveMangler(machOViewDoomEnabled: Bool = false) -> SymbolMangling {
         switch self {
         case .realWords:
-            return RealWordsMangler(exportTrieMangler: RealWordsExportTrieMangler(machOViewDoom: machOViewDoom))
+            return RealWordsMangler(exportTrieMangler: RealWordsExportTrieMangler(machOViewDoomEnabled: machOViewDoomEnabled))
         case .caesar:
             return CaesarMangler(exportTrieMangler: CaesarExportTrieMangler())
         }

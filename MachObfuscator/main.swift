@@ -8,8 +8,7 @@ private func main() {
         return
     }
     LOGGER = SoutLogger(options: options)
-    print(options.machOViewDoom)
-    let mangler = manglerType.resolveMangler(machOViewDoom: options.machOViewDoom)
+    let mangler = manglerType.resolveMangler(machOViewDoomEnabled: options.machOViewDoom)
     let obfuscator = Obfuscator(directoryURL: appDirectory, mangler: mangler)
     print(Options.usage)
     obfuscator.run()

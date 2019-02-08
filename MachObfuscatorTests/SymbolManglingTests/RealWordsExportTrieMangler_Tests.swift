@@ -7,7 +7,7 @@ class RealWordsExportTrieMangler_Tests: XCTestCase {
     var rootTrie: Trie!
 
     override func setUp() {
-        sut = RealWordsExportTrieMangler(machOViewDoom: false)
+        sut = RealWordsExportTrieMangler(machOViewDoomEnabled: false)
         var childrenLayer0 = trieChildren(number: 3)
         var childrenLayer1 = trieChildren(number: 2)
         var childrenLayer2 = trieChildren(number: 2)
