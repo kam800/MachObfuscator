@@ -5,6 +5,12 @@ protocol RealWordsExportTrieMangling: AnyObject {
 }
 
 final class RealWordsExportTrieMangler: RealWordsExportTrieMangling {
+    private let machOViewDoom: Bool
+
+    init(machOViewDoom: Bool) {
+        self.machOViewDoom = machOViewDoom
+    }
+
     func mangle(trie: Trie, fillingRootLabelWith labelFill: UInt8) -> Trie {
         var trieCopy = trie
 
@@ -13,7 +19,8 @@ final class RealWordsExportTrieMangler: RealWordsExportTrieMangling {
         }
 
         trieCopy.children = trieCopy.children.enumerated().map { (index, child) -> Trie in
-            guard let labelFill = UInt8(exactly: index + 1) else {
+            let addingComponent = machOViewDoom ? 0 : 1
+            guard let labelFill = UInt8(exactly: index + addingComponent) else {
                 fatalError("Trie label values probably exhausted at \(child.labelRange)")
             }
 

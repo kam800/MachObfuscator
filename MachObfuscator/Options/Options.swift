@@ -4,6 +4,7 @@ struct Options {
     var help: Bool
     var quiet: Bool
     var verbose: Bool
+    var machOViewDoom: Bool
     var manglerKey: String
     var appDirectory: URL?
 }
@@ -24,7 +25,7 @@ extension Options {
         var verbose = false
         var machOViewDoom = false
         var manglerKey = SymbolManglers.defaultManglerKey
-        while case let option = getopt(argc, unsafeArgv, "qvhmD:"), option != -1 {
+        while case let option = getopt(argc, unsafeArgv, "qvhDm:"), option != -1 {
             let char = UnicodeScalar(CUnsignedChar(option))
             switch char {
             case "q":
@@ -33,10 +34,10 @@ extension Options {
                 verbose = true
             case "h":
                 help = true
-            case "m":
-                manglerKey = String(cString: optarg)
             case "D":
                 machOViewDoom = true
+            case "m":
+                manglerKey = String(cString: optarg)
             default:
                 fatalError("Unexpected argument: \(char)")
             }
@@ -51,7 +52,7 @@ extension Options {
             .flatMap(URL.init(fileURLWithPath:))?
             .resolvingSymlinksInPath()
 
-        self.init(help: help, quiet: quiet, verbose: verbose, manglerKey: manglerKey, appDirectory: appDirectoryURL)
+        self.init(help: help, quiet: quiet, verbose: verbose, machOViewDoom: machOViewDoom, manglerKey: manglerKey, appDirectory: appDirectoryURL)
     }
 
     static var usage: String {
@@ -64,8 +65,8 @@ extension Options {
           -h              help screen (this screen)
           -q              quiet mode, no output to stdout
           -v              verbose mode, output verbose info to stdout
+          -D              MachOViewDoom, MachOView crashes after trying to open your binary (doesn't work with caesarMangler)
           -m mangler_key  select mangler to generate obfuscated symbols
-          -D              MachOViewDoom (MachOView crashes after trying to open your binary)
 
         \(SymbolManglers.helpSummary)
         """
