@@ -22,8 +22,9 @@ extension Options {
         var help = false
         var quiet = false
         var verbose = false
+        var machOViewDoom = false
         var manglerKey = SymbolManglers.defaultManglerKey
-        while case let option = getopt(argc, unsafeArgv, "qvhm:"), option != -1 {
+        while case let option = getopt(argc, unsafeArgv, "qvhmD:"), option != -1 {
             let char = UnicodeScalar(CUnsignedChar(option))
             switch char {
             case "q":
@@ -34,6 +35,8 @@ extension Options {
                 help = true
             case "m":
                 manglerKey = String(cString: optarg)
+            case "D":
+                machOViewDoom = true
             default:
                 fatalError("Unexpected argument: \(char)")
             }
@@ -62,6 +65,7 @@ extension Options {
           -q              quiet mode, no output to stdout
           -v              verbose mode, output verbose info to stdout
           -m mangler_key  select mangler to generate obfuscated symbols
+          -D              MachOViewDoom (MachOView crashes after trying to open your binary)
 
         \(SymbolManglers.helpSummary)
         """
