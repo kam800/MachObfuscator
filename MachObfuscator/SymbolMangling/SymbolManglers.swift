@@ -1,11 +1,13 @@
 import Foundation
 
 enum SymbolManglers {
-    static let allManglers: [SymbolMangling.Type] = [CezarMangler.self, RealWordsMangler.self]
+    static let allManglers: [SymbolMangling] = [CaesarMangler(exportTrieMangler: CaesarExportTrieMangler()),
+                                                RealWordsMangler(exportTrieMangler: RealWordsExportTrieMangler())]
+
+    static let defaultManglerKey = "realWords"
 
     static func mangler(byKey key: String) -> SymbolMangling? {
         return allManglers.first { $0.key == key }
-            .flatMap { $0.init() }
     }
 
     static var helpSummary: String {
