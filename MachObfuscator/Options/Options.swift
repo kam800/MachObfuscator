@@ -5,7 +5,7 @@ struct Options {
     var quiet: Bool
     var verbose: Bool
     var machOViewDoom: Bool
-    var manglerKey: String
+    var manglerType: SymbolManglers?
     var appDirectory: URL?
 }
 
@@ -48,11 +48,13 @@ extension Options {
             appDirectory = argv[Int(optind)]
         }
 
+        let manglerType = SymbolManglers(rawValue: manglerKey)
+
         let appDirectoryURL = appDirectory
             .flatMap(URL.init(fileURLWithPath:))?
             .resolvingSymlinksInPath()
 
-        self.init(help: help, quiet: quiet, verbose: verbose, machOViewDoom: machOViewDoom, manglerKey: manglerKey, appDirectory: appDirectoryURL)
+        self.init(help: help, quiet: quiet, verbose: verbose, machOViewDoom: machOViewDoom, manglerType: manglerType, appDirectory: appDirectoryURL)
     }
 
     static var usage: String {
