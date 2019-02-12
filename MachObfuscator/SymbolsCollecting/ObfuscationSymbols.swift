@@ -9,4 +9,5 @@ struct ObfuscationSymbols {
 struct ObjCSymbols {
     var selectors: Set<String>
     var classes: Set<String>
+    var methTypes: Set<String>
 }

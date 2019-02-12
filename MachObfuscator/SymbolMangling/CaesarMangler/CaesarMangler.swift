@@ -20,6 +20,7 @@ final class CaesarMangler: SymbolMangling {
 
         let classesMap = Dictionary(uniqueKeysWithValues: mangledClasses)
         let selectorsMap = Dictionary(uniqueKeysWithValues: mangledSelectors)
+        let methTypesMap = [String: String]()
 
         if let clashedSymbol = classesMap.values.first(where: { symbols.blacklist.classes.contains($0) })
             ?? selectorsMap.values.first(where: { symbols.blacklist.selectors.contains($0) }) {
@@ -33,8 +34,6 @@ final class CaesarMangler: SymbolMangling {
             }
         }
 
-        return SymbolManglingMap(selectors: selectorsMap,
-                                 classNames: classesMap,
-                                 exportTrieObfuscationMap: triesPerCpuAtUrl)
+        return SymbolManglingMap(selectors: selectorsMap, classNames: classesMap, methTypes: methTypesMap, exportTrieObfuscationMap: triesPerCpuAtUrl)
     }
 }

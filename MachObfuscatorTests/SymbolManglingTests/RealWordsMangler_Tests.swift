@@ -41,8 +41,8 @@ class RealWordsMangler_Tests: XCTestCase {
 
     func test_mangleSymbols_shouldMangleSettersAndGettersCoherently() {
         // Given
-        let whitelist = ObjCSymbols(selectors: [ "user", "view", "setUser:", "setView:" ], classes: [])
-        let blacklist = ObjCSymbols(selectors: [ "" ], classes: [])
+        let whitelist = ObjCSymbols(selectors: [ "user", "view", "setUser:", "setView:" ], classes: [], methTypes: [])
+        let blacklist = ObjCSymbols(selectors: [ "" ], classes: [], methTypes: [])
         let symbols = ObfuscationSymbols(whitelist: whitelist,
                                                     blacklist: blacklist,
                                                     exportTriesPerCpuIdPerURL: [:])
@@ -69,8 +69,8 @@ class RealWordsMangler_Tests: XCTestCase {
 
     func test_mangleSymbols_shouldSkipBlacklistedSettersAndGettersCoherently() {
         // Given
-        let whitelist = ObjCSymbols(selectors: [ "user", "view", "setUser:", "setView:" ], classes: [])
-        let blacklist = ObjCSymbols(selectors: [ "bla2" ], classes: [])
+        let whitelist = ObjCSymbols(selectors: [ "user", "view", "setUser:", "setView:" ], classes: [], methTypes: [])
+        let blacklist = ObjCSymbols(selectors: [ "bla2" ], classes: [], methTypes: [])
         let symbols = ObfuscationSymbols(whitelist: whitelist,
                                          blacklist: blacklist,
                                          exportTriesPerCpuIdPerURL: [:])

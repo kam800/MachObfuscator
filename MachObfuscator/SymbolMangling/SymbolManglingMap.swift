@@ -9,5 +9,7 @@ struct SymbolManglingMap {
 
     var classNames: [String: String]
 
+    var methTypes: [String: String]
+
     var exportTrieObfuscationMap: [URL: TriePerCpu]
 }

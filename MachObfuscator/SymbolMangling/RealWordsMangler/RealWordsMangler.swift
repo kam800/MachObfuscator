@@ -26,11 +26,14 @@ final class RealWordsMangler: SymbolMangling {
         let classManglingMap: [(String, String)] =
             symbols.classManglingMap(sentenceGenerator: sentenceGenerator)
 
+        let methTypesManglingMap = symbols.methTypesManglingMap(sentenceGenerator: sentenceGenerator)
+
         let exportTriesManglingMap =
             symbols.exportTriesManglingMap(exportTrieMangler: exportTrieMangler)
 
         return SymbolManglingMap(selectors: Dictionary(uniqueKeysWithValues: selectorsManglingMap),
                                  classNames: Dictionary(uniqueKeysWithValues: classManglingMap),
+                                 methTypes: Dictionary(uniqueKeysWithValues: methTypesManglingMap),
                                  exportTrieObfuscationMap: exportTriesManglingMap)
     }
 }
@@ -80,6 +83,20 @@ private extension ObfuscationSymbols {
         return whitelist
             .classes
             .compactMap(classManglingEntryProvider)
+    }
+
+    func methTypesManglingMap(sentenceGenerator: SentenceGenerator) -> [(String, String)] {
+        let methNameManglingEntryProvider: (String) -> (String, String)? = { methTypeName in
+            while let randomMethTypeName = sentenceGenerator.getUniqueSentence(length: methTypeName.count)?.capitalizedOnFirstLetter {
+                return (methTypeName, randomMethTypeName)
+            }
+
+            return nil
+        }
+
+        return whitelist
+            .methTypes
+            .compactMap(methNameManglingEntryProvider)
     }
 
     func exportTriesManglingMap(exportTrieMangler: RealWordsExportTrieMangling) -> [URL: SymbolManglingMap.TriePerCpu] {

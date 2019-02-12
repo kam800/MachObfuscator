@@ -20,17 +20,18 @@ extension ObfuscationSymbols {
         let whitelistSelectors = userSelectors.subtracting(blacklistSelectors)
         let whitelistClasses = userClasses.subtracting(blacklistClasses)
 
+        let whiteListMethTypes = userSources.flatMap { $0.methTypes }.uniq
+        let blackListMethTypes = systemSources.flatMap { $0.methTypes }.uniq
+
         let whitelistExportTriePerCpuIdPerURL: [URL: [CpuId: Trie]] =
             userSourcesPerPath.mapValues { symbolsSources in
                 [CpuId: Trie](symbolsSources.map { ($0.cpu.asCpuId, $0.exportedTrie!) },
                               uniquingKeysWith: { _, _ in fatalError("Duplicated cpuId") })
             }
 
-        return ObfuscationSymbols(whitelist: ObjCSymbols(selectors: whitelistSelectors,
-                                                         classes: whitelistClasses),
-                                  blacklist: ObjCSymbols(selectors: blacklistSelectors,
-                                                         classes: blacklistClasses),
-                                  exportTriesPerCpuIdPerURL: whitelistExportTriePerCpuIdPerURL)
+        let whiteList = ObjCSymbols(selectors: whitelistSelectors, classes: whitelistClasses, methTypes: whiteListMethTypes)
+        let blackList = ObjCSymbols(selectors: blacklistSelectors, classes: blacklistClasses, methTypes: blackListMethTypes)
+        return ObfuscationSymbols(whitelist: whiteList, blacklist: blackList, exportTriesPerCpuIdPerURL: whitelistExportTriePerCpuIdPerURL)
     }
 }
 

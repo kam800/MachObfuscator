@@ -15,6 +15,13 @@ extension Mach {
         return classNamesData.split(separator: 0).compactMap { String(bytes: $0, encoding: .utf8) }
     }
 
+    var methTypes: [String] {
+        guard let methTypeSection = objcMethTypeSection
+        else { return [] }
+        let methTypeData = data.subdata(in: methTypeSection.range.intRange)
+        return methTypeData.split(separator: 0).compactMap { String(bytes: $0, encoding: .utf8) }
+    }
+
     var cstrings: [String] {
         guard let cstringSection = cstringSection
         else { return [] }
