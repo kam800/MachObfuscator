@@ -77,6 +77,7 @@ extension Options {
           -h              help screen (this screen)
           -q              quiet mode, no output to stdout
           -v              verbose mode, output verbose info to stdout
+          -t              obfuscate methType section (may cause runtime problems)
           -D              MachOViewDoom, MachOView crashes after trying to open your binary (doesn't work with caesarMangler)
           -m mangler_key  select mangler to generate obfuscated symbols
 
