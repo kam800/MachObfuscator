@@ -5,22 +5,28 @@ final class CaesarMangler: SymbolMangling {
 
     private let caesarStringMangler: CaesarStringMangling = CaesarStringMangler()
 
+    private let cypherKey: UInt8 = 13
+
     init(exportTrieMangler: CaesarExportTrieMangling) {
         self.exportTrieMangler = exportTrieMangler
     }
 
     func mangleSymbols(_ symbols: ObfuscationSymbols) -> SymbolManglingMap {
         let mangledClasses = symbols.whitelist.classes.map {
-            ($0, caesarStringMangler.mangle($0, usingCypherKey: 13))
+            ($0, caesarStringMangler.mangle($0, usingCypherKey: cypherKey))
         }
 
         let mangledSelectors = symbols.whitelist.selectors.map {
-            ($0, caesarStringMangler.mangle($0, usingCypherKey: 13))
+            ($0, caesarStringMangler.mangle($0, usingCypherKey: cypherKey))
+        }
+
+        let mangledMethTypes = symbols.whitelist.selectors.map {
+            ($0, caesarStringMangler.mangle($0, usingCypherKey: cypherKey))
         }
 
         let classesMap = Dictionary(uniqueKeysWithValues: mangledClasses)
         let selectorsMap = Dictionary(uniqueKeysWithValues: mangledSelectors)
-        let methTypesMap = [String: String]()
+        let methTypesMap = Dictionary(uniqueKeysWithValues: mangledMethTypes)
 
         if let clashedSymbol = classesMap.values.first(where: { symbols.blacklist.classes.contains($0) })
             ?? selectorsMap.values.first(where: { symbols.blacklist.selectors.contains($0) }) {
