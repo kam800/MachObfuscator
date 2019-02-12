@@ -36,7 +36,7 @@ final class CaesarMangler: SymbolMangling {
         let triesPerCpuAtUrl: [URL: SymbolManglingMap.TriePerCpu] = symbols.exportTriesPerCpuIdPerURL.mapValues {
             $0.mapValues {
                 SymbolManglingMap.ObfuscationTriePair(unobfuscated: $0,
-                                                      obfuscated: exportTrieMangler.mangle(trie: $0, withCaesarCypherKey: 13))
+                                                      obfuscated: exportTrieMangler.mangle(trie: $0, withCaesarCypherKey: cypherKey))
             }
         }
 
