@@ -3,8 +3,11 @@ import Foundation
 final class RealWordsMangler: SymbolMangling {
     private let exportTrieMangler: RealWordsExportTrieMangling
 
-    init(exportTrieMangler: RealWordsExportTrieMangling) {
+    private let methTypeObfuscation: Bool
+
+    init(exportTrieMangler: RealWordsExportTrieMangling, methTypeObfuscation: Bool) {
         self.exportTrieMangler = exportTrieMangler
+        self.methTypeObfuscation = methTypeObfuscation
     }
 
     func mangleSymbols(_ symbols: ObfuscationSymbols) -> SymbolManglingMap {
@@ -26,7 +29,8 @@ final class RealWordsMangler: SymbolMangling {
         let classManglingMap: [(String, String)] =
             symbols.classManglingMap(sentenceGenerator: sentenceGenerator)
 
-        let methTypesManglingMap = symbols.methTypesManglingMap(sentenceGenerator: sentenceGenerator)
+        let methTypesManglingMap = methTypeObfuscation ?
+            symbols.methTypesManglingMap(sentenceGenerator: sentenceGenerator) : []
 
         let exportTriesManglingMap =
             symbols.exportTriesManglingMap(exportTrieMangler: exportTrieMangler)

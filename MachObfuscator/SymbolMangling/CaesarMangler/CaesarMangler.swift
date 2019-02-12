@@ -7,8 +7,11 @@ final class CaesarMangler: SymbolMangling {
 
     private let cypherKey: UInt8 = 13
 
-    init(exportTrieMangler: CaesarExportTrieMangling) {
+    private let methTypeObfuscation: Bool
+
+    init(exportTrieMangler: CaesarExportTrieMangling, methTypeObfuscation: Bool) {
         self.exportTrieMangler = exportTrieMangler
+        self.methTypeObfuscation = methTypeObfuscation
     }
 
     func mangleSymbols(_ symbols: ObfuscationSymbols) -> SymbolManglingMap {
@@ -16,13 +19,17 @@ final class CaesarMangler: SymbolMangling {
             ($0, caesarStringMangler.mangle($0, usingCypherKey: cypherKey))
         }
 
-        let mangledSelectors = symbols.whitelist.selectors.map {
+        let selectorsManglingEntryProvider: [(String, String)] = symbols.whitelist.selectors.map {
             ($0, caesarStringMangler.mangle($0, usingCypherKey: cypherKey))
         }
 
-        let mangledMethTypes = symbols.whitelist.selectors.map {
+        let methTypesManglingEntryProvider: [(String, String)] = symbols.whitelist.methTypes.map {
             ($0, caesarStringMangler.mangle($0, usingCypherKey: cypherKey))
         }
+
+        let mangledSelectors = selectorsManglingEntryProvider
+
+        let mangledMethTypes = methTypeObfuscation ? methTypesManglingEntryProvider : []
 
         let classesMap = Dictionary(uniqueKeysWithValues: mangledClasses)
         let selectorsMap = Dictionary(uniqueKeysWithValues: mangledSelectors)

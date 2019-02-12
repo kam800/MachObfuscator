@@ -4,6 +4,7 @@ struct Options {
     var help: Bool
     var quiet: Bool
     var verbose: Bool
+    var methTypeObfuscation: Bool
     var machOViewDoom: Bool
     var manglerType: SymbolManglers?
     var appDirectory: URL?
@@ -24,8 +25,9 @@ extension Options {
         var quiet = false
         var verbose = false
         var machOViewDoom = false
+        var methTypeObfuscation = false
         var manglerKey = SymbolManglers.defaultManglerKey
-        while case let option = getopt(argc, unsafeArgv, "qvhDm:"), option != -1 {
+        while case let option = getopt(argc, unsafeArgv, "qvhtDm:"), option != -1 {
             let char = UnicodeScalar(CUnsignedChar(option))
             switch char {
             case "q":
@@ -34,6 +36,8 @@ extension Options {
                 verbose = true
             case "h":
                 help = true
+            case "t":
+                methTypeObfuscation = true
             case "D":
                 machOViewDoom = true
             case "m":
@@ -54,7 +58,13 @@ extension Options {
             .flatMap(URL.init(fileURLWithPath:))?
             .resolvingSymlinksInPath()
 
-        self.init(help: help, quiet: quiet, verbose: verbose, machOViewDoom: machOViewDoom, manglerType: manglerType, appDirectory: appDirectoryURL)
+        self.init(help: help,
+                  quiet: quiet,
+                  verbose: verbose,
+                  methTypeObfuscation: methTypeObfuscation,
+                  machOViewDoom: machOViewDoom,
+                  manglerType: manglerType,
+                  appDirectory: appDirectoryURL)
     }
 
     static var usage: String {

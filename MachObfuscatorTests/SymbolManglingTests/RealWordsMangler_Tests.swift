@@ -25,7 +25,7 @@ class RealWordsMangler_Tests: XCTestCase {
             "blaBla3",
         ]
 
-        sut = RealWordsMangler(exportTrieMangler: IdentityRealWordsExportTrieMangling())
+        sut = RealWordsMangler(exportTrieMangler: IdentityRealWordsExportTrieMangling(), methTypeObfuscation: false)
     }
 
     override func tearDown() {
@@ -43,9 +43,7 @@ class RealWordsMangler_Tests: XCTestCase {
         // Given
         let whitelist = ObjCSymbols(selectors: [ "user", "view", "setUser:", "setView:" ], classes: [], methTypes: [])
         let blacklist = ObjCSymbols(selectors: [ "" ], classes: [], methTypes: [])
-        let symbols = ObfuscationSymbols(whitelist: whitelist,
-                                                    blacklist: blacklist,
-                                                    exportTriesPerCpuIdPerURL: [:])
+        let symbols = ObfuscationSymbols(whitelist: whitelist, blacklist: blacklist, exportTriesPerCpuIdPerURL: [:])
 
         // When
         let mangledSymbols = when(symbols: symbols)
