@@ -69,7 +69,7 @@ extension Options {
 
     static var usage: String {
         return """
-        usage: \(CommandLine.arguments[0]) [-qvhD] [-m mangler_key] APP_BUNDLE
+        usage: \(CommandLine.arguments[0]) [-qvhtD] [-m mangler_key] APP_BUNDLE
 
           Obfuscates application APP_BUNDLE in-place.
 
@@ -77,7 +77,7 @@ extension Options {
           -h              help screen (this screen)
           -q              quiet mode, no output to stdout
           -v              verbose mode, output verbose info to stdout
-          -t              obfuscate methType section (may cause runtime problems)
+          -t              obfuscate methType section (objc/runtime.h methods may work incorrectly)
           -D              MachOViewDoom, MachOView crashes after trying to open your binary (doesn't work with caesarMangler)
           -m mangler_key  select mangler to generate obfuscated symbols
 
