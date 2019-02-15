@@ -1,10 +1,6 @@
 import Foundation
 
 final class CaesarMangler: SymbolMangling {
-    let key: String = "caesar"
-
-    let helpDescription: String = "ROT13 all objc symbols and dyld info"
-
     private let exportTrieMangler: CaesarExportTrieMangling
 
     private let caesarStringMangler: CaesarStringMangling = CaesarStringMangler()
