@@ -47,7 +47,7 @@ Only sample changes are shown above. MachObfuscator changes more Mach-O sections
 
 ```
 $ ./MachObfuscator
-usage: ./MachObfuscator [-qvh] [-m mangler_key] APP_BUNDLE
+usage: ./MachObfuscator [-qvhtD] [-m mangler_key] APP_BUNDLE
 
   Obfuscates application APP_BUNDLE in-place.
 
@@ -55,6 +55,8 @@ Options:
   -h              help screen (this screen)
   -q              quiet mode, no output to stdout
   -v              verbose mode, output verbose info to stdout
+  -t              obfuscate methType section (objc/runtime.h methods may work incorrectly)
+  -D              MachOViewDoom, MachOView crashes after trying to open your binary (doesn't work with caesarMangler)
   -m mangler_key  select mangler to generate obfuscated symbols
 
 Available manglers by mangler_key:
@@ -81,6 +83,7 @@ MachObfuscator changes following Mach-O sections:
 
 - `__TEXT, __objc_classname` – mangles symbol names
 - `__TEXT, __objc_methname` – mangles symbol names
+- `__TEXT, __objc_methtype` –  (optional, enabled with `-t` parameter) fills whole section with `0`s
 - `__TEXT, __swift3_typeref`, `__TEXT, __swift4_typeref` – fills whole section with `0`s
 - `__TEXT, __swift3_reflstr` – fills whole section with `0`s
 - `LC_DYLD_INFO_ONLY` – mangles export tries and binding lists
