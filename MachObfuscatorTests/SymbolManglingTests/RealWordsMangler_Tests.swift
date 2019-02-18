@@ -25,7 +25,7 @@ class RealWordsMangler_Tests: XCTestCase {
             "blaBla3",
         ]
 
-        sut = RealWordsMangler(exportTrieMangler: IdentityRealWordsExportTrieMangling(), methTypeObfuscation: false)
+        sut = RealWordsMangler(exportTrieMangler: IdentityRealWordsExportTrieMangling())
     }
 
     override func tearDown() {

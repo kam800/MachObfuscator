@@ -16,10 +16,6 @@ private extension Mach {
             data.replaceStrings(inRange: classNameSection.range.intRange, withMapping: map.classNames)
         }
 
-        if let methTypeSection = objcMethTypeSection {
-            data.replaceStrings(inRange: methTypeSection.range.intRange, withMapping: map.methTypes)
-        }
-
         if let (_, obfuscatedTrie) = map
             .exportTrieObfuscationMap[imageURL]?[cpu.asCpuId] {
             for obfuscatedNode in obfuscatedTrie.flatNodes {

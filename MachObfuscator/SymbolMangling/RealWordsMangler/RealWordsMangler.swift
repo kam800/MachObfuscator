@@ -3,11 +3,8 @@ import Foundation
 final class RealWordsMangler: SymbolMangling {
     private let exportTrieMangler: RealWordsExportTrieMangling
 
-    private let methTypeObfuscation: Bool
-
-    init(exportTrieMangler: RealWordsExportTrieMangling, methTypeObfuscation: Bool) {
+    init(exportTrieMangler: RealWordsExportTrieMangling) {
         self.exportTrieMangler = exportTrieMangler
-        self.methTypeObfuscation = methTypeObfuscation
     }
 
     func mangleSymbols(_ symbols: ObfuscationSymbols) -> SymbolManglingMap {
@@ -29,15 +26,11 @@ final class RealWordsMangler: SymbolMangling {
         let classManglingMap: [(String, String)] =
             symbols.classManglingMap(sentenceGenerator: sentenceGenerator)
 
-        let methTypesManglingMap = methTypeObfuscation ?
-            symbols.methTypesManglingMap(sentenceGenerator: sentenceGenerator) : []
-
         let exportTriesManglingMap =
             symbols.exportTriesManglingMap(exportTrieMangler: exportTrieMangler)
 
         return SymbolManglingMap(selectors: Dictionary(uniqueKeysWithValues: selectorsManglingMap),
                                  classNames: Dictionary(uniqueKeysWithValues: classManglingMap),
-                                 methTypes: Dictionary(uniqueKeysWithValues: methTypesManglingMap),
                                  exportTrieObfuscationMap: exportTriesManglingMap)
     }
 }
@@ -87,20 +80,6 @@ private extension ObfuscationSymbols {
         return whitelist
             .classes
             .compactMap(classManglingEntryProvider)
-    }
-
-    func methTypesManglingMap(sentenceGenerator: SentenceGenerator) -> [(String, String)] {
-        let methNameManglingEntryProvider: (String) -> (String, String)? = { methTypeName in
-            while let randomMethTypeName = sentenceGenerator.getUniqueSentence(length: methTypeName.count)?.capitalizedOnFirstLetter {
-                return (methTypeName, randomMethTypeName)
-            }
-
-            return nil
-        }
-
-        return whitelist
-            .methTypes
-            .compactMap(methNameManglingEntryProvider)
     }
 
     func exportTriesManglingMap(exportTrieMangler: RealWordsExportTrieMangling) -> [URL: SymbolManglingMap.TriePerCpu] {

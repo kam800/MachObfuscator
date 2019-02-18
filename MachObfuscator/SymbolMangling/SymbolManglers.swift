@@ -23,13 +23,13 @@ enum SymbolManglers: String, CaseIterable {
         }
     }
 
-    func resolveMangler(machOViewDoomEnabled: Bool = false, methTypeObfuscation: Bool = false) -> SymbolMangling {
+    func resolveMangler(machOViewDoomEnabled: Bool = false) -> SymbolMangling {
         switch self {
         case .realWords:
             let realWordsExportTrieMangler = RealWordsExportTrieMangler(machOViewDoomEnabled: machOViewDoomEnabled)
-            return RealWordsMangler(exportTrieMangler: realWordsExportTrieMangler, methTypeObfuscation: methTypeObfuscation)
+            return RealWordsMangler(exportTrieMangler: realWordsExportTrieMangler)
         case .caesar:
-            return CaesarMangler(exportTrieMangler: CaesarExportTrieMangler(), methTypeObfuscation: methTypeObfuscation)
+            return CaesarMangler(exportTrieMangler: CaesarExportTrieMangler())
         }
     }
 }

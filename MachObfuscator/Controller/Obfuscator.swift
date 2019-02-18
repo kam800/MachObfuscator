@@ -2,11 +2,15 @@ import Foundation
 
 class Obfuscator {
     private let directoryURL: URL
+
     private let mangler: SymbolMangling
 
-    init(directoryURL: URL, mangler: SymbolMangling) {
+    private let methTypeObfuscation: Bool
+
+    init(directoryURL: URL, mangler: SymbolMangling, methTypeObfuscation: Bool = false) {
         self.directoryURL = directoryURL
         self.mangler = mangler
+        self.methTypeObfuscation = methTypeObfuscation
     }
 
     func run(loader: ImageLoader & SymbolsSourceLoader & DependencyNodeLoader = SimpleImageLoader()) {
@@ -39,6 +43,10 @@ class Obfuscator {
             image.eraseSymtab()
             // TODO: add option
             image.eraseSwiftReflectiveSections()
+            if methTypeObfuscation {
+                image.eraseMethTypeSection()
+            }
+
             savable.append(image)
         }
 

@@ -7,11 +7,8 @@ final class CaesarMangler: SymbolMangling {
 
     private let cypherKey: UInt8 = 13
 
-    private let methTypeObfuscation: Bool
-
-    init(exportTrieMangler: CaesarExportTrieMangling, methTypeObfuscation: Bool) {
+    init(exportTrieMangler: CaesarExportTrieMangling) {
         self.exportTrieMangler = exportTrieMangler
-        self.methTypeObfuscation = methTypeObfuscation
     }
 
     func mangleSymbols(_ symbols: ObfuscationSymbols) -> SymbolManglingMap {
@@ -23,17 +20,10 @@ final class CaesarMangler: SymbolMangling {
             ($0, caesarStringMangler.mangle($0, usingCypherKey: cypherKey))
         }
 
-        let methTypesManglingEntryProvider: [(String, String)] = symbols.whitelist.methTypes.map {
-            ($0, caesarStringMangler.mangle($0, usingCypherKey: cypherKey))
-        }
-
         let mangledSelectors = selectorsManglingEntryProvider
-
-        let mangledMethTypes = methTypeObfuscation ? methTypesManglingEntryProvider : []
 
         let classesMap = Dictionary(uniqueKeysWithValues: mangledClasses)
         let selectorsMap = Dictionary(uniqueKeysWithValues: mangledSelectors)
-        let methTypesMap = Dictionary(uniqueKeysWithValues: mangledMethTypes)
 
         if let clashedSymbol = classesMap.values.first(where: { symbols.blacklist.classes.contains($0) })
             ?? selectorsMap.values.first(where: { symbols.blacklist.selectors.contains($0) }) {
@@ -47,6 +37,6 @@ final class CaesarMangler: SymbolMangling {
             }
         }
 
-        return SymbolManglingMap(selectors: selectorsMap, classNames: classesMap, methTypes: methTypesMap, exportTrieObfuscationMap: triesPerCpuAtUrl)
+        return SymbolManglingMap(selectors: selectorsMap, classNames: classesMap, exportTrieObfuscationMap: triesPerCpuAtUrl)
     }
 }
