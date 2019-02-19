@@ -3,7 +3,6 @@ import Foundation
 struct SymbolsSourceMock: SymbolsSource {
     var selectors: [String]
     var classNames: [String]
-    var methTypes: [String]
     var cstrings: [String]
     var exportedTrie: Trie?
     var cpu: Mach.Cpu
@@ -12,13 +11,11 @@ struct SymbolsSourceMock: SymbolsSource {
 extension SymbolsSourceMock {
     static func with(selectors: [String] = [],
                      classNames: [String] = [],
-                     methTypes: [String] = [],
                      cstrings: [String] = [],
                      exportedTrie: Trie? = nil,
                      cpuType: Int32 = 0x17, cpuSubtype: Int32 = 0x42) -> SymbolsSourceMock {
         return SymbolsSourceMock(selectors: selectors,
                                  classNames: classNames,
-                                 methTypes: methTypes,
                                  cstrings: cstrings,
                                  exportedTrie: exportedTrie,
                                  cpu: Mach.Cpu(type: cpuType, subtype: cpuSubtype))
