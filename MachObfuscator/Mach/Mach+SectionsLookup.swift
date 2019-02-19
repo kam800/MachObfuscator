@@ -12,6 +12,10 @@ extension Mach {
         return section("__objc_methname", segment: "__TEXT")
     }
 
+    var objcMethTypeSection: Section? {
+        return section("__objc_methtype", segment: "__TEXT")
+    }
+
     var objcClassNameSection: Section? {
         return section("__objc_classname", segment: "__TEXT")
     }

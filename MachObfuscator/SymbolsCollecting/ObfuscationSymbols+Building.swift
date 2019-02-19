@@ -26,11 +26,9 @@ extension ObfuscationSymbols {
                               uniquingKeysWith: { _, _ in fatalError("Duplicated cpuId") })
             }
 
-        return ObfuscationSymbols(whitelist: ObjCSymbols(selectors: whitelistSelectors,
-                                                         classes: whitelistClasses),
-                                  blacklist: ObjCSymbols(selectors: blacklistSelectors,
-                                                         classes: blacklistClasses),
-                                  exportTriesPerCpuIdPerURL: whitelistExportTriePerCpuIdPerURL)
+        let whiteList = ObjCSymbols(selectors: whitelistSelectors, classes: whitelistClasses)
+        let blackList = ObjCSymbols(selectors: blacklistSelectors, classes: blacklistClasses)
+        return ObfuscationSymbols(whitelist: whiteList, blacklist: blackList, exportTriesPerCpuIdPerURL: whitelistExportTriePerCpuIdPerURL)
     }
 }
 

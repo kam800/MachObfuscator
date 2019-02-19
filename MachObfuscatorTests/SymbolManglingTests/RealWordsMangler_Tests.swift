@@ -43,9 +43,7 @@ class RealWordsMangler_Tests: XCTestCase {
         // Given
         let whitelist = ObjCSymbols(selectors: [ "user", "view", "setUser:", "setView:" ], classes: [])
         let blacklist = ObjCSymbols(selectors: [ "" ], classes: [])
-        let symbols = ObfuscationSymbols(whitelist: whitelist,
-                                                    blacklist: blacklist,
-                                                    exportTriesPerCpuIdPerURL: [:])
+        let symbols = ObfuscationSymbols(whitelist: whitelist, blacklist: blacklist, exportTriesPerCpuIdPerURL: [:])
 
         // When
         let mangledSymbols = when(symbols: symbols)

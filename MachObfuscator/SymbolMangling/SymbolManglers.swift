@@ -26,7 +26,8 @@ enum SymbolManglers: String, CaseIterable {
     func resolveMangler(machOViewDoomEnabled: Bool = false) -> SymbolMangling {
         switch self {
         case .realWords:
-            return RealWordsMangler(exportTrieMangler: RealWordsExportTrieMangler(machOViewDoomEnabled: machOViewDoomEnabled))
+            let realWordsExportTrieMangler = RealWordsExportTrieMangler(machOViewDoomEnabled: machOViewDoomEnabled)
+            return RealWordsMangler(exportTrieMangler: realWordsExportTrieMangler)
         case .caesar:
             return CaesarMangler(exportTrieMangler: CaesarExportTrieMangler())
         }

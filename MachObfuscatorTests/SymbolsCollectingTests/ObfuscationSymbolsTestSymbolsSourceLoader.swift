@@ -9,7 +9,11 @@ struct SymbolsSourceMock: SymbolsSource {
 }
 
 extension SymbolsSourceMock {
-    static func with(selectors: [String] = [], classNames: [String] = [], cstrings: [String] = [], exportedTrie: Trie? = nil, cpuType: Int32 = 0x17, cpuSubtype: Int32 = 0x42) -> SymbolsSourceMock {
+    static func with(selectors: [String] = [],
+                     classNames: [String] = [],
+                     cstrings: [String] = [],
+                     exportedTrie: Trie? = nil,
+                     cpuType: Int32 = 0x17, cpuSubtype: Int32 = 0x42) -> SymbolsSourceMock {
         return SymbolsSourceMock(selectors: selectors,
                                  classNames: classNames,
                                  cstrings: cstrings,

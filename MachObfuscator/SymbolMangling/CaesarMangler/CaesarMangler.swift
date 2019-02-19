@@ -5,18 +5,22 @@ final class CaesarMangler: SymbolMangling {
 
     private let caesarStringMangler: CaesarStringMangling = CaesarStringMangler()
 
+    private let cypherKey: UInt8 = 13
+
     init(exportTrieMangler: CaesarExportTrieMangling) {
         self.exportTrieMangler = exportTrieMangler
     }
 
     func mangleSymbols(_ symbols: ObfuscationSymbols) -> SymbolManglingMap {
         let mangledClasses = symbols.whitelist.classes.map {
-            ($0, caesarStringMangler.mangle($0, usingCypherKey: 13))
+            ($0, caesarStringMangler.mangle($0, usingCypherKey: cypherKey))
         }
 
-        let mangledSelectors = symbols.whitelist.selectors.map {
-            ($0, caesarStringMangler.mangle($0, usingCypherKey: 13))
+        let selectorsManglingEntryProvider: [(String, String)] = symbols.whitelist.selectors.map {
+            ($0, caesarStringMangler.mangle($0, usingCypherKey: cypherKey))
         }
+
+        let mangledSelectors = selectorsManglingEntryProvider
 
         let classesMap = Dictionary(uniqueKeysWithValues: mangledClasses)
         let selectorsMap = Dictionary(uniqueKeysWithValues: mangledSelectors)
@@ -29,12 +33,10 @@ final class CaesarMangler: SymbolMangling {
         let triesPerCpuAtUrl: [URL: SymbolManglingMap.TriePerCpu] = symbols.exportTriesPerCpuIdPerURL.mapValues {
             $0.mapValues {
                 SymbolManglingMap.ObfuscationTriePair(unobfuscated: $0,
-                                                      obfuscated: exportTrieMangler.mangle(trie: $0, withCaesarCypherKey: 13))
+                                                      obfuscated: exportTrieMangler.mangle(trie: $0, withCaesarCypherKey: cypherKey))
             }
         }
 
-        return SymbolManglingMap(selectors: selectorsMap,
-                                 classNames: classesMap,
-                                 exportTrieObfuscationMap: triesPerCpuAtUrl)
+        return SymbolManglingMap(selectors: selectorsMap, classNames: classesMap, exportTrieObfuscationMap: triesPerCpuAtUrl)
     }
 }

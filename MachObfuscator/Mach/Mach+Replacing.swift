@@ -15,6 +15,7 @@ private extension Mach {
         if let classNameSection = objcClassNameSection {
             data.replaceStrings(inRange: classNameSection.range.intRange, withMapping: map.classNames)
         }
+
         if let (_, obfuscatedTrie) = map
             .exportTrieObfuscationMap[imageURL]?[cpu.asCpuId] {
             for obfuscatedNode in obfuscatedTrie.flatNodes {

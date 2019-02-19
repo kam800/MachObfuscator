@@ -9,7 +9,9 @@ private func main() {
 
     LOGGER = SoutLogger(options: options)
     let mangler = manglerType.resolveMangler(machOViewDoomEnabled: options.machOViewDoom)
-    let obfuscator = Obfuscator(directoryURL: appDirectory, mangler: mangler)
+    let obfuscator = Obfuscator(directoryURL: appDirectory,
+                                mangler: mangler,
+                                methTypeObfuscation: options.methTypeObfuscation)
     obfuscator.run()
 }
 
