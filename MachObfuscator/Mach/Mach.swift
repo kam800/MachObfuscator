@@ -56,6 +56,8 @@ struct Mach {
 
     struct Segment: Equatable {
         var name: String
+        var vmRange: Range<UInt64>
+        var fileRange: Range<UInt64>
         var sections: [Section]
     }
 

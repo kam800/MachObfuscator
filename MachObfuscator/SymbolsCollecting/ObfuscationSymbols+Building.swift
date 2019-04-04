@@ -9,13 +9,15 @@ extension ObfuscationSymbols {
 
         let userSelectors = userSources.flatMap { $0.selectors }.uniq
         let userClasses = userSources.flatMap { $0.classNames }.uniq
+        let userDynamicProperties = userSources.flatMap { $0.dynamicPropertyNames }.uniq
         let systemSelectors = systemSources.flatMap { $0.selectors }.uniq
         let systemClasses = systemSources.flatMap { $0.classNames }.uniq
         let systemCStrings = systemSources.flatMap { $0.cstrings }.uniq
-        let systemSelectorsAndCStrings = (Array(systemSelectors) + Array(systemCStrings)).uniq
-        let blacklistSetters = systemSelectorsAndCStrings.map { $0.asSetter }.uniq
+        let blackListGetters =
+            (Array(systemSelectors) + Array(systemCStrings) + Array(userDynamicProperties)).uniq
+        let blacklistSetters = blackListGetters.map { $0.asSetter }.uniq
 
-        let blacklistSelectors = (Array(systemSelectorsAndCStrings) + Array(blacklistSetters)).uniq
+        let blacklistSelectors = (Array(blackListGetters) + Array(blacklistSetters)).uniq
         let blacklistClasses = (Array(systemClasses) + Array(systemCStrings)).uniq
         let whitelistSelectors = userSelectors.subtracting(blacklistSelectors)
         let whitelistClasses = userClasses.subtracting(blacklistClasses)

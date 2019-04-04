@@ -82,10 +82,10 @@ private extension Mach {
 
             switch command.cmd {
             case UInt32(LC_SEGMENT):
-                let segment: segment_command = data.getStruct(atOffset: cursor)
+                let rawSegment: segment_command = data.getStruct(atOffset: cursor)
                 let sections: [section] = data.getStructs(atOffset: cursor + MemoryLayout<segment_command>.size,
-                                                          count: Int(segment.nsects))
-                segments.append(Segment(segment: segment, sections: sections))
+                                                          count: Int(rawSegment.nsects))
+                segments.append(Segment(segment: rawSegment, sections: sections))
             case UInt32(LC_SYMTAB):
                 let symtab_command: symtab_command = data.getStruct(atOffset: cursor)
                 symtab = Symtab(symtab_command)
@@ -133,10 +133,10 @@ private extension Mach {
 
             switch command.cmd {
             case UInt32(LC_SEGMENT_64):
-                let segment: segment_command_64 = data.getStruct(atOffset: cursor)
+                let rawSegment: segment_command_64 = data.getStruct(atOffset: cursor)
                 let sections: [section_64] = data.getStructs(atOffset: cursor + MemoryLayout<segment_command_64>.size,
-                                                             count: Int(segment.nsects))
-                segments.append(Segment(segment: segment, sections: sections))
+                                                             count: Int(rawSegment.nsects))
+                segments.append(Segment(segment: rawSegment, sections: sections))
             case UInt32(LC_SYMTAB):
                 let symtab_command: symtab_command = data.getStruct(atOffset: cursor)
                 symtab = Symtab(symtab_command)
@@ -181,11 +181,15 @@ private extension Mach.Platform {
 private extension Mach.Segment {
     init(segment: segment_command_64, sections: [section_64]) {
         name = segment.name
+        vmRange = Range(offset: segment.vmaddr, count: segment.vmsize)
+        fileRange = Range(offset: segment.fileoff, count: segment.filesize)
         self.sections = sections.map { Mach.Section($0) }
     }
 
     init(segment: segment_command, sections: [section]) {
         name = segment.name
+        vmRange = Range(offset: UInt64(segment.vmaddr), count: UInt64(segment.vmsize))
+        fileRange = Range(offset: UInt64(segment.fileoff), count: UInt64(segment.filesize))
         self.sections = sections.map { Mach.Section($0) }
     }
 }
