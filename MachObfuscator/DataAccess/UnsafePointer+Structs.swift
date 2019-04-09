@@ -17,6 +17,7 @@ extension UnsafePointer {
 extension UnsafePointer where Pointee == UInt8 {
     mutating func readStruct<T>() -> T {
         let result: T = getStruct()
+        // TODO: size?
         self = advanced(by: MemoryLayout<T>.stride)
         return result
     }

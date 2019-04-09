@@ -20,6 +20,14 @@ extension Mach {
         return section("__objc_classname", segment: "__TEXT")
     }
 
+    var objcClasslist: Section? {
+        return section("__objc_classlist", segment: "__DATA")
+    }
+
+    var objcCatlist: Section? {
+        return section("__objc_catlist", segment: "__DATA")
+    }
+
     var cstringSection: Section? {
         return section("__cstring", segment: "__TEXT")
     }

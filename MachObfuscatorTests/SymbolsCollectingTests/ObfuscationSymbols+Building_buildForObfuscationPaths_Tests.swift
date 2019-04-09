@@ -31,6 +31,7 @@ class ObfuscationSymbols_Building_buildForObfuscationPaths_Tests: XCTestCase {
         testLoader["/tmp/ob2"] = [
             SymbolsSourceMock.with(selectors: ["s1", "s2", "s5", "s6", "s7"],
                                    classNames: ["c1", "c2", "c5", "c6", "c7"],
+                                   dynamicPropertyNames: ["d1"],
                                    exportedTrie: Trie.with(label: "ob2"),
                                    cpuType: 0x17,
                                    cpuSubtype: 0x42)
@@ -40,7 +41,7 @@ class ObfuscationSymbols_Building_buildForObfuscationPaths_Tests: XCTestCase {
                                    classNames: ["c2"])
         ]
         testLoader["/tmp/x2"] = [
-            SymbolsSourceMock.with(selectors: ["s5"],
+            SymbolsSourceMock.with(selectors: ["s5", "d1"],
                                    classNames: ["c5"],
                                    cstrings: ["s6", "c6"])
         ]
@@ -53,7 +54,7 @@ class ObfuscationSymbols_Building_buildForObfuscationPaths_Tests: XCTestCase {
                                            loader: testLoader)
     }
 
-    func test_whitelistSelectors_shouldContainObfuscableImagesSelectorsWithoutUnobfuscableDependenciesSelectorsAndCstrings() {
+    func test_whitelistSelectors_shouldContainObfuscableImagesSelectorsWithoutDynamicPropertiesAndUnobfuscableDependenciesSelectorsAndCstrings() {
         XCTAssertEqual(sut.whitelist.selectors, [ "s1", "s3", "s7"])
     }
 
@@ -61,8 +62,8 @@ class ObfuscationSymbols_Building_buildForObfuscationPaths_Tests: XCTestCase {
         XCTAssertEqual(sut.whitelist.classes, [ "c1", "c3", "c7"])
     }
 
-    func test_blacklistSelectors_shouldContainUnobfuscableDependenciesSelectorsAndCstrings() {
-        XCTAssertEqual(sut.blacklist.selectors, [ "s2", "setS2:", "s5", "setS5:", "s6", "setS6:", "c6", "setC6:"])
+    func test_blacklistSelectors_shouldContainDynamicPropertyAccessorsAndUnobfuscableDependenciesSelectorsAndCstrings() {
+        XCTAssertEqual(sut.blacklist.selectors, [ "s2", "setS2:", "s5", "setS5:", "s6", "setS6:", "c6", "setC6:", "d1", "setD1:"])
     }
 
     func test_blacklistClassNames_shouldContainUnobfuscableDependenciesClassNamesAndCstrings() {

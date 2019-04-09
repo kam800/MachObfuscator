@@ -4,6 +4,7 @@ struct SymbolsSourceMock: SymbolsSource {
     var selectors: [String]
     var classNames: [String]
     var cstrings: [String]
+    var dynamicPropertyNames: [String]
     var exportedTrie: Trie?
     var cpu: Mach.Cpu
 }
@@ -12,11 +13,13 @@ extension SymbolsSourceMock {
     static func with(selectors: [String] = [],
                      classNames: [String] = [],
                      cstrings: [String] = [],
+                     dynamicPropertyNames: [String] = [],
                      exportedTrie: Trie? = nil,
                      cpuType: Int32 = 0x17, cpuSubtype: Int32 = 0x42) -> SymbolsSourceMock {
         return SymbolsSourceMock(selectors: selectors,
                                  classNames: classNames,
                                  cstrings: cstrings,
+                                 dynamicPropertyNames: dynamicPropertyNames,
                                  exportedTrie: exportedTrie,
                                  cpu: Mach.Cpu(type: cpuType, subtype: cpuSubtype))
     }

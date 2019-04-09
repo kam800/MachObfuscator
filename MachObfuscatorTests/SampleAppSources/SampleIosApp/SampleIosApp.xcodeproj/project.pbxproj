@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D423FFE42256BC3700A5F78F /* SampleClass+Cat.m in Sources */ = {isa = PBXBuildFile; fileRef = D423FFE32256BC3700A5F78F /* SampleClass+Cat.m */; };
 		D481613621256224008671D8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D481613521256224008671D8 /* AppDelegate.swift */; };
 		D481613821256224008671D8 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D481613721256224008671D8 /* ViewController.swift */; };
 		D481613B21256224008671D8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D481613921256224008671D8 /* Main.storyboard */; };
@@ -58,6 +59,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		D423FFE22256BC3700A5F78F /* SampleClass+Cat.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SampleClass+Cat.h"; sourceTree = "<group>"; };
+		D423FFE32256BC3700A5F78F /* SampleClass+Cat.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "SampleClass+Cat.m"; sourceTree = "<group>"; };
 		D481613221256224008671D8 /* SampleIosApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SampleIosApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D481613521256224008671D8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D481613721256224008671D8 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -133,6 +136,8 @@
 				D481613721256224008671D8 /* ViewController.swift */,
 				D481617A21256A1A008671D8 /* SampleClass.h */,
 				D481617B21256A1A008671D8 /* SampleClass.m */,
+				D423FFE22256BC3700A5F78F /* SampleClass+Cat.h */,
+				D423FFE32256BC3700A5F78F /* SampleClass+Cat.m */,
 				D481613921256224008671D8 /* Main.storyboard */,
 				D481613C21256225008671D8 /* Assets.xcassets */,
 				D481613E21256225008671D8 /* LaunchScreen.storyboard */,
@@ -319,6 +324,7 @@
 				D481613821256224008671D8 /* ViewController.swift in Sources */,
 				D481613621256224008671D8 /* AppDelegate.swift in Sources */,
 				D481617C21256A1A008671D8 /* SampleClass.m in Sources */,
+				D423FFE42256BC3700A5F78F /* SampleClass+Cat.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
