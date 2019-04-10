@@ -964,7 +964,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "swiftformat MachObfuscator";
+			shellScript = "if type swiftformat > /dev/null\nthen\n    swiftformat MachObfuscator\nelse\n    echo \"warning: swiftformat missing\"\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
