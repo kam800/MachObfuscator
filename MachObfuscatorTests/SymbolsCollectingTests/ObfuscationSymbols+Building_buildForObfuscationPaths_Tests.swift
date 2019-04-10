@@ -62,8 +62,9 @@ class ObfuscationSymbols_Building_buildForObfuscationPaths_Tests: XCTestCase {
         XCTAssertEqual(sut.whitelist.classes, [ "c1", "c3", "c7"])
     }
 
+    // TODO: make it opt-out
     func test_blacklistSelectors_shouldContainDynamicPropertyAccessorsAndUnobfuscableDependenciesSelectorsAndCstrings() {
-        XCTAssertEqual(sut.blacklist.selectors, [ "s2", "setS2:", "s5", "setS5:", "s6", "setS6:", "c6", "setC6:", "d1", "setD1:"])
+        XCTAssertEqual(sut.blacklist.selectors, [ "s2", "setS2:", "s4", "setS4:", "s5", "setS5:", "s6", "setS6:", "c4", "setC4:", "c6", "setC6:", "d1", "setD1:"])
     }
 
     func test_blacklistClassNames_shouldContainUnobfuscableDependenciesClassNamesAndCstrings() {
