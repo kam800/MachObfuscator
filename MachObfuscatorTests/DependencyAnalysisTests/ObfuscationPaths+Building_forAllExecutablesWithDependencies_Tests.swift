@@ -43,6 +43,8 @@ class ObfuscationPaths_Building_forAllExecutablesWithDependencies_Tests: XCTestC
         XCTAssert(sut.resolvedDylibMapPerImageURL[executablePath2.asURL]?.isEmpty ?? false)
     }
 
+    // TODO: MachObfuscator should obfuscate all Mach-O in app bundle (unreferenced Mach-Os could be dynamically
+    // loaded).
     func test_shouldNotCollectUnreferencedImages() {
         // Given
         let executablePath = "/tmp/SampleApp.app/MacOS/SampleApp"
@@ -253,11 +255,14 @@ class ObfuscationPaths_Building_forAllExecutablesWithDependencies_Tests: XCTestC
         let executablePath = "/tmp/SampleApp.app/MacOS/SampleApp"
         let externalDependency1Path = "/usr/lib/libobjc.A.dylib"
         let libDyldEntry = "@rpath/lib"
+        let externalFramework = "/MockSystem/Library/Frameworks/AdSupport.framework"
+        let externalLibrary = externalFramework + "/AdSupport"
         testRepository.addMachOPath(executablePath,
                                     platform: .macos,
                                     isExecutable: true,
                                     dylibs: [ externalDependency1Path, libDyldEntry ],
-                                    rpaths: [ "@executable_path/../Frameworks" ])
+                                    rpaths: [ "@executable_path/../Frameworks" ],
+                                    cstrings: [ "foo", externalFramework, "bar" ])
 
         let libPath = "/tmp/SampleApp.app/Frameworks/lib"
         let externalDependency2Path = "/System/Library/Frameworks/AppKit.framework/Versions/C/AppKit"
@@ -267,16 +272,18 @@ class ObfuscationPaths_Building_forAllExecutablesWithDependencies_Tests: XCTestC
 
         testRepository.addMachOPath(externalDependency1Path, isExecutable: false)
         testRepository.addMachOPath(externalDependency2Path, isExecutable: false)
+        testRepository.addMachOPath(externalLibrary, isExecutable: false)
 
         // When
         let sut = buildSUT()
 
         // Then
         XCTAssertEqual(sut.unobfuscableDependencies,
-                       [ externalDependency1Path.asURL, externalDependency2Path.asURL ])
+                       [ externalDependency1Path.asURL, externalDependency2Path.asURL, externalLibrary.asURL ])
         XCTAssertEqual(sut.resolvedDylibMapPerImageURL[executablePath.asURL],
                        [ libDyldEntry: libPath.asURL,
-                         externalDependency1Path: externalDependency1Path.asURL ])
+                         externalDependency1Path: externalDependency1Path.asURL,
+                         externalLibrary: externalLibrary.asURL])
         XCTAssertEqual(sut.resolvedDylibMapPerImageURL[libPath.asURL],
                        [ externalDependency2Path: externalDependency2Path.asURL ])
     }
@@ -286,11 +293,14 @@ class ObfuscationPaths_Building_forAllExecutablesWithDependencies_Tests: XCTestC
         let executablePath = "/tmp/SampleApp.app/SampleApp"
         let externalDependency1DylibEntry = "/usr/lib/libobjc.A.dylib"
         let libDylibEntry = "@rpath/lib"
+        let externalFramework = "/MockSystem/Library/Frameworks/AdSupport.framework"
+        let externalLibrary = externalFramework + "/AdSupport"
         testRepository.addMachOPath(executablePath,
                                     platform: .ios,
                                     isExecutable: true,
                                     dylibs: [ externalDependency1DylibEntry, libDylibEntry ],
-                                    rpaths: [ "@executable_path/Frameworks" ])
+                                    rpaths: [ "@executable_path/Frameworks" ],
+                                    cstrings: [ "foo", externalFramework, "bar" ])
 
         let libPath = "/tmp/SampleApp.app/Frameworks/lib"
         let externalDependency2DylibEntry = "/System/Library/Frameworks/UIKit.framework/UIKit"
@@ -304,15 +314,23 @@ class ObfuscationPaths_Building_forAllExecutablesWithDependencies_Tests: XCTestC
 
         let runtimePrefixedExternalDependency2Path = "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/Library/CoreSimulator/Profiles/Runtimes/iOS.simruntime/Contents/Resources/RuntimeRoot/System/Library/Frameworks/UIKit.framework/UIKit"
         testRepository.addMachOPath(runtimePrefixedExternalDependency2Path, platform: .ios, isExecutable: false)
+        let runtimePrefixedExternalLibrary =
+            "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/Library/CoreSimulator/Profiles/Runtimes/iOS.simruntime/Contents/Resources/RuntimeRoot/MockSystem/Library/Frameworks/AdSupport.framework/AdSupport"
+        testRepository.addMachOPath(runtimePrefixedExternalLibrary, platform: .ios, isExecutable: false)
 
         // When
         let sut = buildSUT()
 
         // Then
         XCTAssertEqual(sut.unobfuscableDependencies,
-                       [ runtimePrefixedExternalDependency1Path.asURL, runtimePrefixedExternalDependency2Path.asURL ])
+                       [ runtimePrefixedExternalDependency1Path.asURL,
+                         runtimePrefixedExternalDependency2Path.asURL,
+                         runtimePrefixedExternalLibrary.asURL,
+                        ])
         XCTAssertEqual(sut.resolvedDylibMapPerImageURL[executablePath.asURL]?[externalDependency1DylibEntry],
                        runtimePrefixedExternalDependency1Path.asURL)
+        XCTAssertEqual(sut.resolvedDylibMapPerImageURL[executablePath.asURL]?[externalLibrary],
+                       runtimePrefixedExternalLibrary.asURL)
         XCTAssertEqual(sut.resolvedDylibMapPerImageURL[libPath.asURL]?[externalDependency2DylibEntry],
                        runtimePrefixedExternalDependency2Path.asURL)
     }

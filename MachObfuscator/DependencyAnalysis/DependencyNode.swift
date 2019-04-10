@@ -3,4 +3,5 @@ protocol DependencyNode {
     var platform: Mach.Platform { get }
     var rpaths: [String] { get }
     var dylibs: [String] { get }
+    var cstrings: [String] { get }
 }
