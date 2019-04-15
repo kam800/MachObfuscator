@@ -2,7 +2,7 @@ import Foundation
 
 class RpathsAccumulator {
     private let executablePath: URL
-    private var searchPathsPerPlatform: [Mach.Platform: [URL] = [:]
+    private var searchPathsPerPlatform: [Mach.Platform: [URL]] = [:]
 
     init(executablePath: URL) {
         self.executablePath = executablePath
