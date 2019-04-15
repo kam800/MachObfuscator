@@ -2,7 +2,7 @@ import Foundation
 
 class RpathsAccumulator {
     private let executablePath: URL
-    private var searchPathsPerPlatform: [Mach.Platform: Set<URL>] = [:]
+    private var searchPathsPerPlatform: [Mach.Platform: [URL]] = [:]
 
     init(executablePath: URL) {
         self.executablePath = executablePath
@@ -27,7 +27,7 @@ class RpathsAccumulator {
             resolvedRpath = platform.translated(path: rpath)
         }
         let searchPath: URL = URL(fileURLWithPath: resolvedRpath).resolvingSymlinksInPath()
-        searchPathsPerPlatform[platform, default: [executablePath]].insert(searchPath)
+        searchPathsPerPlatform[platform, default: [executablePath]].appendUnique(searchPath)
     }
 
     func resolve(dylibEntry: String,
@@ -72,5 +72,14 @@ private extension Mach.Platform {
         } else {
             return path
         }
+    }
+}
+
+extension Array where Element: Equatable {
+    mutating func appendUnique(_ element: Element) {
+        guard !contains(element) else {
+            return
+        }
+        append(element)
     }
 }
