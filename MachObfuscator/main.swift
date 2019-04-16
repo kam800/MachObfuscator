@@ -7,6 +7,11 @@ private func main() {
         return
     }
 
+    guard FileManager.default.fileExists(atURL: appDirectory) else {
+        print("'\(appDirectory.path)' does not exist")
+        return
+    }
+
     LOGGER = SoutLogger(options: options)
     let mangler = manglerType.resolveMangler(machOViewDoomEnabled: options.machOViewDoom)
     let obfuscator = Obfuscator(directoryURL: appDirectory,
