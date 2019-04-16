@@ -5,8 +5,6 @@ extension Data {
         guard count >= MemoryLayout<UInt32>.size else {
             return nil
         }
-        return withUnsafeBytes { (ptr: UnsafePointer<UInt32>) in
-            ptr.pointee
-        }
+        return withUnsafeBytes { $0.load(as: UInt32.self) }
     }
 }

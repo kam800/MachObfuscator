@@ -29,7 +29,7 @@ private extension NibArchive.Object {
                 .humanReadable(forNib: nib, visitedObjects: &visitedObjects, objectsStack: objectsStack)
                 .split(separator: "\n")
                 .enumerated()
-                .map({ offset, element in offset == 0 ? element : "    " + element })
+                .map { offset, element in offset == 0 ? element : "    " + element }
                 .joined(separator: "\n")
             lines.append("  \(key) -> \(valueStr)")
         }

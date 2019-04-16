@@ -1,6 +1,6 @@
 import Foundation
 
-extension UnsafePointer where Pointee == UInt8 {
+extension UnsafeRawPointer {
     mutating func readSleb128() -> Int64 {
         // continuation bit is 1 in default leb128 implementation
         return readLeb128(continuationBitState: true)
@@ -30,7 +30,7 @@ extension UnsafePointer where Pointee == UInt8 {
             if shift > maxShift {
                 fatalError("sleb128 too long to be represented as \(T.self)")
             }
-            group = pointee
+            group = load(as: UInt8.self)
             accumulator |= T(group & 0x7F) << shift
             shift += 7
             self = advanced(by: 1)

@@ -27,15 +27,14 @@ extension section {
 
 extension String {
     init(bytesTuple: (Int8, Int8, Int8, Int8, Int8, Int8, Int8, Int8, Int8, Int8, Int8, Int8, Int8, Int8, Int8, Int8)) {
-        var mutableBytes = bytesTuple
         var table = [Int8](repeating: 0, count: 17)
-        withUnsafePointer(to: &mutableBytes, { ptr in
-            ptr.withMemoryRebound(to: Int8.self, capacity: 16, { ptr in
+        withUnsafePointer(to: bytesTuple) { ptr in
+            ptr.withMemoryRebound(to: Int8.self, capacity: 16) { ptr in
                 for i in 0 ..< 16 {
                     table[i] = ptr[i]
                 }
-            })
-        })
+            }
+        }
         self.init(cString: table)
     }
 }

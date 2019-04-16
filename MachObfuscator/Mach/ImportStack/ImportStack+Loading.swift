@@ -2,15 +2,15 @@ import Foundation
 
 extension Array where Element == ImportStackEntry {
     mutating func add(opcodesData: Data, range: Range<Int>, weakly: Bool) {
-        let parsedStack = opcodesData.withUnsafeBytes { (ptr: UnsafePointer<UInt8>) -> ImportStack in
+        let parsedStack = opcodesData.withUnsafeBytes { (bytes: UnsafeRawBufferPointer) -> ImportStack in
             var stack = ImportStack()
             var dylibOrdinal: Int = 0
             var symbolBytes: [UInt8]?
             var symbolStart: Int?
-            var cursorPtr = ptr.advanced(by: range.lowerBound)
-            let end = ptr.advanced(by: range.upperBound)
+            var cursorPtr = bytes.baseAddress!.advanced(by: range.lowerBound)
+            let end = bytes.baseAddress!.advanced(by: range.upperBound)
             while cursorPtr < end {
-                let opcode = Int32(cursorPtr.pointee)
+                let opcode = Int32(cursorPtr.load(as: UInt8.self))
                 cursorPtr = cursorPtr.advanced(by: 1)
                 switch opcode & BIND_OPCODE_MASK {
                 case BIND_OPCODE_DONE:
@@ -24,7 +24,7 @@ extension Array where Element == ImportStackEntry {
                 case BIND_OPCODE_SET_DYLIB_SPECIAL_IMM:
                     fatalError("Unsupported opcode BIND_OPCODE_SET_DYLIB_SPECIAL_IMM")
                 case BIND_OPCODE_SET_SYMBOL_TRAILING_FLAGS_IMM:
-                    symbolStart = ptr.distance(to: cursorPtr)
+                    symbolStart = bytes.baseAddress!.distance(to: cursorPtr)
                     symbolBytes = cursorPtr.readStringBytes()
                 case BIND_OPCODE_SET_TYPE_IMM: break
                 case BIND_OPCODE_SET_ADDEND_SLEB:

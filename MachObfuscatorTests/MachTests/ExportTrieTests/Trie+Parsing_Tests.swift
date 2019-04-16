@@ -1,7 +1,7 @@
 import XCTest
 
 class Trie_Parsing_Tests: XCTestCase {
-    let samplePayload = Data(bytes: [
+    let samplePayload = Data([
         // Garbage
         0xab, 0xab, 0xab, 0xab,
 

@@ -4,7 +4,7 @@ class Trie_Loading_Tests: XCTestCase {
 
     func test_trieShouldHaveNoChildren_whenChildCountIsZero() {
         // Given
-        let payload = Data(bytes: [
+        let payload = Data([
             // Root node exported symbol information length
             0x00,
             // Root node child count
@@ -20,7 +20,7 @@ class Trie_Loading_Tests: XCTestCase {
 
     func test_trieShouldHaveChildren_whenChildCountIsNonZero() {
         // Given
-        let payload = Data(bytes: [
+        let payload = Data([
             // Root node exported symbol information length
             0x00,
             // Root node child count
@@ -46,7 +46,7 @@ class Trie_Loading_Tests: XCTestCase {
 
     func test_rootTrieShouldAlwaysHaveEmptyLabel() {
         // Given
-        let payload = Data(bytes: [
+        let payload = Data([
             // Root node exported symbol information length
             0x00,
             // Root node child count
@@ -63,7 +63,7 @@ class Trie_Loading_Tests: XCTestCase {
 
     func test_childTriesShouldHaveLabelsOfGraphEdges() {
         // Given
-        let payload = Data(bytes: [
+        let payload = Data([
             // Garbage
             0xab, 0xab, 0xab, 0xab,
             // Root node exported symbol information length
@@ -94,7 +94,7 @@ class Trie_Loading_Tests: XCTestCase {
 
     func test_childTrieShouldExportSymbol_whenChildHasExportedSymbolInformation() {
         // Given
-        let payload = Data(bytes: [
+        let payload = Data( [
             // Garbage
             0xab, 0xab, 0xab, 0xab,
             // Root node exported symbol information length
@@ -124,7 +124,7 @@ class Trie_Loading_Tests: XCTestCase {
 
     func test_childTrieShouldNotExportSymbol_whenChildHasEmptyExportedSymbolInformation() {
         // Given
-        let payload = Data(bytes: [
+        let payload = Data([
             // Garbage
             0xab, 0xab, 0xab, 0xab,
             // Root node exported symbol information length
@@ -152,7 +152,7 @@ class Trie_Loading_Tests: XCTestCase {
 
     func test_shouldLoadNestedTries() {
         // Given
-        let payload = Data(bytes: [
+        let payload = Data([
             // Garbage
             0xab, 0xab, 0xab, 0xab,
 

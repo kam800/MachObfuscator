@@ -1,12 +1,12 @@
 import XCTest
 
-class UnsafePointer_CString_Tests: XCTestCase {
+class UnsafeRawPointer_CString_Tests: XCTestCase {
 
     func template(bytes: [UInt8], expectedStringBytes: [UInt8], expectedPointerOffset: Int, file: StaticString = #file, line: UInt = #line) {
-        let (number, offset) = bytes.withUnsafeBufferPointer { ptr -> ([UInt8], Int) in
-            var baseAddress = ptr.baseAddress!
+        let (number, offset) = bytes.withUnsafeBytes { bytes -> ([UInt8], Int) in
+            var baseAddress = bytes.baseAddress!
             let stringBytes = baseAddress.readStringBytes()
-            let offset = ptr.baseAddress!.distance(to: baseAddress)
+            let offset = bytes.baseAddress!.distance(to: baseAddress)
             return (stringBytes, offset)
         }
 
