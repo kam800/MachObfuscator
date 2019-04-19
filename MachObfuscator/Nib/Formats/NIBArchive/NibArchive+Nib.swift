@@ -25,7 +25,7 @@ extension NibArchive: Nib {
             guard mappedLabelBytes.count <= range.count else {
                 fatalError("Mapped label \(mappedLabel) does not fit into range of \(range.count) bytes")
             }
-            let padding = [UInt8](repeating: 0, count: (range.count - mappedLabelBytes.count))
+            let padding = [UInt8](repeating: 0, count: range.count - mappedLabelBytes.count)
             let paddedMappedLabel = mappedLabelBytes + padding
             data.replaceBytes(inRange: range, withBytes: paddedMappedLabel)
         }
@@ -46,7 +46,7 @@ private extension NibArchive {
     }
 
     var uiClassNames: [RangedString] {
-        guard let classNameKeyIndex = keys.index(where: { $0.value == "UIClassName" })
+        guard let classNameKeyIndex = keys.firstIndex(where: { $0.value == "UIClassName" })
         else { return [] }
         let classNameValues = values.filter { value in
             value.keyIndex == classNameKeyIndex

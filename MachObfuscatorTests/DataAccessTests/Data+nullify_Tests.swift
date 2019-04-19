@@ -10,7 +10,7 @@ class Data_nullify_Tests: XCTestCase {
         sut.nullify(range: 8..<15)
 
         // Then
-        let expectedData = Data(bytes:
+        let expectedData = Data(
             [UInt8](repeating: 0xab, count: 8)
             + [UInt8](repeating: 0x00, count: 7)
             + [UInt8](repeating: 0xab, count: 5)

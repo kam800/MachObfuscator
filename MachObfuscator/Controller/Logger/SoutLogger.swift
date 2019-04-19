@@ -7,7 +7,7 @@ class SoutLogger {
         case info
     }
 
-    fileprivate let verbosity: Verbosity
+    private let verbosity: Verbosity
 
     init(verbosity: Verbosity) {
         self.verbosity = verbosity
@@ -16,7 +16,7 @@ class SoutLogger {
 
 extension SoutLogger: Logger {
     func info(_ text: @autoclosure () -> String) {
-        log(text: text, level: .info)
+        log(text: text(), level: .info)
     }
 
     func warn(_ text: @autoclosure () -> String) {

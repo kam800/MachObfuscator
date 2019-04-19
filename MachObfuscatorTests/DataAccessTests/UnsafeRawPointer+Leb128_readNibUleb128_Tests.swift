@@ -1,12 +1,12 @@
 import XCTest
 
-class UnsafePointer_Leb128_readNibUleb128_Tests: XCTestCase {
+class UnsafeRawPointer_Leb128_readNibUleb128_Tests: XCTestCase {
 
     func template(bytes: [UInt8], expectedNumber: UInt64, expectedPointerOffset: Int, file: StaticString = #file, line: UInt = #line) {
-        let (number, offset) = bytes.withUnsafeBufferPointer { ptr -> (UInt64, Int) in
-            var cursor = ptr.baseAddress!
+        let (number, offset) = bytes.withUnsafeBytes { bytes -> (UInt64, Int) in
+            var cursor = bytes.baseAddress!
             let number = cursor.readNibUleb128()
-            let offset = ptr.baseAddress!.distance(to: cursor)
+            let offset = bytes.baseAddress!.distance(to: cursor)
             return (number, offset)
         }
 

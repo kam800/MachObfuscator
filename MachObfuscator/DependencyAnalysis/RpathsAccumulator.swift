@@ -15,7 +15,7 @@ class RpathsAccumulator {
     }
 
     private func add(rpath: String, loaderPath: URL, platform: Mach.Platform) {
-        let firstPathSeparator = rpath.index(of: Paths.separator) ?? rpath.endIndex
+        let firstPathSeparator = rpath.firstIndex(of: Paths.separator) ?? rpath.endIndex
         let firstPathComponentRange = rpath.startIndex ..< firstPathSeparator
         let resolvedRpath: String
         switch rpath[firstPathComponentRange] {
@@ -34,7 +34,7 @@ class RpathsAccumulator {
                  loaderPath: URL,
                  platform: Mach.Platform,
                  fileRepository: FileRepository) -> URL? {
-        let firstPathSeparator = dylibEntry.index(of: Paths.separator) ?? dylibEntry.endIndex
+        let firstPathSeparator = dylibEntry.firstIndex(of: Paths.separator) ?? dylibEntry.endIndex
         let firstPathComponentRange = dylibEntry.startIndex ..< firstPathSeparator
         let possibleDylibs: [String]
         switch dylibEntry[firstPathComponentRange] {

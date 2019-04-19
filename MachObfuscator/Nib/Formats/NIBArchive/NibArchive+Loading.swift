@@ -58,15 +58,15 @@ extension NibArchive {
 }
 
 private extension Data {
-    func parse<T>(block: (inout UnsafePointer<UInt8>, UnsafePointer<UInt8>) -> T,
+    func parse<T>(block: (inout UnsafeRawPointer, UnsafeRawPointer) -> T,
                   offset: Int,
                   count: Int) -> [T] {
-        return withUnsafeBytes { (ptr: UnsafePointer<UInt8>) in
-            var cursor = ptr.advanced(by: offset)
+        return withUnsafeBytes { (bytes: UnsafeRawBufferPointer) in
+            var cursor = bytes.baseAddress!.advanced(by: offset)
             var elementsLeft = count
             var elements: [T] = []
             while elementsLeft > 0 {
-                elements.append(block(&cursor, ptr))
+                elements.append(block(&cursor, bytes.baseAddress!))
                 elementsLeft -= 1
             }
             return elements
@@ -74,19 +74,17 @@ private extension Data {
     }
 }
 
-private extension UnsafePointer where Pointee == UInt8 {
+private extension UnsafeRawPointer {
     mutating func parseNextObject() -> NibArchive.Object {
         return NibArchive.Object(classIndex: Int(readNibUleb128()),
                                  valuesIndex: Int(readNibUleb128()),
                                  valuesCount: Int(readNibUleb128()))
     }
 
-    mutating func parseNextKey(zeroPtr: UnsafePointer<UInt8>) -> NibArchive.RangedString {
+    mutating func parseNextKey(zeroPtr: UnsafeRawPointer) -> NibArchive.RangedString {
         let keyBytesCount = Int(readNibUleb128())
         let keyOffset = zeroPtr.distance(to: self)
-        let keyBytes = withMemoryRebound(to: UInt8.self, capacity: keyBytesCount) { ptr in
-            [UInt8](UnsafeBufferPointer(start: ptr, count: keyBytesCount))
-        }
+        let keyBytes: [UInt8] = getStructs(count: keyBytesCount)
         guard let key = String(bytes: keyBytes, encoding: .utf8) else {
             fatalError("NIBArchive key is not an UTF8 string")
         }
@@ -96,7 +94,7 @@ private extension UnsafePointer where Pointee == UInt8 {
                                        range: keyOffset ..< keyLimit)
     }
 
-    mutating func parseNextValue(zeroPtr: UnsafePointer<UInt8>) -> NibArchive.Value {
+    mutating func parseNextValue(zeroPtr: UnsafeRawPointer) -> NibArchive.Value {
         let keyIndex = Int(readNibUleb128())
         let value: NibArchive.Value.ValueType
         let valueType: UInt8 = readStruct()
@@ -122,7 +120,7 @@ private extension UnsafePointer where Pointee == UInt8 {
             let bytesCount = Int(readNibUleb128())
             valueOffset = zeroPtr.distance(to: self)
             let bytes: [UInt8] = readStructs(count: bytesCount)
-            value = .data(Data(bytes: bytes))
+            value = .data(Data(bytes))
         case 9:
             value = .null
         case 10:
@@ -137,14 +135,12 @@ private extension UnsafePointer where Pointee == UInt8 {
                                 valueRange: valueOffset ..< valueLimit)
     }
 
-    mutating func parseNextClass(zeroPtr: UnsafePointer<UInt8>) -> NibArchive.RangedString {
+    mutating func parseNextClass(zeroPtr: UnsafeRawPointer) -> NibArchive.RangedString {
         let nameBytesCount = readNibUleb128()
         let extraValues = readNibUleb128()
         let extraValuesBytesSize = 4 * Int(extraValues)
         self = advanced(by: extraValuesBytesSize)
-        var nameBytes = withMemoryRebound(to: UInt8.self, capacity: Int(nameBytesCount)) { ptr in
-            [UInt8](UnsafeBufferPointer(start: ptr, count: Int(nameBytesCount)))
-        }
+        var nameBytes: [UInt8] = getStructs(count: Int(nameBytesCount))
         // TODO: remove?
         while nameBytes.last == 0 {
             nameBytes.removeLast()

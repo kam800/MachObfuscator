@@ -9,7 +9,7 @@ class Data_Structs_getStruct_Tests: XCTestCase {
 
     func test_shouldReadSampleStruct() {
         // Given
-        let data = Data(bytes: [ 0x01, 0xab, 0xcd, 0xef, 0x02, 0x03  ])
+        let data = Data( [ 0x01, 0xab, 0xcd, 0xef, 0x02, 0x03  ])
 
         // When
         let sample: Sample = data.getStruct(atOffset: 1)

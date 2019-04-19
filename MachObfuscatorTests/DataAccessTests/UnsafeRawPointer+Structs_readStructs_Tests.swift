@@ -1,6 +1,6 @@
 import XCTest
 
-class UnsafePointer_Structs_readStructs_Tests: XCTestCase {
+class UnsafeRawPointer_Structs_readStructs_Tests: XCTestCase {
 
     private struct Sample {
         var b1: UInt16
@@ -11,8 +11,8 @@ class UnsafePointer_Structs_readStructs_Tests: XCTestCase {
 
     func test_shouldReadSampleStructs() {
         // Given
-        bytes.withUnsafeBufferPointer { ptr in
-            var cursor = ptr.baseAddress!
+        bytes.withUnsafeBytes { bytes in
+            var cursor = bytes.baseAddress!
 
             // When
             let samples: [Sample] = cursor.readStructs(count: 3)
@@ -25,7 +25,7 @@ class UnsafePointer_Structs_readStructs_Tests: XCTestCase {
             XCTAssertEqual(samples[1].b2, 0xf8f7)
             XCTAssertEqual(samples[2].b1, 0xfaf9)
             XCTAssertEqual(samples[2].b2, 0xfcfb)
-            XCTAssertEqual(ptr.baseAddress!.distance(to: cursor), 12)
+            XCTAssertEqual(bytes.baseAddress!.distance(to: cursor), 12)
         }
     }
 }

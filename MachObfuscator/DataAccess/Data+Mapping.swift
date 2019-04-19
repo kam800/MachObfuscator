@@ -33,6 +33,6 @@ extension Data {
 
     mutating func replaceBytes(inRange range: Range<Int>, withBytes bytes: [UInt8]) {
         precondition(range.count == bytes.count)
-        replaceSubrange(range, with: Data(bytes: bytes))
+        replaceSubrange(range, with: Data(bytes))
     }
 }

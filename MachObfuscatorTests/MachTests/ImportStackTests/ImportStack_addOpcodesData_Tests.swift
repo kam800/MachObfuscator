@@ -5,7 +5,7 @@ class ImportStack_addOpcodesData_Tests: XCTestCase {
     var sut: ImportStack! = ImportStack()
 
     func when(opcodes: [UInt8]) {
-        sut.add(opcodesData: Data(bytes: opcodes), range: 0..<opcodes.count, weakly: false)
+        sut.add(opcodesData: Data(opcodes), range: 0..<opcodes.count, weakly: false)
     }
 
     func test_shouldSetDylibOrdinalFromImmediateValueOf_SET_DYLIB_ORDINAL_IMM() {
