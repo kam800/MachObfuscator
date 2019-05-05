@@ -1,7 +1,9 @@
 import Foundation
 
 extension ObfuscationSymbols {
-    static func buildFor(obfuscationPaths: ObfuscationPaths, loader: SymbolsSourceLoader) -> ObfuscationSymbols {
+    static func buildFor(obfuscationPaths: ObfuscationPaths,
+                         loader: SymbolsSourceLoader,
+                         headerLoader: HeaderSymbolsLoader) -> ObfuscationSymbols {
         let systemSources = try! obfuscationPaths.unobfuscableDependencies.flatMap { try loader.load(forURL: $0) }
 
         let userSourcesPerPath = [URL: [SymbolsSource]](uniqueKeysWithValues: obfuscationPaths.obfuscableImages.map { ($0, try! loader.load(forURL: $0)) })
@@ -14,14 +16,28 @@ extension ObfuscationSymbols {
         let systemSelectors = systemSources.flatMap { $0.selectors }.uniq
         let systemClasses = systemSources.flatMap { $0.classNames }.uniq
         let systemCStrings = systemSources.flatMap { $0.cstrings }.uniq
+
+        let systemHeaderSymbols = obfuscationPaths
+            .systemFrameworks
+            .map { try! headerLoader.load(forFrameworkURL: $0) }
+            .flatten()
+
         // TODO: Array(userCStrings) should be opt-in
         let blackListGetters =
-            (Array(systemSelectors) + Array(systemCStrings) + Array(userDynamicProperties) + Array(userCStrings)).uniq
+            (Array(systemHeaderSymbols.selectors)
+                + Array(systemSelectors)
+                + Array(systemCStrings)
+                + Array(userDynamicProperties)
+                + Array(userCStrings)).uniq
         let blacklistSetters = blackListGetters.map { $0.asSetter }.uniq
 
         let blacklistSelectors = (Array(blackListGetters) + Array(blacklistSetters)).uniq
         // TODO: Array(userCStrings) should be opt-in
-        let blacklistClasses = (Array(systemClasses) + Array(systemCStrings) + Array(userCStrings)).uniq
+        let blacklistClasses =
+            (Array(systemHeaderSymbols.classNames)
+                + Array(systemClasses)
+                + Array(systemCStrings)
+                + Array(userCStrings)).uniq
         let whitelistSelectors = userSelectors.subtracting(blacklistSelectors)
         let whitelistClasses = userClasses.subtracting(blacklistClasses)
 
