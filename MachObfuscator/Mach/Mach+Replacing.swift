@@ -27,7 +27,7 @@ private extension Mach {
 
         if let importStack = importStack,
             let resolvedDylibsMap = paths.resolvedDylibMapPerImageURL[imageURL] {
-            let resolvedDylibs = dylibs.map { resolvedDylibsMap[$0]! }
+            let resolvedDylibs = dylibs.map { resolvedDylibsMap[$0] }
             let obfuscatedSymbolPerUnobfuscatedSymbolPerImageURL: [URL: [String: String]] =
                 map.exportTrieObfuscationMap.mapValues {
                     guard let (unobfuscatedTrie, obfuscatedTrie) = $0[cpu.asCpuId] else {
@@ -40,16 +40,16 @@ private extension Mach {
                 }
             for importEntry in importStack where importEntry.dylibOrdinal > 0 {
                 let dylibIndex = importEntry.dylibOrdinal - 1
-                let dylibURL = resolvedDylibs[dylibIndex]
-                if let obfuscatedSymbolPerUnobfuscatedSymbol =
-                    obfuscatedSymbolPerUnobfuscatedSymbolPerImageURL[dylibURL] {
-                    let obfuscatedSymbolString = obfuscatedSymbolPerUnobfuscatedSymbol[importEntry.symbolString]!
+                if let dylibURL = resolvedDylibs[dylibIndex],
+                    let obfuscatedSymbolPerUnobfuscatedSymbol =
+                    obfuscatedSymbolPerUnobfuscatedSymbolPerImageURL[dylibURL],
+                    let obfuscatedSymbolString = obfuscatedSymbolPerUnobfuscatedSymbol[importEntry.symbolString] {
                     let obfuscatedSymbol = [UInt8](obfuscatedSymbolString.utf8)
                     data.replaceBytes(inRange: importEntry.symbolRange.intRange, withBytes: obfuscatedSymbol)
                 }
             }
         } else {
-            fatalError()
+            fatalError("Didn't resolve dylibs for '\(imageURL)'. Probably a bug.")
         }
 
         if let symtab = symtab {
