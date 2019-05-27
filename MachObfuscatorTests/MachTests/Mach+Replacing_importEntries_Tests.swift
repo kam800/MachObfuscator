@@ -137,6 +137,7 @@ private extension ObfuscationPaths {
     init(resolvedDylibMapPerImageURL: [URL: [String: URL]]) {
         self.init(obfuscableImages: [URL.machoMacExecutable, URL.sampleDylib],
                   unobfuscableDependencies: [],
+                  systemFrameworks: [],
                   resolvedDylibMapPerImageURL: resolvedDylibMapPerImageURL,
                   nibs: [])
     }
