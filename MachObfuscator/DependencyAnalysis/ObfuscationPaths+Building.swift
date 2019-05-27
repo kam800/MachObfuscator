@@ -53,6 +53,16 @@ extension ObfuscationPaths {
                 .subtracting(unobfuscableDependencies)
             imagesQueue.append(contentsOf: stillUntraversedDependencies.reversed())
         }
+
+        systemFrameworks = obfuscableImages
+            .flatMap { imageURL -> [URL] in
+                resolvedDylibMapPerImageURL[imageURL]?.keys.flatMap { dylibEntry -> [URL] in
+                    fileRepository.resolvedSystemFrameworkLocations(dylibEntry: dylibEntry,
+                                                                    referencingURL: imageURL,
+                                                                    dependencyNodeLoader: dependencyNodeLoader)
+                } ?? []
+            }
+            .uniq
     }
 }
 

@@ -274,6 +274,9 @@ class ObfuscationPaths_Building_forAllExecutablesWithDependencies_Tests: XCTestC
         testRepository.addMachOPath(externalDependency2Path, isExecutable: false)
         testRepository.addMachOPath(externalLibrary, isExecutable: false)
 
+        let externalDependency2SDKPath = Paths.macosFrameworksRoot + "/System/Library/Frameworks/AppKit.framework"
+        testRepository.addFilePath(externalDependency2SDKPath)
+
         // When
         let sut = buildSUT()
 
@@ -286,6 +289,7 @@ class ObfuscationPaths_Building_forAllExecutablesWithDependencies_Tests: XCTestC
                          externalLibrary: externalLibrary.asURL])
         XCTAssertEqual(sut.resolvedDylibMapPerImageURL[libPath.asURL],
                        [ externalDependency2Path: externalDependency2Path.asURL ])
+        XCTAssertEqual(sut.systemFrameworks, [ externalDependency2SDKPath.asURL ])
     }
 
     func test_shouldCollectExternalDependencies_AsUnobfuscable_AndAppendRuntimePrefix_WhenIOSPlatform() {
@@ -318,6 +322,11 @@ class ObfuscationPaths_Building_forAllExecutablesWithDependencies_Tests: XCTestC
             "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/Library/CoreSimulator/Profiles/Runtimes/iOS.simruntime/Contents/Resources/RuntimeRoot/MockSystem/Library/Frameworks/AdSupport.framework/AdSupport"
         testRepository.addMachOPath(runtimePrefixedExternalLibrary, platform: .ios, isExecutable: false)
 
+        let externalFrameworkSDKPath = Paths.iosFrameworksRoot + externalFramework
+        testRepository.addFilePath(externalFrameworkSDKPath)
+        let externalFramework2SDKPath = Paths.iosFrameworksRoot + "/System/Library/Frameworks/UIKit.framework"
+        testRepository.addFilePath(externalFramework2SDKPath)
+
         // When
         let sut = buildSUT()
 
@@ -333,6 +342,7 @@ class ObfuscationPaths_Building_forAllExecutablesWithDependencies_Tests: XCTestC
                        runtimePrefixedExternalLibrary.asURL)
         XCTAssertEqual(sut.resolvedDylibMapPerImageURL[libPath.asURL]?[externalDependency2DylibEntry],
                        runtimePrefixedExternalDependency2Path.asURL)
+        XCTAssertEqual(sut.systemFrameworks, [ externalFrameworkSDKPath.asURL, externalFramework2SDKPath.asURL ])
     }
 
     func test_shouldCollectSwiftLibraries_AsUnobfuscable() {
@@ -398,11 +408,5 @@ class ObfuscationPaths_Building_forAllExecutablesWithDependencies_Tests: XCTestC
 
         // Then
         XCTAssertEqual(sut.nibs, [ nib1Path.asURL, nib2Path.asURL ])
-    }
-}
-
-private extension String {
-    var asURL: URL {
-        return URL(fileURLWithPath: self)
     }
 }
