@@ -6,6 +6,8 @@ extension SoutLogger {
 
         if options.quiet {
             verbosity = .quiet
+        } else if options.debug {
+            verbosity = .debug
         } else if options.verbose {
             verbosity = .info
         } else {

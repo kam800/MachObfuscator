@@ -47,7 +47,7 @@ Only sample changes are shown above. MachObfuscator changes more Mach-O sections
 
 ```
 $ ./MachObfuscator
-usage: ./MachObfuscator [-qvhtD] [-m mangler_key] APP_BUNDLE
+usage: ./MachObfuscator [-qvdhtD] [-m mangler_key] APP_BUNDLE
 
   Obfuscates application APP_BUNDLE in-place.
 
@@ -55,6 +55,7 @@ Options:
   -h              help screen (this screen)
   -q              quiet mode, no output to stdout
   -v              verbose mode, output verbose info to stdout
+  -d              debug mode, output more verbose info to stdout  
   -t              obfuscate methType section (objc/runtime.h methods may work incorrectly)
   -D              MachOViewDoom, MachOView crashes after trying to open your binary (doesn't work with caesarMangler)
   -m mangler_key  select mangler to generate obfuscated symbols

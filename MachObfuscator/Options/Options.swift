@@ -4,6 +4,7 @@ struct Options {
     var help: Bool
     var quiet: Bool
     var verbose: Bool
+    var debug: Bool
     var methTypeObfuscation: Bool
     var machOViewDoom: Bool
     var manglerType: SymbolManglers?
@@ -24,16 +25,19 @@ extension Options {
         var help = false
         var quiet = false
         var verbose = false
+        var debug = false
         var machOViewDoom = false
         var methTypeObfuscation = false
         var manglerKey = SymbolManglers.defaultManglerKey
-        while case let option = getopt(argc, unsafeArgv, "qvhtDm:"), option != -1 {
+        while case let option = getopt(argc, unsafeArgv, "qvdhtDm:"), option != -1 {
             let char = UnicodeScalar(CUnsignedChar(option))
             switch char {
             case "q":
                 quiet = true
             case "v":
                 verbose = true
+            case "d":
+                debug = true
             case "h":
                 help = true
             case "t":
@@ -61,6 +65,7 @@ extension Options {
         self.init(help: help,
                   quiet: quiet,
                   verbose: verbose,
+                  debug: debug,
                   methTypeObfuscation: methTypeObfuscation,
                   machOViewDoom: machOViewDoom,
                   manglerType: manglerType,
@@ -69,7 +74,7 @@ extension Options {
 
     static var usage: String {
         return """
-        usage: \(CommandLine.arguments[0]) [-qvhtD] [-m mangler_key] APP_BUNDLE
+        usage: \(CommandLine.arguments[0]) [-qvdhtD] [-m mangler_key] APP_BUNDLE
 
           Obfuscates application APP_BUNDLE in-place.
 
@@ -77,6 +82,7 @@ extension Options {
           -h              help screen (this screen)
           -q              quiet mode, no output to stdout
           -v              verbose mode, output verbose info to stdout
+          -d              debug mode, output more verbose info to stdout
           -t              obfuscate methType section (objc/runtime.h methods may work incorrectly)
           -D              MachOViewDoom, MachOView crashes after trying to open your binary (doesn't work with caesarMangler)
           -m mangler_key  select mangler to generate obfuscated symbols
