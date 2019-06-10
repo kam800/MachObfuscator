@@ -2,6 +2,7 @@ import Foundation
 
 struct Options {
     var help = false
+    var dryrun = false
     var quiet = false
     var verbose = false
     var debug = false
@@ -46,11 +47,13 @@ extension Options {
             case swiftReflection
             case skipFramework
             case skipAllFrameworks
+            case dryrun
         }
 
         let longopts: [option] = [
             option(name: Options.newCCharPtrFromStaticString("help"), has_arg: no_argument, flag: nil, val: OptLongChars.help),
             option(name: Options.newCCharPtrFromStaticString("verbose"), has_arg: no_argument, flag: nil, val: OptLongChars.verbose),
+            option(name: Options.newCCharPtrFromStaticString("dry-run"), has_arg: no_argument, flag: nil, val: OptLongCases.dryrun.rawValue),
             option(name: Options.newCCharPtrFromStaticString("methtype"), has_arg: no_argument, flag: nil, val: OptLongChars.methTypeObfuscation),
             option(name: Options.newCCharPtrFromStaticString("machoview-doom"), has_arg: no_argument, flag: nil, val: OptLongChars.machOViewDoom),
             option(name: Options.newCCharPtrFromStaticString("swift-reflection"), has_arg: no_argument, flag: nil, val: OptLongCases.swiftReflection.rawValue),
@@ -70,6 +73,8 @@ extension Options {
                 debug = true
             case OptLongChars.help:
                 help = true
+            case OptLongCases.dryrun.rawValue:
+                dryrun = true
             case OptLongChars.methTypeObfuscation:
                 methTypeObfuscation = true
             case OptLongChars.machOViewDoom:
@@ -110,6 +115,7 @@ extension Options {
           -q, --quiet             quiet mode, no output to stdout
           -v, --verbose           verbose mode, output verbose info to stdout
           -d, --debug             debug mode, output more verbose info to stdout
+          --dry-run               analyze only, do not save obfuscated images
         
           -t, --methtype          obfuscate methType section (objc/runtime.h methods may work incorrectly)
           -D, --machoview-doom    MachOViewDoom, MachOView crashes after trying to open your binary (doesn't work with caesarMangler)

@@ -50,6 +50,7 @@ class Obfuscator {
             var image: Image = try! loader.load(forURL: obfuscableImage)
             image.replaceSymbols(withMap: manglingMap, paths: paths)
             // TODO: add option
+            // TODO: what is the difference between eraseSymtab and last operation in replaceSymbols?
             image.eraseSymtab()
             if options.swiftReflectionObfuscation {
                 image.eraseSwiftReflectiveSections()
@@ -69,9 +70,13 @@ class Obfuscator {
             savable.append(nib)
         }
 
-        LOGGER.info("Saving all the files in place...")
-        savable.forEach {
-            $0.save()
+        if options.dryrun {
+            LOGGER.warn("Running in dry run mode - will not update files")
+        } else {
+            LOGGER.info("Saving all the files in place...")
+            savable.forEach {
+                $0.save()
+            }
         }
 
         LOGGER.info("BYE")
