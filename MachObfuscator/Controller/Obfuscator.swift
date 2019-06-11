@@ -61,6 +61,9 @@ class Obfuscator {
             if options.methTypeObfuscation {
                 image.eraseMethTypeSection()
             }
+            for sectionDef in options.eraseSections {
+                image.eraseSection(sectionDef.sectionName, segment: sectionDef.segmentName)
+            }
 
             savable.append(image)
         }

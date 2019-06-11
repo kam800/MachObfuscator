@@ -1,7 +1,7 @@
 import Foundation
 
 extension Mach {
-    private func section(_ sectionName: String, segment segmentName: String) -> Section? {
+    func section(_ sectionName: String, segment segmentName: String) -> Section? {
         return segments
             .first(where: { $0.name == segmentName })?
             .sections
