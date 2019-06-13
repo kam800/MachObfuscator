@@ -30,17 +30,6 @@ class Obfuscator {
         LOGGER.info("\(symbols.blacklist.classes.count) unobfuscable classes")
 
         LOGGER.info("Mangling symbols...")
-        symbols.whitelist.selectors.filter {
-            $0.utf8.count != $0.count
-        }.forEach { (selector) in
-                LOGGER.debug("Selector with UTF8 characters: \"\(selector)\"");
-        }
-        symbols.whitelist.classes.filter {
-            $0.utf8.count != $0.count
-        }.forEach { (classname) in
-            LOGGER.debug("Class with UTF8 characters: \"\(classname)\"");
-        }
-
         let manglingMap = mangler.mangleSymbols(symbols)
         LOGGER.info("\(manglingMap.selectors.count) mangled selectors")
         LOGGER.info("\(manglingMap.classNames.count) mangled classes")
