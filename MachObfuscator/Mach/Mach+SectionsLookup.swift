@@ -39,6 +39,8 @@ extension Mach {
         "__swift3_reflstr",
         "__swift4_typeref",
         "__swift4_reflstr",
+        "__swift5_typeref",
+        "__swift5_reflstr",
     ]
 
     var swiftReflectionSections: [Section] {
