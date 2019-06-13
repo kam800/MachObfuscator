@@ -42,4 +42,17 @@ class Data_Mapping_replaceStrings_Tests: XCTestCase {
         // Then
         XCTAssertEqual(sut, "b1\0a2\0\0\0b3\0\0\0\0a5\0b6\0".data(using: .utf8))
     }
+    
+    
+    func test_shouldReplaceStringWithNonasciiCharacters_whenMappingMatches() {
+        // Given
+        let data = "zażółć:gęślą:jaźń\0array\0".data(using: .utf8)!
+        var sut = data
+        
+        // When
+        sut.replaceStrings(inRange: 0..<data.count, withMapping: [ "zażółć:gęślą:jaźń" : "zazzoollccXgeesslaaXjazznn" ])
+        
+        // Then
+        XCTAssertEqual(sut, "zazzoollccXgeesslaaXjazznn\0array\0".data(using: .utf8))
+    }
 }
