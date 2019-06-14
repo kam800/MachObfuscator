@@ -35,7 +35,7 @@ extension Options {
         var debug = false
         var machOViewDoom = false
         var methTypeObfuscation = false
-        var switfReflectionObfuscation = false
+        var swiftReflectionObfuscation = false
         var manglerKey = SymbolManglers.defaultManglerKey
         
         struct OptLongChars {
@@ -50,7 +50,7 @@ extension Options {
         }
         enum OptLongCases: Int32 {
             case OPT_FIRST = 256;
-            case switfrefl;
+            case swiftReflection;
         };
         
         let longopts: [option] = [
@@ -58,7 +58,7 @@ extension Options {
             option(name: Options.newCCharPtrFromStaticString("verbose"),   has_arg: no_argument,       flag: nil, val: OptLongChars.verbose),
             option(name: Options.newCCharPtrFromStaticString("methtype"),      has_arg: no_argument, flag: nil, val: OptLongChars.methTypeObfuscation),
             option(name: Options.newCCharPtrFromStaticString("machoview-doom"),      has_arg: no_argument, flag: nil, val: OptLongChars.machOViewDoom),
-            option(name: Options.newCCharPtrFromStaticString("swift-reflection"),      has_arg: no_argument, flag: nil, val: OptLongCases.switfrefl.rawValue),
+            option(name: Options.newCCharPtrFromStaticString("swift-reflection"),      has_arg: no_argument, flag: nil, val: OptLongCases.swiftReflection.rawValue),
             option(name: Options.newCCharPtrFromStaticString("mangler"),      has_arg: required_argument, flag: nil, val: OptLongChars.manglerKey),
             option()    // { NULL, NULL, NULL, NULL }
         ];
@@ -79,8 +79,8 @@ extension Options {
                 machOViewDoom = true
             case OptLongChars.manglerKey:
                 manglerKey = String(cString: optarg)
-            case OptLongCases.switfrefl.rawValue:
-                switfReflectionObfuscation = true;
+            case OptLongCases.swiftReflection.rawValue:
+                swiftReflectionObfuscation = true;
             case OptLongChars.unknownOption:
                 help = true
                 break
@@ -106,7 +106,7 @@ extension Options {
                   debug: debug,
                   methTypeObfuscation: methTypeObfuscation,
                   machOViewDoom: machOViewDoom,
-                  switfReflectionObfuscation: switfReflectionObfuscation,
+                  switfReflectionObfuscation: swiftReflectionObfuscation,
                   manglerType: manglerType,
                   appDirectory: appDirectoryURL)
     }
@@ -125,7 +125,7 @@ extension Options {
         
           -t, --methtype          obfuscate methType section (objc/runtime.h methods may work incorrectly)
           -D, --machoview-doom    MachOViewDoom, MachOView crashes after trying to open your binary (doesn't work with caesarMangler)
-          --swift-reflection      obfuscate Swift reflection sections (typeref and reflstr)
+          --swift-reflection      obfuscate Swift reflection sections (typeref and reflstr). May cause problems for Swift >= 4.2
           -m mangler_key,
           --mangler mangler_key   select mangler to generate obfuscated symbols
 

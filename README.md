@@ -59,7 +59,7 @@ Options:
 
   -t, --methtype          obfuscate methType section (objc/runtime.h methods may work incorrectly)
   -D, --machoview-doom    MachOViewDoom, MachOView crashes after trying to open your binary (doesn't work with caesarMangler)
-  --swift-reflection      obfuscate Swift reflection sections (typeref and reflstr). May cause problem for Swift >= 4.2
+  --swift-reflection      obfuscate Swift reflection sections (typeref and reflstr). May cause problems for Swift >= 4.2
   -m mangler_key,
   --mangler mangler_key   select mangler to generate obfuscated symbols
 
