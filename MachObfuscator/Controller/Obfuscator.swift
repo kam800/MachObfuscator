@@ -7,13 +7,13 @@ class Obfuscator {
 
     private let methTypeObfuscation: Bool
     
-    private let switfReflectionObfuscation: Bool
+    private let swiftReflectionObfuscation: Bool
 
-    init(directoryURL: URL, mangler: SymbolMangling, methTypeObfuscation: Bool = false, switfReflectionObfuscation: Bool = false) {
+    init(directoryURL: URL, mangler: SymbolMangling, methTypeObfuscation: Bool = false, swiftReflectionObfuscation: Bool = false) {
         self.directoryURL = directoryURL
         self.mangler = mangler
         self.methTypeObfuscation = methTypeObfuscation
-        self.switfReflectionObfuscation = switfReflectionObfuscation
+        self.swiftReflectionObfuscation = swiftReflectionObfuscation
     }
 
     func run(loader: ImageLoader & SymbolsSourceLoader & DependencyNodeLoader = SimpleImageLoader(),
@@ -36,7 +36,7 @@ class Obfuscator {
         let manglingMap = mangler.mangleSymbols(symbols)
         LOGGER.info("\(manglingMap.selectors.count) mangled selectors")
         LOGGER.info("\(manglingMap.classNames.count) mangled classes")
-        if switfReflectionObfuscation {
+        if swiftReflectionObfuscation {
             LOGGER.info("Will obfuscate Swift reflection sections")
         }
         if methTypeObfuscation {
@@ -52,7 +52,7 @@ class Obfuscator {
             image.replaceSymbols(withMap: manglingMap, paths: paths)
             // TODO: add option
             image.eraseSymtab()
-            if switfReflectionObfuscation {
+            if swiftReflectionObfuscation {
                 image.eraseSwiftReflectiveSections()
             }
             if methTypeObfuscation {

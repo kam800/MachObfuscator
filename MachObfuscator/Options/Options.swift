@@ -7,7 +7,7 @@ struct Options {
     var debug: Bool
     var methTypeObfuscation: Bool
     var machOViewDoom: Bool
-    var switfReflectionObfuscation = false
+    var swiftReflectionObfuscation = false
     var manglerType: SymbolManglers?
     var appDirectory: URL?
 }
@@ -106,7 +106,7 @@ extension Options {
                   debug: debug,
                   methTypeObfuscation: methTypeObfuscation,
                   machOViewDoom: machOViewDoom,
-                  switfReflectionObfuscation: swiftReflectionObfuscation,
+                  swiftReflectionObfuscation: swiftReflectionObfuscation,
                   manglerType: manglerType,
                   appDirectory: appDirectoryURL)
     }
