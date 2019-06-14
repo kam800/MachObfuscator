@@ -27,6 +27,8 @@ class Obfuscator {
         let paths = ObfuscationPaths.forAllExecutablesWithDependencies(inDirectory: directoryURL, dependencyNodeLoader: loader,
                                                                        obfuscableFilesFilter: obfuscableFilesFilter)
         LOGGER.info("\(paths.obfuscableImages.count) obfuscable images")
+        LOGGER.debug("Obfuscable images:")
+        paths.obfuscableImages.forEach({ (u) in LOGGER.debug(u.absoluteString) })
         LOGGER.info("\(paths.nibs.count) obfuscable NIBs")
 
         LOGGER.info("Collecting symbols...")
