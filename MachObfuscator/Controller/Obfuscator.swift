@@ -8,12 +8,15 @@ class Obfuscator {
     private let methTypeObfuscation: Bool
     
     private let swiftReflectionObfuscation: Bool
+    
+    private let obfuscableFilesFilter : ObfuscableFilesFilter
 
-    init(directoryURL: URL, mangler: SymbolMangling, methTypeObfuscation: Bool = false, swiftReflectionObfuscation: Bool = false) {
+    init(directoryURL: URL, mangler: SymbolMangling, methTypeObfuscation: Bool = false, swiftReflectionObfuscation: Bool = false, obfuscableFilesFilter : ObfuscableFilesFilter = ObfuscableFilesFilter.defaultObfuscableFilesFilter()) {
         self.directoryURL = directoryURL
         self.mangler = mangler
         self.methTypeObfuscation = methTypeObfuscation
         self.swiftReflectionObfuscation = swiftReflectionObfuscation
+        self.obfuscableFilesFilter = obfuscableFilesFilter
     }
 
     func run(loader: ImageLoader & SymbolsSourceLoader & DependencyNodeLoader = SimpleImageLoader(),
@@ -21,7 +24,8 @@ class Obfuscator {
         LOGGER.info("Will obfuscate \(directoryURL)")
 
         LOGGER.info("Looking for dependencies...")
-        let paths = ObfuscationPaths.forAllExecutablesWithDependencies(inDirectory: directoryURL, dependencyNodeLoader: loader)
+        let paths = ObfuscationPaths.forAllExecutablesWithDependencies(inDirectory: directoryURL, dependencyNodeLoader: loader,
+                                                                       obfuscableFilesFilter: obfuscableFilesFilter)
         LOGGER.info("\(paths.obfuscableImages.count) obfuscable images")
         LOGGER.info("\(paths.nibs.count) obfuscable NIBs")
 

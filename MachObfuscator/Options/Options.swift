@@ -8,6 +8,7 @@ struct Options {
     var methTypeObfuscation: Bool
     var machOViewDoom: Bool
     var swiftReflectionObfuscation = false
+    var obfuscableFilesFilter : ObfuscableFilesFilter
     var manglerType: SymbolManglers?
     var appDirectory: URL?
 }
@@ -36,6 +37,7 @@ extension Options {
         var machOViewDoom = false
         var methTypeObfuscation = false
         var swiftReflectionObfuscation = false
+        var obfuscableFilesFilter = ObfuscableFilesFilter.defaultObfuscableFilesFilter()
         var manglerKey = SymbolManglers.defaultManglerKey
         
         struct OptLongChars {
@@ -49,8 +51,10 @@ extension Options {
             static let manglerKey = Int32(Character("m").asciiValue!)
         }
         enum OptLongCases: Int32 {
-            case OPT_FIRST = 256;
-            case swiftReflection;
+            case OPT_FIRST = 256
+            case swiftReflection
+            case noFramework
+            case noFrameworks
         };
         
         let longopts: [option] = [
@@ -59,6 +63,8 @@ extension Options {
             option(name: Options.newCCharPtrFromStaticString("methtype"),      has_arg: no_argument, flag: nil, val: OptLongChars.methTypeObfuscation),
             option(name: Options.newCCharPtrFromStaticString("machoview-doom"),      has_arg: no_argument, flag: nil, val: OptLongChars.machOViewDoom),
             option(name: Options.newCCharPtrFromStaticString("swift-reflection"),      has_arg: no_argument, flag: nil, val: OptLongCases.swiftReflection.rawValue),
+            option(name: Options.newCCharPtrFromStaticString("no-framework"),      has_arg: required_argument, flag: nil, val: OptLongCases.noFramework.rawValue),
+            option(name: Options.newCCharPtrFromStaticString("no-frameworks"),      has_arg: no_argument, flag: nil, val: OptLongCases.noFrameworks.rawValue),
             option(name: Options.newCCharPtrFromStaticString("mangler"),      has_arg: required_argument, flag: nil, val: OptLongChars.manglerKey),
             option()    // { NULL, NULL, NULL, NULL }
         ];
@@ -81,6 +87,10 @@ extension Options {
                 manglerKey = String(cString: optarg)
             case OptLongCases.swiftReflection.rawValue:
                 swiftReflectionObfuscation = true;
+            case OptLongCases.noFramework.rawValue:
+                obfuscableFilesFilter = obfuscableFilesFilter.and(ObfuscableFilesFilter.notFramework(framework: String(cString: optarg)))
+            case OptLongCases.noFrameworks.rawValue:
+                obfuscableFilesFilter = obfuscableFilesFilter.and(ObfuscableFilesFilter.notFrameworks())
             case OptLongChars.unknownOption:
                 help = true
                 break
@@ -107,6 +117,7 @@ extension Options {
                   methTypeObfuscation: methTypeObfuscation,
                   machOViewDoom: machOViewDoom,
                   swiftReflectionObfuscation: swiftReflectionObfuscation,
+                  obfuscableFilesFilter: obfuscableFilesFilter,
                   manglerType: manglerType,
                   appDirectory: appDirectoryURL)
     }
@@ -126,6 +137,10 @@ extension Options {
           -t, --methtype          obfuscate methType section (objc/runtime.h methods may work incorrectly)
           -D, --machoview-doom    MachOViewDoom, MachOView crashes after trying to open your binary (doesn't work with caesarMangler)
           --swift-reflection      obfuscate Swift reflection sections (typeref and reflstr). May cause problems for Swift >= 4.2
+        
+          --no-frameworks         do not obfuscate frameworks
+          --no-framework framework  do not obfuscate given framework
+        
           -m mangler_key,
           --mangler mangler_key   select mangler to generate obfuscated symbols
 
