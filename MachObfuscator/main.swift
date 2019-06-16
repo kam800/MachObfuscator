@@ -16,7 +16,8 @@ private func main() {
     let mangler = manglerType.resolveMangler(machOViewDoomEnabled: options.machOViewDoom)
     let obfuscator = Obfuscator(directoryURL: appDirectory,
                                 mangler: mangler,
-                                methTypeObfuscation: options.methTypeObfuscation)
+                                methTypeObfuscation: options.methTypeObfuscation,
+                                swiftReflectionObfuscation: options.swiftReflectionObfuscation)
     obfuscator.run()
 }
 
