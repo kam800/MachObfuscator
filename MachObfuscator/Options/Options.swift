@@ -20,13 +20,13 @@ extension Options {
                          unsafeArgv: CommandLine.unsafeArgv,
                          argv: CommandLine.arguments)
     }
-    static func newCCharPtrFromStaticString(_ str: StaticString) -> UnsafePointer<CChar>
-    {
-        let rp = UnsafeRawPointer(str.utf8Start);
-        let rplen = str.utf8CodeUnitCount;
-        return rp.bindMemory(to: CChar.self, capacity: rplen);
+
+    static func newCCharPtrFromStaticString(_ str: StaticString) -> UnsafePointer<CChar> {
+        let rp = UnsafeRawPointer(str.utf8Start)
+        let rplen = str.utf8CodeUnitCount
+        return rp.bindMemory(to: CChar.self, capacity: rplen)
     }
-    
+
     init(argc: Int32, unsafeArgv: UnsafeArgv, argv: [String]) {
         optreset = 1
         var help = false
@@ -37,7 +37,7 @@ extension Options {
         var methTypeObfuscation = false
         var swiftReflectionObfuscation = false
         var manglerKey = SymbolManglers.defaultManglerKey
-        
+
         struct OptLongChars {
             static let unknownOption = Int32(Character("?").asciiValue!)
             static let help = Int32(Character("h").asciiValue!)
@@ -49,20 +49,20 @@ extension Options {
             static let manglerKey = Int32(Character("m").asciiValue!)
         }
         enum OptLongCases: Int32 {
-            case OPT_FIRST = 256;
-            case swiftReflection;
-        };
-        
+            case OPT_FIRST = 256
+            case swiftReflection
+        }
+
         let longopts: [option] = [
-            option(name: Options.newCCharPtrFromStaticString("help"),      has_arg: no_argument,       flag: nil, val: OptLongChars.help),
-            option(name: Options.newCCharPtrFromStaticString("verbose"),   has_arg: no_argument,       flag: nil, val: OptLongChars.verbose),
-            option(name: Options.newCCharPtrFromStaticString("methtype"),      has_arg: no_argument, flag: nil, val: OptLongChars.methTypeObfuscation),
-            option(name: Options.newCCharPtrFromStaticString("machoview-doom"),      has_arg: no_argument, flag: nil, val: OptLongChars.machOViewDoom),
-            option(name: Options.newCCharPtrFromStaticString("swift-reflection"),      has_arg: no_argument, flag: nil, val: OptLongCases.swiftReflection.rawValue),
-            option(name: Options.newCCharPtrFromStaticString("mangler"),      has_arg: required_argument, flag: nil, val: OptLongChars.manglerKey),
-            option()    // { NULL, NULL, NULL, NULL }
-        ];
-        
+            option(name: Options.newCCharPtrFromStaticString("help"), has_arg: no_argument, flag: nil, val: OptLongChars.help),
+            option(name: Options.newCCharPtrFromStaticString("verbose"), has_arg: no_argument, flag: nil, val: OptLongChars.verbose),
+            option(name: Options.newCCharPtrFromStaticString("methtype"), has_arg: no_argument, flag: nil, val: OptLongChars.methTypeObfuscation),
+            option(name: Options.newCCharPtrFromStaticString("machoview-doom"), has_arg: no_argument, flag: nil, val: OptLongChars.machOViewDoom),
+            option(name: Options.newCCharPtrFromStaticString("swift-reflection"), has_arg: no_argument, flag: nil, val: OptLongCases.swiftReflection.rawValue),
+            option(name: Options.newCCharPtrFromStaticString("mangler"), has_arg: required_argument, flag: nil, val: OptLongChars.manglerKey),
+            option(), // { NULL, NULL, NULL, NULL }
+        ]
+
         while case let option = getopt_long(argc, unsafeArgv, "qvdhtDm:", longopts, nil), option != -1 {
             switch option {
             case OptLongChars.quiet:
@@ -80,10 +80,9 @@ extension Options {
             case OptLongChars.manglerKey:
                 manglerKey = String(cString: optarg)
             case OptLongCases.swiftReflection.rawValue:
-                swiftReflectionObfuscation = true;
+                swiftReflectionObfuscation = true
             case OptLongChars.unknownOption:
                 help = true
-                break
             default:
                 fatalError("Unexpected argument: \(option)")
             }

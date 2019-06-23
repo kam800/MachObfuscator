@@ -6,7 +6,7 @@ class Obfuscator {
     private let mangler: SymbolMangling
 
     private let methTypeObfuscation: Bool
-    
+
     private let swiftReflectionObfuscation: Bool
 
     init(directoryURL: URL, mangler: SymbolMangling, methTypeObfuscation: Bool = false, swiftReflectionObfuscation: Bool = false) {
@@ -43,7 +43,6 @@ class Obfuscator {
             LOGGER.info("Will obfuscate methType sections")
         }
 
-        
         var savable: [Savable] = []
 
         for obfuscableImage in paths.obfuscableImages {

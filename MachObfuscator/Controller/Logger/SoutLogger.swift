@@ -19,7 +19,7 @@ extension SoutLogger: Logger {
     func debug(_ text: @autoclosure () -> String) {
         log(text: "DEBUG: \(text())", level: .debug)
     }
-    
+
     func info(_ text: @autoclosure () -> String) {
         log(text: text(), level: .info)
     }
