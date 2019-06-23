@@ -7,8 +7,9 @@ struct Options {
     var debug: Bool
     var methTypeObfuscation: Bool
     var machOViewDoom: Bool
-    var swiftReflectionObfuscation = false
+    var swiftReflectionObfuscation: Bool
     var manglerType: SymbolManglers?
+    var skipSymbolsFromSources: [URL]
     var appDirectory: URL?
 }
 
@@ -37,6 +38,7 @@ extension Options {
         var methTypeObfuscation = false
         var swiftReflectionObfuscation = false
         var manglerKey = SymbolManglers.defaultManglerKey
+        var skipSymbolsFromSources: [URL] = []
 
         struct OptLongChars {
             static let unknownOption = Int32(Character("?").asciiValue!)
@@ -51,6 +53,7 @@ extension Options {
         enum OptLongCases: Int32 {
             case OPT_FIRST = 256
             case swiftReflection
+            case skipSymbolsFromSources
         }
 
         let longopts: [option] = [
@@ -60,6 +63,7 @@ extension Options {
             option(name: Options.newCCharPtrFromStaticString("machoview-doom"), has_arg: no_argument, flag: nil, val: OptLongChars.machOViewDoom),
             option(name: Options.newCCharPtrFromStaticString("swift-reflection"), has_arg: no_argument, flag: nil, val: OptLongCases.swiftReflection.rawValue),
             option(name: Options.newCCharPtrFromStaticString("mangler"), has_arg: required_argument, flag: nil, val: OptLongChars.manglerKey),
+            option(name: Options.newCCharPtrFromStaticString("skip-symbols-from-sources"), has_arg: required_argument, flag: nil, val: OptLongCases.skipSymbolsFromSources.rawValue),
             option(), // { NULL, NULL, NULL, NULL }
         ]
 
@@ -81,6 +85,9 @@ extension Options {
                 manglerKey = String(cString: optarg)
             case OptLongCases.swiftReflection.rawValue:
                 swiftReflectionObfuscation = true
+            case OptLongCases.skipSymbolsFromSources.rawValue:
+                let sourcesPath = URL(fileURLWithPath: String(cString: optarg))
+                skipSymbolsFromSources.append(sourcesPath)
             case OptLongChars.unknownOption:
                 help = true
             default:
@@ -107,6 +114,7 @@ extension Options {
                   machOViewDoom: machOViewDoom,
                   swiftReflectionObfuscation: swiftReflectionObfuscation,
                   manglerType: manglerType,
+                  skipSymbolsFromSources: skipSymbolsFromSources,
                   appDirectory: appDirectoryURL)
     }
 
@@ -127,6 +135,10 @@ extension Options {
           --swift-reflection      obfuscate Swift reflection sections (typeref and reflstr). May cause problems for Swift >= 4.2
           -m mangler_key,
           --mangler mangler_key   select mangler to generate obfuscated symbols
+
+          --skip-symbols-from-sources PATH
+                                  Don't obfuscate all the symbols found in PATH (searches for all nested *.[hm] files).
+                                  This option can be used multiple times to add multiple paths.
 
         \(SymbolManglers.helpSummary)
         """
