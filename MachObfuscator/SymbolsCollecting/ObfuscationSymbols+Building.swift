@@ -3,7 +3,7 @@ import Foundation
 extension ObfuscationSymbols {
     static func buildFor(obfuscationPaths: ObfuscationPaths,
                          loader: SymbolsSourceLoader,
-                         headerLoader: HeaderSymbolsLoader) -> ObfuscationSymbols {
+                         sourceSymbolsLoader: SourceSymbolsLoader) -> ObfuscationSymbols {
         let systemSources = try! obfuscationPaths.unobfuscableDependencies.flatMap { try loader.load(forURL: $0) }
 
         let userSourcesPerPath = [URL: [SymbolsSource]](uniqueKeysWithValues: obfuscationPaths.obfuscableImages.map { ($0, try! loader.load(forURL: $0)) })
@@ -19,7 +19,7 @@ extension ObfuscationSymbols {
 
         let systemHeaderSymbols = obfuscationPaths
             .systemFrameworks
-            .map { try! headerLoader.load(forFrameworkURL: $0) }
+            .map { try! sourceSymbolsLoader.load(forFrameworkURL: $0) }
             .flatten()
 
         // TODO: Array(userCStrings) should be opt-in

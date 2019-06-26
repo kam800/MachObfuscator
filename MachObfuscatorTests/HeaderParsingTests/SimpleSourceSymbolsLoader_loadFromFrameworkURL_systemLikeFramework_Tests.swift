@@ -1,18 +1,18 @@
 import XCTest
 
-class SimpleHeaderSymbolsLoader_loadFromFrameworkURL_systemLikeFramework_Tests: XCTestCase {
+class SimpleSourceSymbolsLoader_loadFromFrameworkURL_systemLikeFramework_Tests: XCTestCase {
 
-    var header: HeaderSymbols!
+    var symbols: SourceSymbols!
 
     override func setUp() {
         super.setUp()
 
-        let sut = SimpleHeaderSymbolsLoader()
-        header = try! sut.load(forFrameworkURL: URL.systemLikeFramework)
+        let sut = SimpleSourceSymbolsLoader()
+        symbols = try! sut.load(forFrameworkURL: URL.systemLikeFramework)
     }
 
     override func tearDown() {
-        header = nil
+        symbols = nil
 
         super.tearDown()
     }
@@ -23,7 +23,7 @@ class SimpleHeaderSymbolsLoader_loadFromFrameworkURL_systemLikeFramework_Tests: 
             "UIUserNotificationSettings",
             "UIApplicationDelegate"
         ]
-        XCTAssertEqual(header.classNames, expectedClassNames)
+        XCTAssertEqual(symbols.classNames, expectedClassNames)
     }
 
     func test_shouldParseAllSelectors() {
@@ -37,6 +37,6 @@ class SimpleHeaderSymbolsLoader_loadFromFrameworkURL_systemLikeFramework_Tests: 
             "application:didFinishLaunchingWithOptions:",
             "application:handleActionWithIdentifier:forLocalNotification:completionHandler:"
         ]
-        XCTAssertEqual(header.selectors, expectedSelectors)
+        XCTAssertEqual(symbols.selectors, expectedSelectors)
     }
 }

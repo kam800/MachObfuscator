@@ -5,10 +5,12 @@ private let methodSuffixRegexp = try! NSRegularExpression(pattern: "\\s([A-Z_]+_
 private let namedParameterRegexp = try! NSRegularExpression(pattern: "\\b(\\w+:)", options: [])
 private let parameterlessMethodNameRegexp = try! NSRegularExpression(pattern: "\\b(\\w+)\\b", options: [])
 
+private let methodNameDelimiters = CharacterSet([";", "{", "}"])
+
 extension String {
     var objCMethodNames: [String] {
         let headerWithoutComments = withoutComments
-        let allLines = headerWithoutComments.components(separatedBy: ";")
+        let allLines = headerWithoutComments.components(separatedBy: methodNameDelimiters)
         return allLines.compactMap { $0.objCMethodNameFromLine }
     }
 

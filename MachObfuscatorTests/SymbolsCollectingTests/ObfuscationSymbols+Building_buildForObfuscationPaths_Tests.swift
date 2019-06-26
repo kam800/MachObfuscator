@@ -4,7 +4,7 @@ class ObfuscationSymbols_Building_buildForObfuscationPaths_Tests: XCTestCase {
 
     var sampleObfuscationPaths: ObfuscationPaths! = ObfuscationPaths()
     var testLoader: ObfuscationSymbolsTestSymbolsSourceLoader! = ObfuscationSymbolsTestSymbolsSourceLoader()
-    var testHeaderLoader: ObfuscationSymbolsTestHeaderSymbolsLoader! = ObfuscationSymbolsTestHeaderSymbolsLoader()
+    var testSymbolsLoader: ObfuscationSymbolsTestSourceSymbolsLoader! = ObfuscationSymbolsTestSourceSymbolsLoader()
     var sut: ObfuscationSymbols!
 
     override func setUp() {
@@ -49,11 +49,11 @@ class ObfuscationSymbols_Building_buildForObfuscationPaths_Tests: XCTestCase {
                                    classNames: ["c5"],
                                    cstrings: ["s6", "c6"])
         ]
-        testHeaderLoader["/tmp/sys1.framework"] = HeaderSymbols(
+        testSymbolsLoader["/tmp/sys1.framework"] = SourceSymbols(
             selectors: [ "sys1s" ],
             classNames: [ "sys1c" ]
         )
-        testHeaderLoader["/tmp/sys2.framework"] = HeaderSymbols(
+        testSymbolsLoader["/tmp/sys2.framework"] = SourceSymbols(
             selectors: [ "sys2s" ],
             classNames: [ "sys2c" ]
         )
@@ -64,7 +64,7 @@ class ObfuscationSymbols_Building_buildForObfuscationPaths_Tests: XCTestCase {
     func buildSUT() -> ObfuscationSymbols {
         return ObfuscationSymbols.buildFor(obfuscationPaths: sampleObfuscationPaths,
                                            loader: testLoader,
-                                           headerLoader: testHeaderLoader)
+                                           sourceSymbolsLoader: testSymbolsLoader)
     }
 
     func test_whitelistSelectors_shouldContainObfuscableImagesAccessors_withoutBlacklistedAccessors() {
