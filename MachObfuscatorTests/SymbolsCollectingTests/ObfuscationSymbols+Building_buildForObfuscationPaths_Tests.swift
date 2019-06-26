@@ -57,6 +57,10 @@ class ObfuscationSymbols_Building_buildForObfuscationPaths_Tests: XCTestCase {
             selectors: [ "sys2s" ],
             classNames: [ "sys2c" ]
         )
+        testSymbolsLoader["/tmp/githubLibrary/"] = SourceSymbols(
+            selectors: [ "sourceSelector " ],
+            classNames: [ "sourceClass" ]
+        )
 
         sut = buildSUT()
     }
@@ -64,7 +68,8 @@ class ObfuscationSymbols_Building_buildForObfuscationPaths_Tests: XCTestCase {
     func buildSUT() -> ObfuscationSymbols {
         return ObfuscationSymbols.buildFor(obfuscationPaths: sampleObfuscationPaths,
                                            loader: testLoader,
-                                           sourceSymbolsLoader: testSymbolsLoader)
+                                           sourceSymbolsLoader: testSymbolsLoader,
+                                           skippedSymbolsSources: [ "/tmp/githubLibrary/".asURL ]) // TODO!!!!
     }
 
     func test_whitelistSelectors_shouldContainObfuscableImagesAccessors_withoutBlacklistedAccessors() {
@@ -83,21 +88,25 @@ class ObfuscationSymbols_Building_buildForObfuscationPaths_Tests: XCTestCase {
         let unobfuscableDependenciesSymbols: Set<String> = [ "s2", "setS2:", "s5", "setS5:",  ]
         let cstringsSymbols: Set<String> = [ "s4", "setS4:", "c4", "setC4:", "s6", "setS6:", "c6", "setC6:" ]
         let frameworkHeaderSymbols: Set<String> = [ "sys1s", "setSys1s:", "sys2s", "setSys2s:" ]
+        let skippedSymbols: Set<String> = [ "sourceSelector" ]
         XCTAssertEqual(sut.blacklist.selectors,
                        dynamicPropertySymbols
                         .union(unobfuscableDependenciesSymbols)
                         .union(cstringsSymbols)
-                        .union(frameworkHeaderSymbols))
+                        .union(frameworkHeaderSymbols)
+                        .union(skippedSymbols))
     }
 
     func test_blacklistClassNames_shouldContainUnobfuscableDependenciesClassNames_andAllCstringsClassNames_andFrameworkHeaderClassNames() {
         let unobfuscableDependenciesClassNames: Set<String> = [ "c2", "c5" ]
         let cstringsClassNames: Set<String> = [ "s4", "c4", "s6", "c6" ]
         let frameworkHeaderClassNames: Set<String> = [ "sys1c", "sys2c" ]
+        let skippedSymbols: Set<String> = [ "sourceClass" ]
         XCTAssertEqual(sut.blacklist.classes,
                        unobfuscableDependenciesClassNames
                         .union(cstringsClassNames)
-                        .union(frameworkHeaderClassNames))
+                        .union(frameworkHeaderClassNames)
+                        .union(skippedSymbols))
     }
 
     func test_exportTriesPerURL_shouldContainTriesOfObfuscableImages() {

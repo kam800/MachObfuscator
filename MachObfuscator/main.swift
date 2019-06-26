@@ -17,7 +17,8 @@ private func main() {
     let obfuscator = Obfuscator(directoryURL: appDirectory,
                                 mangler: mangler,
                                 methTypeObfuscation: options.methTypeObfuscation,
-                                swiftReflectionObfuscation: options.swiftReflectionObfuscation)
+                                swiftReflectionObfuscation: options.swiftReflectionObfuscation,
+                                skippedSymbolsSources: options.skipSymbolsFromSources)
     obfuscator.run()
 }
 

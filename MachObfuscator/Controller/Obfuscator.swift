@@ -9,11 +9,18 @@ class Obfuscator {
 
     private let swiftReflectionObfuscation: Bool
 
-    init(directoryURL: URL, mangler: SymbolMangling, methTypeObfuscation: Bool = false, swiftReflectionObfuscation: Bool = false) {
+    private let skippedSymbolsSources: [URL]
+
+    init(directoryURL: URL,
+         mangler: SymbolMangling,
+         methTypeObfuscation: Bool = false,
+         swiftReflectionObfuscation: Bool = false,
+         skippedSymbolsSources: [URL] = []) {
         self.directoryURL = directoryURL
         self.mangler = mangler
         self.methTypeObfuscation = methTypeObfuscation
         self.swiftReflectionObfuscation = swiftReflectionObfuscation
+        self.skippedSymbolsSources = skippedSymbolsSources
     }
 
     func run(loader: ImageLoader & SymbolsSourceLoader & DependencyNodeLoader = SimpleImageLoader(),
@@ -26,7 +33,10 @@ class Obfuscator {
         LOGGER.info("\(paths.nibs.count) obfuscable NIBs")
 
         LOGGER.info("Collecting symbols...")
-        let symbols = ObfuscationSymbols.buildFor(obfuscationPaths: paths, loader: loader, sourceSymbolsLoader: sourceSymbolsLoader)
+        let symbols = ObfuscationSymbols.buildFor(obfuscationPaths: paths,
+                                                  loader: loader,
+                                                  sourceSymbolsLoader: sourceSymbolsLoader,
+                                                  skippedSymbolsSources: skippedSymbolsSources)
         LOGGER.info("\(symbols.whitelist.selectors.count) obfuscable selectors")
         LOGGER.info("\(symbols.whitelist.classes.count) obfuscable classes")
         LOGGER.info("\(symbols.blacklist.selectors.count) unobfuscable selectors")
