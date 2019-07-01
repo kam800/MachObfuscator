@@ -66,7 +66,7 @@ extension Options {
             option(name: Options.newCCharPtrFromStaticString("skip-framework"), has_arg: required_argument, flag: nil, val: OptLongCases.skipFramework.rawValue),
             option(name: Options.newCCharPtrFromStaticString("skip-all-frameworks"), has_arg: no_argument, flag: nil, val: OptLongCases.skipAllFrameworks.rawValue),
             option(name: Options.newCCharPtrFromStaticString("mangler"), has_arg: required_argument, flag: nil, val: OptLongChars.manglerKey),
-            option() // { NULL, NULL, NULL, NULL }
+            option(), // { NULL, NULL, NULL, NULL }
         ]
 
         while case let option = getopt_long(argc, unsafeArgv, "qvdhtDm:", longopts, nil), option != -1 {

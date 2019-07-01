@@ -8,10 +8,10 @@ class Obfuscator {
     private let methTypeObfuscation: Bool
 
     private let swiftReflectionObfuscation: Bool
-    
-    private let obfuscableFilesFilter : ObfuscableFilesFilter
 
-    init(directoryURL: URL, mangler: SymbolMangling, methTypeObfuscation: Bool = false, swiftReflectionObfuscation: Bool = false, obfuscableFilesFilter : ObfuscableFilesFilter = ObfuscableFilesFilter.defaultObfuscableFilesFilter()) {
+    private let obfuscableFilesFilter: ObfuscableFilesFilter
+
+    init(directoryURL: URL, mangler: SymbolMangling, methTypeObfuscation: Bool = false, swiftReflectionObfuscation: Bool = false, obfuscableFilesFilter: ObfuscableFilesFilter = ObfuscableFilesFilter.defaultObfuscableFilesFilter()) {
         self.directoryURL = directoryURL
         self.mangler = mangler
         self.methTypeObfuscation = methTypeObfuscation
@@ -28,7 +28,7 @@ class Obfuscator {
                                                                        obfuscableFilesFilter: obfuscableFilesFilter)
         LOGGER.info("\(paths.obfuscableImages.count) obfuscable images")
         LOGGER.debug("Obfuscable images:")
-        paths.obfuscableImages.forEach({ (u) in LOGGER.debug(u.absoluteString) })
+        paths.obfuscableImages.forEach { u in LOGGER.debug(u.absoluteString) }
         LOGGER.info("\(paths.nibs.count) obfuscable NIBs")
 
         LOGGER.info("Collecting symbols...")
