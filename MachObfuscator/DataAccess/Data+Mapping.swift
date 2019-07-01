@@ -20,7 +20,7 @@ extension Data {
     mutating func replaceStrings(inRange range: Range<Int>, withMapping mapping: [String: String]) {
         let rangesPerString = stringRangesPerString(inRange: range)
         mapping.forEach { originalString, mappedString in
-            precondition(originalString.count == mappedString.count)
+            precondition(originalString.utf8.count == mappedString.utf8.count)
             if let stringRanges = rangesPerString[originalString] {
                 stringRanges.forEach { stringRange in
                     let targetData = mappedString.data(using: .utf8)!

@@ -39,7 +39,7 @@ private extension ObfuscationSymbols {
     func nonSettersManglingMap(sentenceGenerator: SentenceGenerator) -> [(String, String)] {
         let mangledSelectorsBlacklist = (Array(blacklist.selectors) + Array(whitelist.selectors)).uniq
         let nonSetterManglingEntryProvider: (String) -> (String, String)? = { selector in
-            while let randomSelector = sentenceGenerator.getUniqueSentence(length: selector.count) {
+            while let randomSelector = sentenceGenerator.getUniqueSentence(length: selector.utf8.count) {
                 if !mangledSelectorsBlacklist.contains(randomSelector) {
                     return (selector, randomSelector)
                 }
@@ -70,7 +70,7 @@ private extension ObfuscationSymbols {
     func classManglingMap(sentenceGenerator: SentenceGenerator) -> [(String, String)] {
         let mangledClassesBlacklist = (Array(blacklist.classes) + Array(whitelist.classes)).uniq
         let classManglingEntryProvider: (String) -> (String, String)? = { className in
-            while let randomClassName = sentenceGenerator.getUniqueSentence(length: className.count)?.capitalizedOnFirstLetter {
+            while let randomClassName = sentenceGenerator.getUniqueSentence(length: className.utf8.count)?.capitalizedOnFirstLetter {
                 if !mangledClassesBlacklist.contains(randomClassName) {
                     return (className, randomClassName)
                 }

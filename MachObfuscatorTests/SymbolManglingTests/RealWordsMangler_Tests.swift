@@ -23,6 +23,8 @@ class RealWordsMangler_Tests: XCTestCase {
             "blaBla1",
             "blaBla2",
             "blaBla3",
+            "zazzoollccXgeesslaaXjazznn",
+            "zazzoollccYgeesslaaYjazznn"
         ]
 
         sut = RealWordsMangler(exportTrieMangler: IdentityRealWordsExportTrieMangling())
@@ -91,5 +93,37 @@ class RealWordsMangler_Tests: XCTestCase {
         ]
         XCTAssert(mangledSymbols.selectors == firstVersion
             || mangledSymbols.selectors == secondVersion)
+    }
+    
+    func test_mangleSymbols_shouldMangleAsciiSymbolToCorrectLength() {
+        // Given
+        
+        let whitelist = ObjCSymbols(selectors: [ "asdf" ], classes: ["Asdf"])
+        let blacklist = ObjCSymbols(selectors: [ "" ], classes: [])
+        let symbols = ObfuscationSymbols(whitelist: whitelist, blacklist: blacklist, exportTriesPerCpuIdPerURL: [:])
+        
+        // When
+        let mangledSymbols = when(symbols: symbols)
+        
+        // Then
+        let expectedMangledBytes = 4
+        XCTAssert(mangledSymbols.selectors["asdf"]!.utf8.count == expectedMangledBytes)
+        XCTAssert(mangledSymbols.classNames["Asdf"]!.utf8.count == expectedMangledBytes)
+    }
+    
+    func test_mangleSymbols_shouldMangleNonasciiSymbolToCorrectLength() {
+        // Given
+        
+        let whitelist = ObjCSymbols(selectors: [ "zażółć:gęślą:jaźń" ], classes: ["Zażółć_gęślą_jaźń"])
+        let blacklist = ObjCSymbols(selectors: [ "" ], classes: [])
+        let symbols = ObfuscationSymbols(whitelist: whitelist, blacklist: blacklist, exportTriesPerCpuIdPerURL: [:])
+        
+        // When
+        let mangledSymbols = when(symbols: symbols)
+        
+        // Then
+        let expectedMangledBytes = 26 //counts 2 bytes per non-ascii character
+        XCTAssert(mangledSymbols.selectors["zażółć:gęślą:jaźń"]!.utf8.count == expectedMangledBytes)
+        XCTAssert(mangledSymbols.classNames["Zażółć_gęślą_jaźń"]!.utf8.count == expectedMangledBytes)
     }
 }

@@ -21,13 +21,13 @@ extension Options {
                          unsafeArgv: CommandLine.unsafeArgv,
                          argv: CommandLine.arguments)
     }
-    static func newCCharPtrFromStaticString(_ str: StaticString) -> UnsafePointer<CChar>
-    {
-        let rp = UnsafeRawPointer(str.utf8Start);
-        let rplen = str.utf8CodeUnitCount;
-        return rp.bindMemory(to: CChar.self, capacity: rplen);
+
+    static func newCCharPtrFromStaticString(_ str: StaticString) -> UnsafePointer<CChar> {
+        let rp = UnsafeRawPointer(str.utf8Start)
+        let rplen = str.utf8CodeUnitCount
+        return rp.bindMemory(to: CChar.self, capacity: rplen)
     }
-    
+
     init(argc: Int32, unsafeArgv: UnsafeArgv, argv: [String]) {
         optreset = 1
         var help = false
@@ -39,7 +39,7 @@ extension Options {
         var swiftReflectionObfuscation = false
         var obfuscableFilesFilter = ObfuscableFilesFilter.defaultObfuscableFilesFilter()
         var manglerKey = SymbolManglers.defaultManglerKey
-        
+
         struct OptLongChars {
             static let unknownOption = Int32(Character("?").asciiValue!)
             static let help = Int32(Character("h").asciiValue!)
@@ -86,14 +86,13 @@ extension Options {
             case OptLongChars.manglerKey:
                 manglerKey = String(cString: optarg)
             case OptLongCases.swiftReflection.rawValue:
-                swiftReflectionObfuscation = true;
+                swiftReflectionObfuscation = true
             case OptLongCases.noFramework.rawValue:
                 obfuscableFilesFilter = obfuscableFilesFilter.and(ObfuscableFilesFilter.notFramework(framework: String(cString: optarg)))
             case OptLongCases.noFrameworks.rawValue:
                 obfuscableFilesFilter = obfuscableFilesFilter.and(ObfuscableFilesFilter.notFrameworks())
             case OptLongChars.unknownOption:
                 help = true
-                break
             default:
                 fatalError("Unexpected argument: \(option)")
             }

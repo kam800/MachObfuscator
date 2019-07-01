@@ -6,7 +6,7 @@ class Obfuscator {
     private let mangler: SymbolMangling
 
     private let methTypeObfuscation: Bool
-    
+
     private let swiftReflectionObfuscation: Bool
     
     private let obfuscableFilesFilter : ObfuscableFilesFilter
@@ -49,7 +49,6 @@ class Obfuscator {
             LOGGER.info("Will obfuscate methType sections")
         }
 
-        
         var savable: [Savable] = []
 
         for obfuscableImage in paths.obfuscableImages {
