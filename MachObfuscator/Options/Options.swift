@@ -8,7 +8,7 @@ struct Options {
     var methTypeObfuscation: Bool
     var machOViewDoom: Bool
     var swiftReflectionObfuscation = false
-    var obfuscableFilesFilter : ObfuscableFilesFilter
+    var obfuscableFilesFilter: ObfuscableFilesFilter
     var manglerType: SymbolManglers?
     var appDirectory: URL?
 }
@@ -53,22 +53,22 @@ extension Options {
         enum OptLongCases: Int32 {
             case OPT_FIRST = 256
             case swiftReflection
-            case noFramework
-            case noFrameworks
-        };
-        
+            case skipFramework
+            case skipAllFrameworks
+        }
+
         let longopts: [option] = [
-            option(name: Options.newCCharPtrFromStaticString("help"),      has_arg: no_argument,       flag: nil, val: OptLongChars.help),
-            option(name: Options.newCCharPtrFromStaticString("verbose"),   has_arg: no_argument,       flag: nil, val: OptLongChars.verbose),
-            option(name: Options.newCCharPtrFromStaticString("methtype"),      has_arg: no_argument, flag: nil, val: OptLongChars.methTypeObfuscation),
-            option(name: Options.newCCharPtrFromStaticString("machoview-doom"),      has_arg: no_argument, flag: nil, val: OptLongChars.machOViewDoom),
-            option(name: Options.newCCharPtrFromStaticString("swift-reflection"),      has_arg: no_argument, flag: nil, val: OptLongCases.swiftReflection.rawValue),
-            option(name: Options.newCCharPtrFromStaticString("no-framework"),      has_arg: required_argument, flag: nil, val: OptLongCases.noFramework.rawValue),
-            option(name: Options.newCCharPtrFromStaticString("no-frameworks"),      has_arg: no_argument, flag: nil, val: OptLongCases.noFrameworks.rawValue),
-            option(name: Options.newCCharPtrFromStaticString("mangler"),      has_arg: required_argument, flag: nil, val: OptLongChars.manglerKey),
-            option()    // { NULL, NULL, NULL, NULL }
-        ];
-        
+            option(name: Options.newCCharPtrFromStaticString("help"), has_arg: no_argument, flag: nil, val: OptLongChars.help),
+            option(name: Options.newCCharPtrFromStaticString("verbose"), has_arg: no_argument, flag: nil, val: OptLongChars.verbose),
+            option(name: Options.newCCharPtrFromStaticString("methtype"), has_arg: no_argument, flag: nil, val: OptLongChars.methTypeObfuscation),
+            option(name: Options.newCCharPtrFromStaticString("machoview-doom"), has_arg: no_argument, flag: nil, val: OptLongChars.machOViewDoom),
+            option(name: Options.newCCharPtrFromStaticString("swift-reflection"), has_arg: no_argument, flag: nil, val: OptLongCases.swiftReflection.rawValue),
+            option(name: Options.newCCharPtrFromStaticString("skip-framework"), has_arg: required_argument, flag: nil, val: OptLongCases.skipFramework.rawValue),
+            option(name: Options.newCCharPtrFromStaticString("skip-all-frameworks"), has_arg: no_argument, flag: nil, val: OptLongCases.skipAllFrameworks.rawValue),
+            option(name: Options.newCCharPtrFromStaticString("mangler"), has_arg: required_argument, flag: nil, val: OptLongChars.manglerKey),
+            option() // { NULL, NULL, NULL, NULL }
+        ]
+
         while case let option = getopt_long(argc, unsafeArgv, "qvdhtDm:", longopts, nil), option != -1 {
             switch option {
             case OptLongChars.quiet:
@@ -87,10 +87,10 @@ extension Options {
                 manglerKey = String(cString: optarg)
             case OptLongCases.swiftReflection.rawValue:
                 swiftReflectionObfuscation = true
-            case OptLongCases.noFramework.rawValue:
-                obfuscableFilesFilter = obfuscableFilesFilter.and(ObfuscableFilesFilter.notFramework(framework: String(cString: optarg)))
-            case OptLongCases.noFrameworks.rawValue:
-                obfuscableFilesFilter = obfuscableFilesFilter.and(ObfuscableFilesFilter.notFrameworks())
+            case OptLongCases.skipFramework.rawValue:
+                obfuscableFilesFilter = obfuscableFilesFilter.and(ObfuscableFilesFilter.skipFramework(framework: String(cString: optarg)))
+            case OptLongCases.skipAllFrameworks.rawValue:
+                obfuscableFilesFilter = obfuscableFilesFilter.and(ObfuscableFilesFilter.skipAllFrameworks())
             case OptLongChars.unknownOption:
                 help = true
             default:
@@ -137,8 +137,8 @@ extension Options {
           -D, --machoview-doom    MachOViewDoom, MachOView crashes after trying to open your binary (doesn't work with caesarMangler)
           --swift-reflection      obfuscate Swift reflection sections (typeref and reflstr). May cause problems for Swift >= 4.2
         
-          --no-frameworks         do not obfuscate frameworks
-          --no-framework framework  do not obfuscate given framework
+          --skip-all-frameworks       do not obfuscate frameworks
+          --skip-framework framework  do not obfuscate given framework
         
           -m mangler_key,
           --mangler mangler_key   select mangler to generate obfuscated symbols

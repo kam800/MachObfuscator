@@ -3,8 +3,6 @@ import Foundation
 extension ObfuscationPaths {
     static func forAllExecutablesWithDependencies(inDirectory dir: URL, fileRepository: FileRepository = FileManager.default, dependencyNodeLoader: DependencyNodeLoader, obfuscableFilesFilter: ObfuscableFilesFilter) -> ObfuscationPaths {
         var paths = ObfuscationPaths()
-        
-        // TODO: create better exclusion mechanism (with custom excludes and includes)    
         paths.addAllExecutablesWithDependencies(inDirectory: dir,
                                                 fileRepository: fileRepository,
                                                 imageLoader: dependencyNodeLoader,

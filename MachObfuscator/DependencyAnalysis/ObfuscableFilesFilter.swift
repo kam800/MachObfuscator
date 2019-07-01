@@ -17,10 +17,10 @@ extension ObfuscableFilesFilter {
         // > build variants for devices running iOS 12.2, watchOS 5.2,
         // > and tvOS 12.2.
         // -- https://developer.apple.com/documentation/xcode_release_notes/xcode_10_2_beta_release_notes/swift_5_release_notes_for_xcode_10_2_beta
-        return notSwiftLibrary()
+        return skipSwiftLibrary()
     }
     
-    static func notSwiftLibrary() -> ObfuscableFilesFilter {
+    static func skipSwiftLibrary() -> ObfuscableFilesFilter {
         return ObfuscableFilesFilter { url in
             !url.lastPathComponent.starts(with: "libswift")
         }
@@ -32,13 +32,14 @@ extension ObfuscableFilesFilter {
         }
     }
     
-    static func notFramework(framework : String) -> ObfuscableFilesFilter {
+    static func skipFramework(framework : String) -> ObfuscableFilesFilter {
+        let frameworkComponent = framework + ".framework"
         return ObfuscableFilesFilter { url in
-            !url.lastPathComponent.starts(with: framework)
+            !url.pathComponents.contains(frameworkComponent)
         }
     }
     
-    static func notFrameworks() -> ObfuscableFilesFilter {
+    static func skipAllFrameworks() -> ObfuscableFilesFilter {
         return ObfuscableFilesFilter { url in
             !url.pathComponents.contains("Frameworks")
         }
