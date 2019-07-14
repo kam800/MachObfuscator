@@ -22,7 +22,7 @@ class ObfuscationPaths_Building_forAllExecutablesWithDependencies_Tests: XCTestC
     func buildSUT() -> ObfuscationPaths {
         return ObfuscationPaths.forAllExecutablesWithDependencies(inDirectory: sampleAppURL,
                                                                   fileRepository: testRepository,
-                                                                  dependencyNodeLoader: testRepository)
+                                                                  dependencyNodeLoader: testRepository, obfuscableFilesFilter: ObfuscableFilesFilter.defaultObfuscableFilesFilter())
     }
 
     func test_shouldCollectAllExecutables() {

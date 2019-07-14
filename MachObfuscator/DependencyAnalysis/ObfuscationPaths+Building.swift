@@ -1,13 +1,12 @@
 import Foundation
 
 extension ObfuscationPaths {
-    static func forAllExecutablesWithDependencies(inDirectory dir: URL, fileRepository: FileRepository = FileManager.default, dependencyNodeLoader: DependencyNodeLoader) -> ObfuscationPaths {
+    static func forAllExecutablesWithDependencies(inDirectory dir: URL, fileRepository: FileRepository = FileManager.default, dependencyNodeLoader: DependencyNodeLoader, obfuscableFilesFilter: ObfuscableFilesFilter) -> ObfuscationPaths {
         var paths = ObfuscationPaths()
-        // TODO: create better exclusion mechanism (with custom excludes and includes)
         paths.addAllExecutablesWithDependencies(inDirectory: dir,
                                                 fileRepository: fileRepository,
                                                 imageLoader: dependencyNodeLoader,
-                                                obfuscableFilesFilter: defaultObfuscableFilesFilter(obfuscableDirectory: dir))
+                                                obfuscableFilesFilter: obfuscableFilesFilter.and(ObfuscableFilesFilter.onlyFiles(in: dir)))
         return paths
     }
 
@@ -63,36 +62,5 @@ extension ObfuscationPaths {
                 } ?? []
             }
             .uniq
-    }
-}
-
-private struct ObfuscableFilesFilter {
-    let isObfuscable: (URL) -> Bool
-}
-
-private extension ObfuscableFilesFilter {
-    func and(_ other: ObfuscableFilesFilter) -> ObfuscableFilesFilter {
-        return ObfuscableFilesFilter { url in
-            self.isObfuscable(url) && other.isObfuscable(url)
-        }
-    }
-}
-
-private func defaultObfuscableFilesFilter(obfuscableDirectory: URL) -> ObfuscableFilesFilter {
-    // > Swift apps no longer include dynamically linked libraries
-    // > for the Swift standard library and Swift SDK overlays in
-    // > build variants for devices running iOS 12.2, watchOS 5.2,
-    // > and tvOS 12.2.
-    // -- https://developer.apple.com/documentation/xcode_release_notes/xcode_10_2_beta_release_notes/swift_5_release_notes_for_xcode_10_2_beta
-    return onlyFiles(in: obfuscableDirectory).and(notSwiftLibrary)
-}
-
-private let notSwiftLibrary = ObfuscableFilesFilter { url in
-    !url.lastPathComponent.starts(with: "libswift")
-}
-
-private func onlyFiles(in obfuscableDirectory: URL) -> ObfuscableFilesFilter {
-    return ObfuscableFilesFilter { url in
-        obfuscableDirectory.contains(url)
     }
 }
