@@ -57,8 +57,8 @@ class ObfuscationSymbols_Building_buildForObfuscationPaths_Tests: XCTestCase {
             selectors: [ "sys2s" ],
             classNames: [ "sys2c" ]
         )
-        testSymbolsLoader["/tmp/githubLibrary/"] = SourceSymbols(
-            selectors: [ "sourceSelector " ],
+        testSymbolsLoader["/tmp/githubLibrary"] = SourceSymbols(
+            selectors: [ "sourceSelector" ],
             classNames: [ "sourceClass" ]
         )
 
@@ -88,7 +88,7 @@ class ObfuscationSymbols_Building_buildForObfuscationPaths_Tests: XCTestCase {
         let unobfuscableDependenciesSymbols: Set<String> = [ "s2", "setS2:", "s5", "setS5:",  ]
         let cstringsSymbols: Set<String> = [ "s4", "setS4:", "c4", "setC4:", "s6", "setS6:", "c6", "setC6:" ]
         let frameworkHeaderSymbols: Set<String> = [ "sys1s", "setSys1s:", "sys2s", "setSys2s:" ]
-        let skippedSymbols: Set<String> = [ "sourceSelector" ]
+        let skippedSymbols: Set<String> = [ "sourceSelector", "setSourceSelector:" ]
         XCTAssertEqual(sut.blacklist.selectors,
                        dynamicPropertySymbols
                         .union(unobfuscableDependenciesSymbols)
