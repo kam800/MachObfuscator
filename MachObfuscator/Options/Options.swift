@@ -8,6 +8,7 @@ struct Options {
     var methTypeObfuscation: Bool
     var machOViewDoom: Bool
     var swiftReflectionObfuscation: Bool
+    var obfuscableFilesFilter: ObfuscableFilesFilter
     var manglerType: SymbolManglers?
     var skipSymbolsFromSources: [URL]
     var appDirectory: URL?
@@ -37,6 +38,7 @@ extension Options {
         var machOViewDoom = false
         var methTypeObfuscation = false
         var swiftReflectionObfuscation = false
+        var obfuscableFilesFilter = ObfuscableFilesFilter.defaultObfuscableFilesFilter()
         var manglerKey = SymbolManglers.defaultManglerKey
         var skipSymbolsFromSources: [URL] = []
 
@@ -53,6 +55,8 @@ extension Options {
         enum OptLongCases: Int32 {
             case OPT_FIRST = 256
             case swiftReflection
+            case skipFramework
+            case skipAllFrameworks
             case skipSymbolsFromSources
         }
 
@@ -62,6 +66,8 @@ extension Options {
             option(name: Options.newCCharPtrFromStaticString("methtype"), has_arg: no_argument, flag: nil, val: OptLongChars.methTypeObfuscation),
             option(name: Options.newCCharPtrFromStaticString("machoview-doom"), has_arg: no_argument, flag: nil, val: OptLongChars.machOViewDoom),
             option(name: Options.newCCharPtrFromStaticString("swift-reflection"), has_arg: no_argument, flag: nil, val: OptLongCases.swiftReflection.rawValue),
+            option(name: Options.newCCharPtrFromStaticString("skip-framework"), has_arg: required_argument, flag: nil, val: OptLongCases.skipFramework.rawValue),
+            option(name: Options.newCCharPtrFromStaticString("skip-all-frameworks"), has_arg: no_argument, flag: nil, val: OptLongCases.skipAllFrameworks.rawValue),
             option(name: Options.newCCharPtrFromStaticString("mangler"), has_arg: required_argument, flag: nil, val: OptLongChars.manglerKey),
             option(name: Options.newCCharPtrFromStaticString("skip-symbols-from-sources"), has_arg: required_argument, flag: nil, val: OptLongCases.skipSymbolsFromSources.rawValue),
             option(), // { NULL, NULL, NULL, NULL }
@@ -85,6 +91,10 @@ extension Options {
                 manglerKey = String(cString: optarg)
             case OptLongCases.swiftReflection.rawValue:
                 swiftReflectionObfuscation = true
+            case OptLongCases.skipFramework.rawValue:
+                obfuscableFilesFilter = obfuscableFilesFilter.and(ObfuscableFilesFilter.skipFramework(framework: String(cString: optarg)))
+            case OptLongCases.skipAllFrameworks.rawValue:
+                obfuscableFilesFilter = obfuscableFilesFilter.and(ObfuscableFilesFilter.skipAllFrameworks())
             case OptLongCases.skipSymbolsFromSources.rawValue:
                 let sourcesPath = URL(fileURLWithPath: String(cString: optarg))
                 skipSymbolsFromSources.append(sourcesPath)
@@ -113,6 +123,7 @@ extension Options {
                   methTypeObfuscation: methTypeObfuscation,
                   machOViewDoom: machOViewDoom,
                   swiftReflectionObfuscation: swiftReflectionObfuscation,
+                  obfuscableFilesFilter: obfuscableFilesFilter,
                   manglerType: manglerType,
                   skipSymbolsFromSources: skipSymbolsFromSources,
                   appDirectory: appDirectoryURL)
@@ -133,6 +144,10 @@ extension Options {
           -t, --methtype          obfuscate methType section (objc/runtime.h methods may work incorrectly)
           -D, --machoview-doom    MachOViewDoom, MachOView crashes after trying to open your binary (doesn't work with caesarMangler)
           --swift-reflection      obfuscate Swift reflection sections (typeref and reflstr). May cause problems for Swift >= 4.2
+        
+          --skip-all-frameworks       do not obfuscate frameworks
+          --skip-framework framework  do not obfuscate given framework
+        
           -m mangler_key,
           --mangler mangler_key   select mangler to generate obfuscated symbols
 

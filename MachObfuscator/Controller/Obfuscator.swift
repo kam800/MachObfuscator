@@ -9,17 +9,21 @@ class Obfuscator {
 
     private let swiftReflectionObfuscation: Bool
 
+    private let obfuscableFilesFilter: ObfuscableFilesFilter
+
     private let skippedSymbolsSources: [URL]
 
     init(directoryURL: URL,
          mangler: SymbolMangling,
          methTypeObfuscation: Bool = false,
          swiftReflectionObfuscation: Bool = false,
+         obfuscableFilesFilter: ObfuscableFilesFilter = ObfuscableFilesFilter.defaultObfuscableFilesFilter(),
          skippedSymbolsSources: [URL] = []) {
         self.directoryURL = directoryURL
         self.mangler = mangler
         self.methTypeObfuscation = methTypeObfuscation
         self.swiftReflectionObfuscation = swiftReflectionObfuscation
+        self.obfuscableFilesFilter = obfuscableFilesFilter
         self.skippedSymbolsSources = skippedSymbolsSources
     }
 
@@ -28,8 +32,11 @@ class Obfuscator {
         LOGGER.info("Will obfuscate \(directoryURL)")
 
         LOGGER.info("Looking for dependencies...")
-        let paths = ObfuscationPaths.forAllExecutablesWithDependencies(inDirectory: directoryURL, dependencyNodeLoader: loader)
+        let paths = ObfuscationPaths.forAllExecutablesWithDependencies(inDirectory: directoryURL, dependencyNodeLoader: loader,
+                                                                       obfuscableFilesFilter: obfuscableFilesFilter)
         LOGGER.info("\(paths.obfuscableImages.count) obfuscable images")
+        LOGGER.debug("Obfuscable images:")
+        paths.obfuscableImages.forEach { u in LOGGER.debug(u.absoluteString) }
         LOGGER.info("\(paths.nibs.count) obfuscable NIBs")
 
         LOGGER.info("Collecting symbols...")

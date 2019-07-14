@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8444A5C522A91A7400941940 /* ObfuscableFilesFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A5C422A91A7400941940 /* ObfuscableFilesFilter.swift */; };
+		8444A5C622A9204400941940 /* ObfuscableFilesFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A5C422A91A7400941940 /* ObfuscableFilesFilter.swift */; };
 		8831AF4C22081D63006BEB91 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48B8F471F7FEBC200E73BBD /* main.swift */; };
 		8831AF4D22081D93006BEB91 /* CaesarExportTrieMangler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4F47C81529825A2DAB1FCAC /* CaesarExportTrieMangler.swift */; };
 		8831AF4E22081DA5006BEB91 /* CaesarCypher.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4F47D828D5B299A6471F1BA /* CaesarCypher.swift */; };
@@ -282,6 +284,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		8444A5C422A91A7400941940 /* ObfuscableFilesFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObfuscableFilesFilter.swift; sourceTree = "<group>"; };
 		88A1F2AD21F5F1FD00C8389E /* RealWordsExportTrieMangler_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealWordsExportTrieMangler_Tests.swift; sourceTree = "<group>"; };
 		D403A4F1217FACB300285492 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		D4065D3722612357004DCA7D /* Pipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pipe.swift; sourceTree = "<group>"; };
@@ -872,6 +875,7 @@
 				D481609B2120A9D9008671D8 /* DependencyNode.swift */,
 				D44D73F7211C3CE800DE002B /* DependencyNodeLoader.swift */,
 				D44D73FE211C63C300DE002B /* DependencyNodeLoader+isMachOExecutable.swift */,
+				8444A5C422A91A7400941940 /* ObfuscableFilesFilter.swift */,
 			);
 			path = DependencyAnalysis;
 			sourceTree = "<group>";
@@ -1082,6 +1086,7 @@
 				D4C98AD22143249F008340B2 /* RealWordsMangler.swift in Sources */,
 				D410A6CF20CF2C30006A31E5 /* URL+NibLoading.swift in Sources */,
 				D455EB28223E637100E4B1E7 /* Mach+classNames.swift in Sources */,
+				8444A5C522A91A7400941940 /* ObfuscableFilesFilter.swift in Sources */,
 				D4AAA5FE201C8AEC009BB8FA /* NibArchive.swift in Sources */,
 				D467A1082274375800BA953A /* String+objCPropertyNames.swift in Sources */,
 				D455EB2A223E637100E4B1E7 /* Mach+exportTrie.swift in Sources */,
@@ -1276,6 +1281,7 @@
 				D44D73892119EBD100DE002B /* NibPlist+Nib.swift in Sources */,
 				D4816070211C69AD008671D8 /* ImportStack+Parsing.swift in Sources */,
 				D432EAEC213DE0F200C2ADA0 /* ImageLoaderProtocol.swift in Sources */,
+				8444A5C622A9204400941940 /* ObfuscableFilesFilter.swift in Sources */,
 				D4D82CF12202547800090614 /* ArraySentenceGenerator.swift in Sources */,
 				D481617721256771008671D8 /* Mach+Loading_FatIos_Tests.swift in Sources */,
 				D432EADE213DDFBE00C2ADA0 /* SimpleImageLoader+DependencyNodeLoader.swift in Sources */,
