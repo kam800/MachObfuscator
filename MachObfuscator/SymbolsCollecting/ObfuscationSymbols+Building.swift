@@ -20,7 +20,7 @@ extension ObfuscationSymbols {
 
         let systemHeaderSymbols = obfuscationPaths
             .systemFrameworks
-            .map { try! sourceSymbolsLoader.load(forFrameworkURL: $0) }
+            .map(sourceSymbolsLoader.forceLoad(forFrameworkURL:))
             .flatten()
 
         let skippedSymbols = skippedSymbolsSources
@@ -86,7 +86,7 @@ private extension String {
 private extension SourceSymbolsLoader {
     func forceLoad(forFrameworkURL url: URL) -> SourceSymbols {
         do {
-            LOGGER.info("Collecting blacklist symbols in \(url)")
+            LOGGER.info("Collecting symbols from \(url)")
             return try load(forFrameworkURL: url)
         } catch {
             fatalError("Error while reading symbols from path '\(url)': \(error)")
