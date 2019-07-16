@@ -11,16 +11,24 @@ class Obfuscator {
 
     private let obfuscableFilesFilter: ObfuscableFilesFilter
 
-    init(directoryURL: URL, mangler: SymbolMangling, methTypeObfuscation: Bool = false, swiftReflectionObfuscation: Bool = false, obfuscableFilesFilter: ObfuscableFilesFilter = ObfuscableFilesFilter.defaultObfuscableFilesFilter()) {
+    private let skippedSymbolsSources: [URL]
+
+    init(directoryURL: URL,
+         mangler: SymbolMangling,
+         methTypeObfuscation: Bool = false,
+         swiftReflectionObfuscation: Bool = false,
+         obfuscableFilesFilter: ObfuscableFilesFilter = ObfuscableFilesFilter.defaultObfuscableFilesFilter(),
+         skippedSymbolsSources: [URL] = []) {
         self.directoryURL = directoryURL
         self.mangler = mangler
         self.methTypeObfuscation = methTypeObfuscation
         self.swiftReflectionObfuscation = swiftReflectionObfuscation
         self.obfuscableFilesFilter = obfuscableFilesFilter
+        self.skippedSymbolsSources = skippedSymbolsSources
     }
 
     func run(loader: ImageLoader & SymbolsSourceLoader & DependencyNodeLoader = SimpleImageLoader(),
-             headerLoader: HeaderSymbolsLoader = SimpleHeaderSymbolsLoader()) {
+             sourceSymbolsLoader: SourceSymbolsLoader = SimpleSourceSymbolsLoader()) {
         LOGGER.info("Will obfuscate \(directoryURL)")
 
         LOGGER.info("Looking for dependencies...")
@@ -32,7 +40,10 @@ class Obfuscator {
         LOGGER.info("\(paths.nibs.count) obfuscable NIBs")
 
         LOGGER.info("Collecting symbols...")
-        let symbols = ObfuscationSymbols.buildFor(obfuscationPaths: paths, loader: loader, headerLoader: headerLoader)
+        let symbols = ObfuscationSymbols.buildFor(obfuscationPaths: paths,
+                                                  loader: loader,
+                                                  sourceSymbolsLoader: sourceSymbolsLoader,
+                                                  skippedSymbolsSources: skippedSymbolsSources)
         LOGGER.info("\(symbols.whitelist.selectors.count) obfuscable selectors")
         LOGGER.info("\(symbols.whitelist.classes.count) obfuscable classes")
         LOGGER.info("\(symbols.blacklist.selectors.count) unobfuscable selectors")

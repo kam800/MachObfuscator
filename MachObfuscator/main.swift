@@ -18,7 +18,8 @@ private func main() {
                                 mangler: mangler,
                                 methTypeObfuscation: options.methTypeObfuscation,
                                 swiftReflectionObfuscation: options.swiftReflectionObfuscation,
-                                obfuscableFilesFilter: options.obfuscableFilesFilter)
+                                obfuscableFilesFilter: options.obfuscableFilesFilter,
+                                skippedSymbolsSources: options.skipSymbolsFromSources)
     obfuscator.run()
 }
 
