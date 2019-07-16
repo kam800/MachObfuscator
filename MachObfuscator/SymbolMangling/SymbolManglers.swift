@@ -10,8 +10,12 @@ enum SymbolManglers: String, CaseIterable {
                 .joined(separator: "\n"))
     }
 
+    static var defaultMangler: SymbolManglers {
+        return SymbolManglers.realWords
+    }
+
     static var defaultManglerKey: String {
-        return SymbolManglers.realWords.rawValue
+        return defaultMangler.rawValue
     }
 
     var helpDescription: String {
