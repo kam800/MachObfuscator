@@ -25,6 +25,9 @@ struct Options {
     var methTypeObfuscation = false
     var swiftReflectionObfuscation = false
     var eraseSections: [EraseSectionConfiguration] = []
+    // TODO: paths could be replaced by something more useful
+    var sourceFileNamesReplacement = "FILENAME_REMOVED"
+    var sourceFileNamesPrefixes: [String] = []
     var obfuscableFilesFilter = ObfuscableFilesFilter.defaultObfuscableFilesFilter()
     var manglerType: SymbolManglers? = SymbolManglers.defaultMangler
     var skippedSymbolsSources: [URL] = []
@@ -63,6 +66,7 @@ extension Options {
             case OPT_FIRST = 256
             case swiftReflection
             case eraseSection
+            case eraseSourceFileNames
             case skipFramework
             case skipAllFrameworks
             case skipSymbolsFromSources
@@ -77,6 +81,7 @@ extension Options {
             option(name: Options.newCCharPtrFromStaticString("machoview-doom"), has_arg: no_argument, flag: nil, val: OptLongChars.machOViewDoom),
             option(name: Options.newCCharPtrFromStaticString("swift-reflection"), has_arg: no_argument, flag: nil, val: OptLongCases.swiftReflection.rawValue),
             option(name: Options.newCCharPtrFromStaticString("erase-section"), has_arg: required_argument, flag: nil, val: OptLongCases.eraseSection.rawValue),
+            option(name: Options.newCCharPtrFromStaticString("erase-source-file-names"), has_arg: required_argument, flag: nil, val: OptLongCases.eraseSourceFileNames.rawValue),
             option(name: Options.newCCharPtrFromStaticString("skip-framework"), has_arg: required_argument, flag: nil, val: OptLongCases.skipFramework.rawValue),
             option(name: Options.newCCharPtrFromStaticString("skip-all-frameworks"), has_arg: no_argument, flag: nil, val: OptLongCases.skipAllFrameworks.rawValue),
             option(name: Options.newCCharPtrFromStaticString("mangler"), has_arg: required_argument, flag: nil, val: OptLongChars.manglerKey),
@@ -106,6 +111,8 @@ extension Options {
                 swiftReflectionObfuscation = true
             case OptLongCases.eraseSection.rawValue:
                 eraseSections.append(EraseSectionConfiguration(sectionDef: String(cString: optarg)))
+            case OptLongCases.eraseSourceFileNames.rawValue:
+                sourceFileNamesPrefixes.append(String(cString: optarg))
             case OptLongCases.skipFramework.rawValue:
                 obfuscableFilesFilter = obfuscableFilesFilter.and(ObfuscableFilesFilter.skipFramework(framework: String(cString: optarg)))
             case OptLongCases.skipAllFrameworks.rawValue:
@@ -147,6 +154,8 @@ extension Options {
           -D, --machoview-doom    MachOViewDoom, MachOView crashes after trying to open your binary (doesn't work with caesarMangler)
           --swift-reflection      obfuscate Swift reflection sections (typeref and reflstr). May cause problems for Swift >= 4.2
           --erase-section SEGMENT,SECTION    erase given section, for example: __TEXT,__swift5_reflstr
+          --erase-source-file-names PREFIX   erase source file paths from binary. Erases paths starting with given prefix
+                                             by replacing them by constant string
         
           --skip-all-frameworks       do not obfuscate frameworks
           --skip-framework framework  do not obfuscate given framework

@@ -55,6 +55,7 @@ class Obfuscator {
             // TODO: add option
             // TODO: what is the difference between eraseSymtab and last operation in replaceSymbols?
             image.eraseSymtab()
+            image.eraseFilePaths(options.sourceFileNamesPrefixes, usingReplacement: options.sourceFileNamesReplacement)
             if options.swiftReflectionObfuscation {
                 image.eraseSwiftReflectiveSections()
             }
