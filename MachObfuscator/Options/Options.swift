@@ -1,16 +1,16 @@
 import Foundation
 
 struct Options {
-    var help: Bool
-    var quiet: Bool
-    var verbose: Bool
-    var debug: Bool
-    var methTypeObfuscation: Bool
-    var machOViewDoom: Bool
-    var swiftReflectionObfuscation: Bool
-    var obfuscableFilesFilter: ObfuscableFilesFilter
-    var manglerType: SymbolManglers?
-    var skipSymbolsFromSources: [URL]
+    var help = false
+    var quiet = false
+    var verbose = false
+    var debug = false
+    var machOViewDoom = false
+    var methTypeObfuscation = false
+    var swiftReflectionObfuscation = false
+    var obfuscableFilesFilter = ObfuscableFilesFilter.defaultObfuscableFilesFilter()
+    var manglerType: SymbolManglers? = SymbolManglers.defaultMangler
+    var skippedSymbolsSources: [URL] = []
     var appDirectory: URL?
 }
 
@@ -31,16 +31,6 @@ extension Options {
 
     init(argc: Int32, unsafeArgv: UnsafeArgv, argv: [String]) {
         optreset = 1
-        var help = false
-        var quiet = false
-        var verbose = false
-        var debug = false
-        var machOViewDoom = false
-        var methTypeObfuscation = false
-        var swiftReflectionObfuscation = false
-        var obfuscableFilesFilter = ObfuscableFilesFilter.defaultObfuscableFilesFilter()
-        var manglerKey = SymbolManglers.defaultManglerKey
-        var skipSymbolsFromSources: [URL] = []
 
         struct OptLongChars {
             static let unknownOption = Int32(Character("?").asciiValue!)
@@ -88,7 +78,7 @@ extension Options {
             case OptLongChars.machOViewDoom:
                 machOViewDoom = true
             case OptLongChars.manglerKey:
-                manglerKey = String(cString: optarg)
+                manglerType = SymbolManglers(rawValue: String(cString: optarg))
             case OptLongCases.swiftReflection.rawValue:
                 swiftReflectionObfuscation = true
             case OptLongCases.skipFramework.rawValue:
@@ -97,7 +87,7 @@ extension Options {
                 obfuscableFilesFilter = obfuscableFilesFilter.and(ObfuscableFilesFilter.skipAllFrameworks())
             case OptLongCases.skipSymbolsFromSources.rawValue:
                 let sourcesPath = URL(fileURLWithPath: String(cString: optarg))
-                skipSymbolsFromSources.append(sourcesPath)
+                skippedSymbolsSources.append(sourcesPath)
             case OptLongChars.unknownOption:
                 help = true
             default:
@@ -110,23 +100,9 @@ extension Options {
             appDirectory = argv[Int(optind)]
         }
 
-        let manglerType = SymbolManglers(rawValue: manglerKey)
-
-        let appDirectoryURL = appDirectory
+        self.appDirectory = appDirectory
             .flatMap(URL.init(fileURLWithPath:))?
             .resolvingSymlinksInPath()
-
-        self.init(help: help,
-                  quiet: quiet,
-                  verbose: verbose,
-                  debug: debug,
-                  methTypeObfuscation: methTypeObfuscation,
-                  machOViewDoom: machOViewDoom,
-                  swiftReflectionObfuscation: swiftReflectionObfuscation,
-                  obfuscableFilesFilter: obfuscableFilesFilter,
-                  manglerType: manglerType,
-                  skipSymbolsFromSources: skipSymbolsFromSources,
-                  appDirectory: appDirectoryURL)
     }
 
     static var usage: String {
