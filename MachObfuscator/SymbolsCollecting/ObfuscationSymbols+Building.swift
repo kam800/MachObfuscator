@@ -3,7 +3,8 @@ import Foundation
 extension ObfuscationSymbols {
     static func buildFor(obfuscationPaths: ObfuscationPaths,
                          loader: SymbolsSourceLoader,
-                         headerLoader: HeaderSymbolsLoader) -> ObfuscationSymbols {
+                         sourceSymbolsLoader: SourceSymbolsLoader,
+                         skippedSymbolsSources: [URL]) -> ObfuscationSymbols {
         let systemSources = try! obfuscationPaths.unobfuscableDependencies.flatMap { try loader.load(forURL: $0) }
 
         let userSourcesPerPath = [URL: [SymbolsSource]](uniqueKeysWithValues: obfuscationPaths.obfuscableImages.map { ($0, try! loader.load(forURL: $0)) })
@@ -19,25 +20,31 @@ extension ObfuscationSymbols {
 
         let systemHeaderSymbols = obfuscationPaths
             .systemFrameworks
-            .map { try! headerLoader.load(forFrameworkURL: $0) }
+            .map(sourceSymbolsLoader.forceLoad(forFrameworkURL:))
+            .flatten()
+
+        let skippedSymbols = skippedSymbolsSources
+            .map(sourceSymbolsLoader.forceLoad(forFrameworkURL:))
             .flatten()
 
         // TODO: Array(userCStrings) should be opt-in
-        let blackListGetters =
-            (Array(systemHeaderSymbols.selectors)
-                + Array(systemSelectors)
-                + Array(systemCStrings)
-                + Array(userDynamicProperties)
-                + Array(userCStrings)).uniq
+        let blackListGetters: Set<String> =
+            systemHeaderSymbols.selectors
+            .union(systemSelectors)
+            .union(systemCStrings)
+            .union(userDynamicProperties)
+            .union(userCStrings)
+            .union(skippedSymbols.selectors)
         let blacklistSetters = blackListGetters.map { $0.asSetter }.uniq
 
         let blacklistSelectors = (Array(blackListGetters) + Array(blacklistSetters)).uniq
         // TODO: Array(userCStrings) should be opt-in
-        let blacklistClasses =
-            (Array(systemHeaderSymbols.classNames)
-                + Array(systemClasses)
-                + Array(systemCStrings)
-                + Array(userCStrings)).uniq
+        let blacklistClasses: Set<String> =
+            systemHeaderSymbols.classNames
+            .union(systemClasses)
+            .union(systemCStrings)
+            .union(userCStrings)
+            .union(skippedSymbols.classNames)
         let whitelistSelectors = userSelectors.subtracting(blacklistSelectors)
         let whitelistClasses = userClasses.subtracting(blacklistClasses)
 
@@ -73,5 +80,16 @@ private extension String {
             return self
         }
         return "set\(capitalizedOnFirstLetter):"
+    }
+}
+
+private extension SourceSymbolsLoader {
+    func forceLoad(forFrameworkURL url: URL) -> SourceSymbols {
+        do {
+            LOGGER.info("Collecting symbols from \(url)")
+            return try load(forFrameworkURL: url)
+        } catch {
+            fatalError("Error while reading symbols from path '\(url)': \(error)")
+        }
     }
 }
