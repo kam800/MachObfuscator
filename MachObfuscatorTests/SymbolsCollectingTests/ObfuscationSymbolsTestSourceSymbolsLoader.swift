@@ -1,13 +1,13 @@
 import Foundation
 
-class ObfuscationSymbolsTestHeaderSymbolsLoader {
+class ObfuscationSymbolsTestSourceSymbolsLoader {
     fileprivate enum Error: Swift.Error {
         case noEntryForPath
     }
 
-    private var symbolsPerUrl: [String: HeaderSymbols] = [:]
+    private var symbolsPerUrl: [String: SourceSymbols] = [:]
 
-    subscript(path: String) -> HeaderSymbols? {
+    subscript(path: String) -> SourceSymbols? {
         get {
             return symbolsPerUrl[path]
         }
@@ -18,8 +18,8 @@ class ObfuscationSymbolsTestHeaderSymbolsLoader {
 
 }
 
-extension ObfuscationSymbolsTestHeaderSymbolsLoader: HeaderSymbolsLoader {
-    func load(forFrameworkURL frameworkURL: URL) throws -> HeaderSymbols {
+extension ObfuscationSymbolsTestSourceSymbolsLoader: SourceSymbolsLoader {
+    func load(forFrameworkURL frameworkURL: URL) throws -> SourceSymbols {
         let path = frameworkURL.resolvingSymlinksInPath().path
         if let symbols = symbolsPerUrl[path] {
             return symbols

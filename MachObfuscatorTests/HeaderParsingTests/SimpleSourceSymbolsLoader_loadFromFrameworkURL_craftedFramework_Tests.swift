@@ -1,18 +1,18 @@
 import XCTest
 
-class SimpleHeaderSymbolsLoader_loadFromFrameworkURL_craftedFramework_Tests: XCTestCase {
+class SimpleSourceSymbolsLoader_loadFromFrameworkURL_craftedFramework_Tests: XCTestCase {
 
-    var header: HeaderSymbols!
+    var symbols: SourceSymbols!
 
     override func setUp() {
         super.setUp()
 
-        let sut = SimpleHeaderSymbolsLoader()
-        header = try! sut.load(forFrameworkURL: URL.craftedFramework)
+        let sut = SimpleSourceSymbolsLoader()
+        symbols = try! sut.load(forFrameworkURL: URL.craftedFramework)
     }
 
     override func tearDown() {
-        header = nil
+        symbols = nil
 
         super.tearDown()
     }
@@ -52,9 +52,9 @@ class SimpleHeaderSymbolsLoader_loadFromFrameworkURL_craftedFramework_Tests: XCT
             expectedMethods.union(expectedPropertyNames)
 
         expectedSelectors.forEach {
-            XCTAssert(header.selectors.contains($0), "Should contain: \($0)")
+            XCTAssert(symbols.selectors.contains($0), "Should contain: \($0)")
         }
-        let unexpectedSelectors = header.selectors.subtracting(expectedSelectors)
+        let unexpectedSelectors = symbols.selectors.subtracting(expectedSelectors)
         XCTAssertEqual(unexpectedSelectors, [], "Detected unexpected selectors")
     }
 
@@ -67,6 +67,6 @@ class SimpleHeaderSymbolsLoader_loadFromFrameworkURL_craftedFramework_Tests: XCT
             "SampleClass_ForwardDeclaration",
             "SampleProtocol_ForwardDeclaration",
         ]
-        XCTAssertEqual(header.classNames.symmetricDifference(expectedClassNames), [])
+        XCTAssertEqual(symbols.classNames.symmetricDifference(expectedClassNames), [])
     }
 }
