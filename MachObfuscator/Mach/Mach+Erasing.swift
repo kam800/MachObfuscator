@@ -12,6 +12,10 @@ extension Image {
     mutating func eraseMethTypeSection() {
         updateMachs { $0.eraseMethTypeSection() }
     }
+
+    mutating func eraseSection(_ sectionName: String, segment segmentName: String) {
+        updateMachs { $0.eraseSection(sectionName, segment: segmentName) }
+    }
 }
 
 private extension Mach {
@@ -34,5 +38,12 @@ private extension Mach {
         }
 
         data.nullify(range: methTypeSectionRange.intRange)
+    }
+
+    mutating func eraseSection(_ sectionName: String, segment segmentName: String) {
+        guard let sect = section(sectionName, segment: segmentName) else {
+            return
+        }
+        data.nullify(range: sect.range.intRange)
     }
 }

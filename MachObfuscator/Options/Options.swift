@@ -1,5 +1,20 @@
 import Foundation
 
+struct EraseSectionConfiguration {
+    var sectionName: String
+    var segmentName: String
+}
+
+private extension EraseSectionConfiguration {
+    init(sectionDef: String) {
+        let sectionParts = sectionDef.split(separator: ",")
+        guard sectionParts.count == 2 else {
+            fatalError("Section must by pointed with SEGMENT,SECTION format")
+        }
+        self.init(sectionName: String(sectionParts[1]), segmentName: String(sectionParts[0]))
+    }
+}
+
 struct Options {
     var help = false
     var dryrun = false
@@ -9,6 +24,7 @@ struct Options {
     var machOViewDoom = false
     var methTypeObfuscation = false
     var swiftReflectionObfuscation = false
+    var eraseSections: [EraseSectionConfiguration] = []
     var obfuscableFilesFilter = ObfuscableFilesFilter.defaultObfuscableFilesFilter()
     var manglerType: SymbolManglers? = SymbolManglers.defaultMangler
     var skippedSymbolsSources: [URL] = []
@@ -46,6 +62,7 @@ extension Options {
         enum OptLongCases: Int32 {
             case OPT_FIRST = 256
             case swiftReflection
+            case eraseSection
             case skipFramework
             case skipAllFrameworks
             case skipSymbolsFromSources
@@ -59,6 +76,7 @@ extension Options {
             option(name: Options.newCCharPtrFromStaticString("methtype"), has_arg: no_argument, flag: nil, val: OptLongChars.methTypeObfuscation),
             option(name: Options.newCCharPtrFromStaticString("machoview-doom"), has_arg: no_argument, flag: nil, val: OptLongChars.machOViewDoom),
             option(name: Options.newCCharPtrFromStaticString("swift-reflection"), has_arg: no_argument, flag: nil, val: OptLongCases.swiftReflection.rawValue),
+            option(name: Options.newCCharPtrFromStaticString("erase-section"), has_arg: required_argument, flag: nil, val: OptLongCases.eraseSection.rawValue),
             option(name: Options.newCCharPtrFromStaticString("skip-framework"), has_arg: required_argument, flag: nil, val: OptLongCases.skipFramework.rawValue),
             option(name: Options.newCCharPtrFromStaticString("skip-all-frameworks"), has_arg: no_argument, flag: nil, val: OptLongCases.skipAllFrameworks.rawValue),
             option(name: Options.newCCharPtrFromStaticString("mangler"), has_arg: required_argument, flag: nil, val: OptLongChars.manglerKey),
@@ -86,6 +104,8 @@ extension Options {
                 manglerType = SymbolManglers(rawValue: String(cString: optarg))
             case OptLongCases.swiftReflection.rawValue:
                 swiftReflectionObfuscation = true
+            case OptLongCases.eraseSection.rawValue:
+                eraseSections.append(EraseSectionConfiguration(sectionDef: String(cString: optarg)))
             case OptLongCases.skipFramework.rawValue:
                 obfuscableFilesFilter = obfuscableFilesFilter.and(ObfuscableFilesFilter.skipFramework(framework: String(cString: optarg)))
             case OptLongCases.skipAllFrameworks.rawValue:
@@ -126,6 +146,7 @@ extension Options {
           -t, --methtype          obfuscate methType section (objc/runtime.h methods may work incorrectly)
           -D, --machoview-doom    MachOViewDoom, MachOView crashes after trying to open your binary (doesn't work with caesarMangler)
           --swift-reflection      obfuscate Swift reflection sections (typeref and reflstr). May cause problems for Swift >= 4.2
+          --erase-section SEGMENT,SECTION    erase given section, for example: __TEXT,__swift5_reflstr
         
           --skip-all-frameworks       do not obfuscate frameworks
           --skip-framework framework  do not obfuscate given framework
