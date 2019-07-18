@@ -1,13 +1,17 @@
 import Foundation
 
-class EraseSectionConfiguration {
-    let sectionName: String
-    let segmentName: String
+struct EraseSectionConfiguration {
+    var sectionName: String
+    var segmentName: String
+}
 
-    init(_ sectionDef: String) {
-        let sectionParts = sectionDef.split(separator: ",", maxSplits: 2)
-        segmentName = String(sectionParts[0])
-        sectionName = String(sectionParts[1])
+private extension EraseSectionConfiguration {
+    init(sectionDef: String) {
+        let sectionParts = sectionDef.split(separator: ",")
+        guard sectionParts.count == 2 else {
+            fatalError("Section must by pointed with SEGMENT,SECTION format")
+        }
+        self.init(sectionName: String(sectionParts[1]), segmentName: String(sectionParts[0]))
     }
 }
 
@@ -101,7 +105,7 @@ extension Options {
             case OptLongCases.swiftReflection.rawValue:
                 swiftReflectionObfuscation = true
             case OptLongCases.eraseSection.rawValue:
-                eraseSections.append(EraseSectionConfiguration(String(cString: optarg)))
+                eraseSections.append(EraseSectionConfiguration(sectionDef: String(cString: optarg)))
             case OptLongCases.skipFramework.rawValue:
                 obfuscableFilesFilter = obfuscableFilesFilter.and(ObfuscableFilesFilter.skipFramework(framework: String(cString: optarg)))
             case OptLongCases.skipAllFrameworks.rawValue:
