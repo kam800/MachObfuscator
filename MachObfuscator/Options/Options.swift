@@ -28,6 +28,7 @@ struct Options {
     // TODO: paths could be replaced by something more useful
     var sourceFileNamesReplacement = "FILENAME_REMOVED"
     var sourceFileNamesPrefixes: [String] = []
+    var cstringsReplacements: [String: String] = [:]
     var obfuscableFilesFilter = ObfuscableFilesFilter.defaultObfuscableFilesFilter()
     var manglerType: SymbolManglers? = SymbolManglers.defaultMangler
     var skippedSymbolsSources: [URL] = []
@@ -71,7 +72,11 @@ extension Options {
             case skipAllFrameworks
             case skipSymbolsFromSources
             case dryrun
+            case replaceCstring
+            case replaceWith
         }
+
+        var currentCstringToReplace: String?
 
         let longopts: [option] = [
             option(name: Options.newCCharPtrFromStaticString("help"), has_arg: no_argument, flag: nil, val: OptLongChars.help),
@@ -82,6 +87,8 @@ extension Options {
             option(name: Options.newCCharPtrFromStaticString("swift-reflection"), has_arg: no_argument, flag: nil, val: OptLongCases.swiftReflection.rawValue),
             option(name: Options.newCCharPtrFromStaticString("erase-section"), has_arg: required_argument, flag: nil, val: OptLongCases.eraseSection.rawValue),
             option(name: Options.newCCharPtrFromStaticString("erase-source-file-names"), has_arg: required_argument, flag: nil, val: OptLongCases.eraseSourceFileNames.rawValue),
+            option(name: Options.newCCharPtrFromStaticString("replace-cstring"), has_arg: required_argument, flag: nil, val: OptLongCases.replaceCstring.rawValue),
+            option(name: Options.newCCharPtrFromStaticString("replace-with"), has_arg: required_argument, flag: nil, val: OptLongCases.replaceWith.rawValue),
             option(name: Options.newCCharPtrFromStaticString("skip-framework"), has_arg: required_argument, flag: nil, val: OptLongCases.skipFramework.rawValue),
             option(name: Options.newCCharPtrFromStaticString("skip-all-frameworks"), has_arg: no_argument, flag: nil, val: OptLongCases.skipAllFrameworks.rawValue),
             option(name: Options.newCCharPtrFromStaticString("mangler"), has_arg: required_argument, flag: nil, val: OptLongChars.manglerKey),
@@ -113,6 +120,23 @@ extension Options {
                 eraseSections.append(EraseSectionConfiguration(sectionDef: String(cString: optarg)))
             case OptLongCases.eraseSourceFileNames.rawValue:
                 sourceFileNamesPrefixes.append(String(cString: optarg))
+            case OptLongCases.replaceCstring.rawValue:
+                guard currentCstringToReplace == nil else {
+                    fatalError("Previous --replace-cstring not followed by --replace-with")
+                }
+                currentCstringToReplace = String(cString: optarg)
+            case OptLongCases.replaceWith.rawValue:
+                // Set replacement for most recent string
+                guard let currentCstring = currentCstringToReplace else {
+                    fatalError("--replace-with may be used only after --replace-cstring")
+                }
+                let replacement = String(cString: optarg)
+                guard currentCstring.utf8.count >= replacement.utf8.count else {
+                    fatalError("Replacement must be the same length or shorter that CString to replace")
+                }
+                cstringsReplacements[currentCstring] = replacement
+                // wait for next pair
+                currentCstringToReplace = nil
             case OptLongCases.skipFramework.rawValue:
                 obfuscableFilesFilter = obfuscableFilesFilter.and(ObfuscableFilesFilter.skipFramework(framework: String(cString: optarg)))
             case OptLongCases.skipAllFrameworks.rawValue:
@@ -125,6 +149,10 @@ extension Options {
             default:
                 fatalError("Unexpected argument: \(option)")
             }
+        }
+
+        guard currentCstringToReplace == nil else {
+            fatalError("Last --replace-cstring not followed by --replace-with")
         }
 
         var appDirectory: String?
@@ -154,8 +182,11 @@ extension Options {
           -D, --machoview-doom    MachOViewDoom, MachOView crashes after trying to open your binary (doesn't work with caesarMangler)
           --swift-reflection      obfuscate Swift reflection sections (typeref and reflstr). May cause problems for Swift >= 4.2
           --erase-section SEGMENT,SECTION    erase given section, for example: __TEXT,__swift5_reflstr
+        
           --erase-source-file-names PREFIX   erase source file paths from binary. Erases paths starting with given prefix
                                              by replacing them by constant string
+          --replace-cstring STRING           replace arbitrary __cstring with given replacement (use with caution).
+          --replace-with STRING              These options must be used as a pair.
         
           --skip-all-frameworks       do not obfuscate frameworks
           --skip-framework framework  do not obfuscate given framework

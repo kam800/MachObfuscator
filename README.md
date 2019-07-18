@@ -62,8 +62,11 @@ Options:
   -D, --machoview-doom    MachOViewDoom, MachOView crashes after trying to open your binary (doesn't work with caesarMangler)
   --swift-reflection      obfuscate Swift reflection sections (typeref and reflstr). May cause problems for Swift >= 4.2
   --erase-section SEGMENT,SECTION    erase given section, for example: __TEXT,__swift5_reflstr
+  
   --erase-source-file-names PREFIX   erase source file paths from binary. Erases paths starting with given prefix
                                      by replacing them by constant string
+  --replace-cstring STRING           replace arbitrary __cstring (use with caution) with given replacement.
+  --replace-with STRING              These options must be used as a pair.
   
   --skip-all-frameworks       do not obfuscate frameworks
   --skip-framework framework  do not obfuscate given framework

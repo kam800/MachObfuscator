@@ -5,6 +5,10 @@ extension Image {
         let imageUrl = url
         updateMachs { $0.replaceSymbols(withMap: map, imageURL: imageUrl, paths: paths) }
     }
+
+    mutating func replaceCstrings(mapping: [String: String]) {
+        updateMachs { $0.replaceCstrings(mapping: mapping) }
+    }
 }
 
 private extension Mach {
@@ -55,5 +59,20 @@ private extension Mach {
         if let symtab = symtab {
             data.replaceBytes(inRange: symtab.stringTableRange.intRange, withBytes: [UInt8](repeating: 0, count: symtab.stringTableRange.count))
         }
+    }
+
+    // Replace arbitrary CString
+    mutating func replaceCstrings(mapping: [String: String]) {
+        guard !mapping.isEmpty else {
+            // nothing to do
+            return
+        }
+
+        data.replaceStrings(inRange: cstringSection!.range.intRange, withMapping: {
+            let replacement = mapping[$0]!
+            return replacement
+        }, withFilter: {
+            cstring in mapping[cstring] != nil
+        })
     }
 }
