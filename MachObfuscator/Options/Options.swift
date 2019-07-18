@@ -121,7 +121,7 @@ extension Options {
           -q, --quiet             quiet mode, no output to stdout
           -v, --verbose           verbose mode, output verbose info to stdout
           -d, --debug             debug mode, output more verbose info to stdout
-          --dry-run               analyze only, do not save obfuscated images
+          --dry-run               analyze only, do not save obfuscated files
         
           -t, --methtype          obfuscate methType section (objc/runtime.h methods may work incorrectly)
           -D, --machoview-doom    MachOViewDoom, MachOView crashes after trying to open your binary (doesn't work with caesarMangler)
