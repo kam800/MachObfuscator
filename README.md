@@ -58,7 +58,7 @@ Options:
   -d, --debug             debug mode, output more verbose info to stdout
   --dry-run               analyze only, do not save obfuscated files
 
-  -t, --methtype          obfuscate methType section (objc/runtime.h methods may work incorrectly)
+  -t, --methtype          erase methType section (objc/runtime.h methods may work incorrectly)
   -D, --machoview-doom    MachOViewDoom, MachOView crashes after trying to open your binary (doesn't work with caesarMangler)
   --swift-reflection      obfuscate Swift reflection sections (typeref and reflstr). May cause problems for Swift >= 4.2
   --erase-section SEGMENT,SECTION    erase given section, for example: __TEXT,__swift5_reflstr
@@ -99,7 +99,7 @@ MachObfuscator changes following Mach-O sections:
 
 - `__TEXT, __objc_classname` – mangles symbol names
 - `__TEXT, __objc_methname` – mangles symbol names
-- `__TEXT, __objc_methtype` –  (optional, enabled with `-t` parameter) fills whole section with `0`s
+- `__TEXT, __objc_methtype` –  mangles symbol names or optionally (enabled with `-t` parameter) fills whole section with `0`s
 - `__TEXT, __swift3_typeref`, `__TEXT, __swift4_typeref`, `__TEXT, __swift5_typeref` – fills whole section with `0`s
 - `__TEXT, __swift3_reflstr` , `__TEXT, __swift4_reflstr`,  `__TEXT, __swift5_reflstr` – fills whole section with `0`s
 - `LC_DYLD_INFO_ONLY` – mangles export tries and binding lists

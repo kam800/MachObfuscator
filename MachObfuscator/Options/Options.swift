@@ -22,7 +22,7 @@ struct Options {
     var verbose = false
     var debug = false
     var machOViewDoom = false
-    var methTypeObfuscation = false
+    var eraseMethType = false
     var swiftReflectionObfuscation = false
     var eraseSections: [EraseSectionConfiguration] = []
     // TODO: paths could be replaced by something more useful
@@ -59,7 +59,7 @@ extension Options {
             static let verbose = Int32(Character("v").asciiValue!)
             static let quiet = Int32(Character("q").asciiValue!)
             static let debug = Int32(Character("d").asciiValue!)
-            static let methTypeObfuscation = Int32(Character("t").asciiValue!)
+            static let eraseMethType = Int32(Character("t").asciiValue!)
             static let machOViewDoom = Int32(Character("D").asciiValue!)
             static let manglerKey = Int32(Character("m").asciiValue!)
         }
@@ -82,7 +82,7 @@ extension Options {
             option(name: Options.newCCharPtrFromStaticString("help"), has_arg: no_argument, flag: nil, val: OptLongChars.help),
             option(name: Options.newCCharPtrFromStaticString("verbose"), has_arg: no_argument, flag: nil, val: OptLongChars.verbose),
             option(name: Options.newCCharPtrFromStaticString("dry-run"), has_arg: no_argument, flag: nil, val: OptLongCases.dryrun.rawValue),
-            option(name: Options.newCCharPtrFromStaticString("methtype"), has_arg: no_argument, flag: nil, val: OptLongChars.methTypeObfuscation),
+            option(name: Options.newCCharPtrFromStaticString("methtype"), has_arg: no_argument, flag: nil, val: OptLongChars.eraseMethType),
             option(name: Options.newCCharPtrFromStaticString("machoview-doom"), has_arg: no_argument, flag: nil, val: OptLongChars.machOViewDoom),
             option(name: Options.newCCharPtrFromStaticString("swift-reflection"), has_arg: no_argument, flag: nil, val: OptLongCases.swiftReflection.rawValue),
             option(name: Options.newCCharPtrFromStaticString("erase-section"), has_arg: required_argument, flag: nil, val: OptLongCases.eraseSection.rawValue),
@@ -108,8 +108,8 @@ extension Options {
                 help = true
             case OptLongCases.dryrun.rawValue:
                 dryrun = true
-            case OptLongChars.methTypeObfuscation:
-                methTypeObfuscation = true
+            case OptLongChars.eraseMethType:
+                eraseMethType = true
             case OptLongChars.machOViewDoom:
                 machOViewDoom = true
             case OptLongChars.manglerKey:
@@ -178,7 +178,7 @@ extension Options {
           -d, --debug             debug mode, output more verbose info to stdout
           --dry-run               analyze only, do not save obfuscated files
         
-          -t, --methtype          obfuscate methType section (objc/runtime.h methods may work incorrectly)
+          -t, --methtype          erase methType section (objc/runtime.h methods may work incorrectly)
           -D, --machoview-doom    MachOViewDoom, MachOView crashes after trying to open your binary (doesn't work with caesarMangler)
           --swift-reflection      obfuscate Swift reflection sections (typeref and reflstr). May cause problems for Swift >= 4.2
           --erase-section SEGMENT,SECTION    erase given section, for example: __TEXT,__swift5_reflstr

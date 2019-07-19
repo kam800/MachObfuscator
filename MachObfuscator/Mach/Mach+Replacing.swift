@@ -11,6 +11,18 @@ extension Image {
     }
 }
 
+private extension String {
+    func replacing(of sourceString: String, precededBy: String, followedBy: String, with targetString: String) -> String {
+        return replacingOccurrences(of: precededBy + sourceString + followedBy, with: precededBy + targetString + followedBy)
+    }
+
+    func replacing(of sourceString: String, surroundedByAny: [(String, String)], with targetString: String) -> String {
+        return surroundedByAny.reduce(self) { (current, surroundedBy) -> String in
+            current.replacing(of: sourceString, precededBy: surroundedBy.0, followedBy: surroundedBy.1, with: targetString)
+        }
+    }
+}
+
 private extension Mach {
     mutating func replaceSymbols(withMap map: SymbolManglingMap, imageURL: URL, paths: ObfuscationPaths) {
         if let methNameSection = objcMethNameSection {
@@ -18,6 +30,27 @@ private extension Mach {
         }
         if let classNameSection = objcClassNameSection {
             data.replaceStrings(inRange: classNameSection.range.intRange, withMapping: map.classNames)
+        }
+        if let methTypeSection = objcMethTypeSection {
+            // This is very naive and simple algorithm and not efficient at all.
+            // Its main advantage is that it does not require parsing and generating methType strings
+            // Class names seem to be always surrounded by some kind of special characters, like " or < and >
+            data.replaceStrings(inRange: methTypeSection.range.intRange, withMapping: { methType in
+                let newMethType = map.classNames.reduce(methType) { (curResult, mapping) -> String in
+                    guard curResult.contains(mapping.key) else {
+                        // There is small possibility of match, so it better to search once in case of no-match
+                        // for the cost of searching one more time in case of match.
+                        // Note, that match in this check may be false-positive (only substring of identifer matches)
+                        // but that is no problem for this optimization.
+                        return curResult
+                    }
+                    return curResult.replacing(of: mapping.key, surroundedByAny: [("\"", "\""), ("(", ")"), ("[", "]"), ("<", ">"), ("{", "}")], with: mapping.value)
+                }
+                if newMethType != methType {
+                    LOGGER.debug("MethType obfuscation from \(methType) to \(newMethType)")
+                }
+                return newMethType
+            })
         }
 
         if let (_, obfuscatedTrie) = map
