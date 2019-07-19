@@ -51,10 +51,15 @@ class Obfuscator {
         for obfuscableImage in paths.obfuscableImages {
             LOGGER.info("Obfuscating \(obfuscableImage)")
             var image: Image = try! loader.load(forURL: obfuscableImage)
+
             image.replaceSymbols(withMap: manglingMap, paths: paths)
-            // TODO: add option
-            // TODO: what is the difference between eraseSymtab and last operation in replaceSymbols?
-            image.eraseSymtab()
+
+            if options.eraseSymtab {
+                image.eraseSymtab()
+            } else {
+                LOGGER.warn("Leaving SYMTAB unobfuscated")
+            }
+
             if options.swiftReflectionObfuscation {
                 image.eraseSwiftReflectiveSections()
             }

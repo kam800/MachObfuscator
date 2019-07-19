@@ -23,6 +23,7 @@ struct Options {
     var debug = false
     var machOViewDoom = false
     var methTypeObfuscation = false
+    var eraseSymtab = true
     var swiftReflectionObfuscation = false
     var eraseSections: [EraseSectionConfiguration] = []
     var obfuscableFilesFilter = ObfuscableFilesFilter.defaultObfuscableFilesFilter()
@@ -61,6 +62,7 @@ extension Options {
         }
         enum OptLongCases: Int32 {
             case OPT_FIRST = 256
+            case preserveSymtab
             case swiftReflection
             case eraseSection
             case skipFramework
@@ -75,6 +77,7 @@ extension Options {
             option(name: Options.newCCharPtrFromStaticString("dry-run"), has_arg: no_argument, flag: nil, val: OptLongCases.dryrun.rawValue),
             option(name: Options.newCCharPtrFromStaticString("methtype"), has_arg: no_argument, flag: nil, val: OptLongChars.methTypeObfuscation),
             option(name: Options.newCCharPtrFromStaticString("machoview-doom"), has_arg: no_argument, flag: nil, val: OptLongChars.machOViewDoom),
+            option(name: Options.newCCharPtrFromStaticString("preserve-symtab"), has_arg: no_argument, flag: nil, val: OptLongCases.preserveSymtab.rawValue),
             option(name: Options.newCCharPtrFromStaticString("swift-reflection"), has_arg: no_argument, flag: nil, val: OptLongCases.swiftReflection.rawValue),
             option(name: Options.newCCharPtrFromStaticString("erase-section"), has_arg: required_argument, flag: nil, val: OptLongCases.eraseSection.rawValue),
             option(name: Options.newCCharPtrFromStaticString("skip-framework"), has_arg: required_argument, flag: nil, val: OptLongCases.skipFramework.rawValue),
@@ -102,6 +105,8 @@ extension Options {
                 machOViewDoom = true
             case OptLongChars.manglerKey:
                 manglerType = SymbolManglers(rawValue: String(cString: optarg))
+            case OptLongCases.preserveSymtab.rawValue:
+                eraseSymtab = false
             case OptLongCases.swiftReflection.rawValue:
                 swiftReflectionObfuscation = true
             case OptLongCases.eraseSection.rawValue:
@@ -146,6 +151,7 @@ extension Options {
           -t, --methtype          obfuscate methType section (objc/runtime.h methods may work incorrectly)
           -D, --machoview-doom    MachOViewDoom, MachOView crashes after trying to open your binary (doesn't work with caesarMangler)
           --swift-reflection      obfuscate Swift reflection sections (typeref and reflstr). May cause problems for Swift >= 4.2
+          --preserve-symtab       do not erase SYMTAB strings
           --erase-section SEGMENT,SECTION    erase given section, for example: __TEXT,__swift5_reflstr
         
           --skip-all-frameworks       do not obfuscate frameworks
