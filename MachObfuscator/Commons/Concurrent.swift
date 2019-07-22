@@ -30,28 +30,6 @@ extension Array {
     func concurrentCompactMap<B>(_ transform: @escaping (Element) -> B?) -> [B] {
         return concurrentMap_impl(transform).compactMap { $0 }
     }
-
-    func concurrentCompactMap_improbable<B>(numPartitions partitions: Int, _ transform: @escaping (Element) -> B?) -> [B] {
-        var result: [B] = []
-        let q = DispatchQueue(label: "sync queue")
-
-        // Size of partition is rounded up, so that last iteration may be not full, but will be not empty
-        let partitionSize = (count + partitions - 1) / partitions
-
-        DispatchQueue.concurrentPerform(iterations: partitions) { partition in
-            let partitionStartIdx = partition * partitionSize
-            if partitionStartIdx >= count {
-                // partition is empty - possible, when there are very few elements compared to number of partitions
-                return
-            }
-            let elements = self[partitionStartIdx ..< Swift.min(partitionStartIdx + partitionSize, count)]
-            let transformed = elements.compactMap(transform)
-            q.sync {
-                result.append(contentsOf: transformed)
-            }
-        }
-        return result
-    }
 }
 
 extension Set {
