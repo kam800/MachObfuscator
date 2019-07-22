@@ -31,26 +31,10 @@ private extension Mach {
         if let classNameSection = objcClassNameSection {
             data.replaceStrings(inRange: classNameSection.range.intRange, withMapping: map.classNames)
         }
+
         if let methTypeSection = objcMethTypeSection {
-            // This is very naive and simple algorithm and not efficient at all.
-            // Its main advantage is that it does not require parsing and generating methType strings
-            // Class names seem to be always surrounded by some kind of special characters, like " or < and >
-            data.replaceStrings(inRange: methTypeSection.range.intRange, withMapping: { methType in
-                let newMethType = map.classNames.reduce(methType) { (curResult, mapping) -> String in
-                    guard curResult.contains(mapping.key) else {
-                        // There is small possibility of match, so it better to search once in case of no-match
-                        // for the cost of searching one more time in case of match.
-                        // Note, that match in this check may be false-positive (only substring of identifer matches)
-                        // but that is no problem for this optimization.
-                        return curResult
-                    }
-                    return curResult.replacing(of: mapping.key, surroundedByAny: [("\"", "\""), ("(", ")"), ("[", "]"), ("<", ">"), ("{", "}")], with: mapping.value)
-                }
-                if newMethType != methType {
-                    LOGGER.debug("MethType obfuscation from \(methType) to \(newMethType)")
-                }
-                return newMethType
-            })
+            data.replaceStrings(inRange: methTypeSection.range.intRange,
+                                withMapping: { methType in Mach.generateObfuscatedMethType(methType: methType, withMap: map) })
         }
 
         if let (_, obfuscatedTrie) = map
@@ -92,6 +76,27 @@ private extension Mach {
         if let symtab = symtab {
             data.replaceBytes(inRange: symtab.stringTableRange.intRange, withBytes: [UInt8](repeating: 0, count: symtab.stringTableRange.count))
         }
+    }
+
+    // Generate obfuscated methtype from original one. If there is no matching obfuscation, returns input unchanged
+    internal static func generateObfuscatedMethType(methType: String, withMap map: SymbolManglingMap) -> String {
+        // This is very naive and simple algorithm and not efficient at all.
+        // Its main advantage is that it does not require parsing and generating methType strings
+        // Class names seem to be always surrounded by some kind of special characters, like " or < and >
+        let newMethType = map.classNames.reduce(methType) { (curResult, mapping) -> String in
+            guard curResult.contains(mapping.key) else {
+                // There is small possibility of match, so it better to search once in case of no-match
+                // for the cost of searching one more time in case of match.
+                // Note, that match in this check may be false-positive (only substring of identifer matches)
+                // but that is no problem for this optimization.
+                return curResult
+            }
+            return curResult.replacing(of: mapping.key, surroundedByAny: [("\"", "\""), ("(", ")"), ("[", "]"), ("<", ">"), ("{", "}")], with: mapping.value)
+        }
+        if newMethType != methType {
+            LOGGER.debug("MethType obfuscation from \(methType) to \(newMethType)")
+        }
+        return newMethType
     }
 
     // Replace arbitrary CString
