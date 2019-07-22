@@ -122,13 +122,13 @@ extension Options {
                 sourceFileNamesPrefixes.append(String(cString: optarg))
             case OptLongCases.replaceCstring.rawValue:
                 guard currentCstringToReplace == nil else {
-                    fatalError("Previous --replace-cstring not followed by --replace-with")
+                    fatalError("Previous --replace-cstring not followed by --replace-cstring-with")
                 }
                 currentCstringToReplace = String(cString: optarg)
             case OptLongCases.replaceWith.rawValue:
                 // Set replacement for most recent string
                 guard let currentCstring = currentCstringToReplace else {
-                    fatalError("--replace-with may be used only after --replace-cstring")
+                    fatalError("--replace-cstring-with may be used only after --replace-cstring")
                 }
                 let replacement = String(cString: optarg)
                 guard currentCstring.utf8.count >= replacement.utf8.count else {
@@ -152,7 +152,7 @@ extension Options {
         }
 
         guard currentCstringToReplace == nil else {
-            fatalError("Last --replace-cstring not followed by --replace-with")
+            fatalError("Last --replace-cstring not followed by --replace-cstring-with")
         }
 
         var appDirectory: String?
@@ -185,8 +185,8 @@ extension Options {
         
           --erase-source-file-names PREFIX   erase source file paths from binary. Erases paths starting with given prefix
                                              by replacing them by constant string
-          --replace-cstring STRING           replace arbitrary __cstring with given replacement (use with caution).
-          --replace-with STRING              These options must be used as a pair.
+          --replace-cstring STRING           replace arbitrary __cstring with given replacement (use with caution). Matches entire string,
+          --replace-cstring-with STRING      adds padding 0's if needed. These options must be used as a pair.
         
           --skip-all-frameworks       do not obfuscate frameworks
           --skip-framework framework  do not obfuscate given framework
