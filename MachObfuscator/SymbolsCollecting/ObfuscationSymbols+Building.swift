@@ -5,9 +5,9 @@ extension ObfuscationSymbols {
                          loader: SymbolsSourceLoader,
                          sourceSymbolsLoader: SourceSymbolsLoader,
                          skippedSymbolsSources: [URL]) -> ObfuscationSymbols {
-        let systemSources = try! obfuscationPaths.unobfuscableDependencies.flatMap { try loader.load(forURL: $0) }
+        let systemSources = time(withTag: "systemSources") { try! obfuscationPaths.unobfuscableDependencies.flatMap { try loader.load(forURL: $0) } }
 
-        let userSourcesPerPath = [URL: [SymbolsSource]](uniqueKeysWithValues: obfuscationPaths.obfuscableImages.map { ($0, try! loader.load(forURL: $0)) })
+        let userSourcesPerPath = time(withTag: "userSources") { [URL: [SymbolsSource]](uniqueKeysWithValues: obfuscationPaths.obfuscableImages.map { ($0, try! loader.load(forURL: $0)) }) }
         let userSources = userSourcesPerPath.values.flatMap { $0 }
 
         let userSelectors = userSources.flatMap { $0.selectors }.uniq
@@ -18,10 +18,10 @@ extension ObfuscationSymbols {
         let systemClasses = systemSources.flatMap { $0.classNames }.uniq
         let systemCStrings = systemSources.flatMap { $0.cstrings }.uniq
 
-        let systemHeaderSymbols = obfuscationPaths
-            .systemFrameworks
-            .map(sourceSymbolsLoader.forceLoad(forFrameworkURL:))
+        let systemHeaderSymbols = time(withTag: "systemHeaderSymbols") { obfuscationPaths.systemFrameworks
+            .concurrentMap(sourceSymbolsLoader.forceLoad(forFrameworkURL:))
             .flatten()
+        }
 
         let skippedSymbols = skippedSymbolsSources
             .map(sourceSymbolsLoader.forceLoad(forFrameworkURL:))

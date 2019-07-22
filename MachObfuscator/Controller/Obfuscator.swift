@@ -18,18 +18,24 @@ class Obfuscator {
         LOGGER.info("Will obfuscate \(directoryURL)")
 
         LOGGER.info("Looking for dependencies...")
-        let paths = ObfuscationPaths.forAllExecutablesWithDependencies(inDirectory: directoryURL, dependencyNodeLoader: loader,
-                                                                       obfuscableFilesFilter: options.obfuscableFilesFilter)
+        let paths = time(withTag: "Looking for dependencies") {
+            ObfuscationPaths.forAllExecutablesWithDependencies(inDirectory: directoryURL,
+                                                               dependencyNodeLoader: loader,
+                                                               obfuscableFilesFilter: options.obfuscableFilesFilter)
+        }
         LOGGER.info("\(paths.obfuscableImages.count) obfuscable images")
         LOGGER.debug("Obfuscable images:")
         paths.obfuscableImages.forEach { u in LOGGER.debug(u.absoluteString) }
         LOGGER.info("\(paths.nibs.count) obfuscable NIBs")
 
         LOGGER.info("Collecting symbols...")
-        let symbols = ObfuscationSymbols.buildFor(obfuscationPaths: paths,
-                                                  loader: loader,
-                                                  sourceSymbolsLoader: sourceSymbolsLoader,
-                                                  skippedSymbolsSources: options.skippedSymbolsSources)
+
+        let symbols = time(withTag: "Build obfuscation symbols") {
+            ObfuscationSymbols.buildFor(obfuscationPaths: paths,
+                                        loader: loader,
+                                        sourceSymbolsLoader: sourceSymbolsLoader,
+                                        skippedSymbolsSources: options.skippedSymbolsSources)
+        }
         LOGGER.info("\(symbols.whitelist.selectors.count) obfuscable selectors")
         LOGGER.info("\(symbols.whitelist.classes.count) obfuscable classes")
         LOGGER.info("\(symbols.blacklist.selectors.count) unobfuscable selectors")
@@ -39,6 +45,7 @@ class Obfuscator {
         let manglingMap = mangler.mangleSymbols(symbols)
         LOGGER.info("\(manglingMap.selectors.count) mangled selectors")
         LOGGER.info("\(manglingMap.classNames.count) mangled classes")
+
         if options.swiftReflectionObfuscation {
             LOGGER.info("Will obfuscate Swift reflection sections")
         }
