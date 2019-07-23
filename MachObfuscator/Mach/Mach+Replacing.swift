@@ -55,10 +55,6 @@ private extension Mach {
         } else {
             fatalError("Didn't resolve dylibs for '\(imageURL)'. Probably a bug.")
         }
-
-        if let symtab = symtab {
-            data.replaceBytes(inRange: symtab.stringTableRange.intRange, withBytes: [UInt8](repeating: 0, count: symtab.stringTableRange.count))
-        }
     }
 
     // Replace arbitrary CString
