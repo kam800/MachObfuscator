@@ -66,7 +66,7 @@ private extension Mach {
             return replacement
         }, withFilter: {
             cstring in cstring.utf8.count >= replacement.utf8.count &&
-                prefixes.reduce(false) { result, nextMask in result || cstring.starts(with: nextMask) }
+                prefixes.contains(where: { prefix in cstring.starts(with: prefix) })
         })
     }
 }

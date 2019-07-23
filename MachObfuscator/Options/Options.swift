@@ -23,6 +23,7 @@ struct Options {
     var debug = false
     var machOViewDoom = false
     var eraseMethType = false
+    var eraseSymtab = true
     var swiftReflectionObfuscation = false
     var eraseSections: [EraseSectionConfiguration] = []
     // TODO: paths could be replaced by something more useful
@@ -64,6 +65,7 @@ extension Options {
         }
         enum OptLongCases: Int32 {
             case OPT_FIRST = 256
+            case preserveSymtab
             case swiftReflection
             case eraseSection
             case eraseMethType
@@ -84,6 +86,7 @@ extension Options {
             option(name: Options.newCCharPtrFromStaticString("dry-run"), has_arg: no_argument, flag: nil, val: OptLongCases.dryrun.rawValue),
             option(name: Options.newCCharPtrFromStaticString("erase-methtype"), has_arg: no_argument, flag: nil, val: OptLongCases.eraseMethType.rawValue),
             option(name: Options.newCCharPtrFromStaticString("machoview-doom"), has_arg: no_argument, flag: nil, val: OptLongChars.machOViewDoom),
+            option(name: Options.newCCharPtrFromStaticString("preserve-symtab"), has_arg: no_argument, flag: nil, val: OptLongCases.preserveSymtab.rawValue),
             option(name: Options.newCCharPtrFromStaticString("swift-reflection"), has_arg: no_argument, flag: nil, val: OptLongCases.swiftReflection.rawValue),
             option(name: Options.newCCharPtrFromStaticString("erase-section"), has_arg: required_argument, flag: nil, val: OptLongCases.eraseSection.rawValue),
             option(name: Options.newCCharPtrFromStaticString("erase-source-file-names"), has_arg: required_argument, flag: nil, val: OptLongCases.eraseSourceFileNames.rawValue),
@@ -114,6 +117,8 @@ extension Options {
                 machOViewDoom = true
             case OptLongChars.manglerKey:
                 manglerType = SymbolManglers(rawValue: String(cString: optarg))
+            case OptLongCases.preserveSymtab.rawValue:
+                eraseSymtab = false
             case OptLongCases.swiftReflection.rawValue:
                 swiftReflectionObfuscation = true
             case OptLongCases.eraseSection.rawValue:
@@ -122,13 +127,13 @@ extension Options {
                 sourceFileNamesPrefixes.append(String(cString: optarg))
             case OptLongCases.replaceCstring.rawValue:
                 guard currentCstringToReplace == nil else {
-                    fatalError("Previous --replace-cstring not followed by --replace-with")
+                    fatalError("Previous --replace-cstring not followed by --replace-cstring-with")
                 }
                 currentCstringToReplace = String(cString: optarg)
             case OptLongCases.replaceWith.rawValue:
                 // Set replacement for most recent string
                 guard let currentCstring = currentCstringToReplace else {
-                    fatalError("--replace-with may be used only after --replace-cstring")
+                    fatalError("--replace-cstring-with may be used only after --replace-cstring")
                 }
                 let replacement = String(cString: optarg)
                 guard currentCstring.utf8.count >= replacement.utf8.count else {
@@ -152,7 +157,7 @@ extension Options {
         }
 
         guard currentCstringToReplace == nil else {
-            fatalError("Last --replace-cstring not followed by --replace-with")
+            fatalError("Last --replace-cstring not followed by --replace-cstring-with")
         }
 
         var appDirectory: String?
@@ -181,12 +186,13 @@ extension Options {
           --erase-methtype        erase methType section (objc/runtime.h methods may work incorrectly)
           -D, --machoview-doom    MachOViewDoom, MachOView crashes after trying to open your binary (doesn't work with caesarMangler)
           --swift-reflection      obfuscate Swift reflection sections (typeref and reflstr). May cause problems for Swift >= 4.2
+          --preserve-symtab       do not erase SYMTAB strings
           --erase-section SEGMENT,SECTION    erase given section, for example: __TEXT,__swift5_reflstr
         
           --erase-source-file-names PREFIX   erase source file paths from binary. Erases paths starting with given prefix
                                              by replacing them by constant string
-          --replace-cstring STRING           replace arbitrary __cstring with given replacement (use with caution).
-          --replace-with STRING              These options must be used as a pair.
+          --replace-cstring STRING           replace arbitrary __cstring with given replacement (use with caution). Matches entire string,
+          --replace-cstring-with STRING      adds padding 0's if needed. These options must be used as a pair.
         
           --skip-all-frameworks       do not obfuscate frameworks
           --skip-framework framework  do not obfuscate given framework
