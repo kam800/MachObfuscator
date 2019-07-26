@@ -31,6 +31,7 @@ struct Options {
     var sourceFileNamesPrefixes: [String] = []
     var cstringsReplacements: [String: String] = [:]
     var obfuscableFilesFilter = ObfuscableFilesFilter.defaultObfuscableFilesFilter()
+    var analyzeDependencies = true
     var manglerType: SymbolManglers? = SymbolManglers.defaultMangler
     var skippedSymbolsSources: [URL] = []
     var appDirectory: URL?
@@ -76,6 +77,9 @@ extension Options {
             case dryrun
             case replaceCstring
             case replaceWith
+
+            // extra/development options
+            case xxWithoutDependencies
         }
 
         var currentCstringToReplace: String?
@@ -96,6 +100,9 @@ extension Options {
             option(name: Options.newCCharPtrFromStaticString("skip-all-frameworks"), has_arg: no_argument, flag: nil, val: OptLongCases.skipAllFrameworks.rawValue),
             option(name: Options.newCCharPtrFromStaticString("mangler"), has_arg: required_argument, flag: nil, val: OptLongChars.manglerKey),
             option(name: Options.newCCharPtrFromStaticString("skip-symbols-from-sources"), has_arg: required_argument, flag: nil, val: OptLongCases.skipSymbolsFromSources.rawValue),
+
+            // extra options
+            option(name: Options.newCCharPtrFromStaticString("xx-without-dependencies"), has_arg: no_argument, flag: nil, val: OptLongCases.xxWithoutDependencies.rawValue),
             option(), // { NULL, NULL, NULL, NULL }
         ]
 
@@ -149,6 +156,11 @@ extension Options {
             case OptLongCases.skipSymbolsFromSources.rawValue:
                 let sourcesPath = URL(fileURLWithPath: String(cString: optarg))
                 skippedSymbolsSources.append(sourcesPath)
+
+            // extra options
+            case OptLongCases.xxWithoutDependencies.rawValue:
+                analyzeDependencies = false
+
             case OptLongChars.unknownOption:
                 help = true
             default:
@@ -203,6 +215,9 @@ extension Options {
           --skip-symbols-from-sources PATH
                                   Don't obfuscate all the symbols found in PATH (searches for all nested *.[hm] files).
                                   This option can be used multiple times to add multiple paths.
+        
+        Development options:
+          --xx-without-dependencies          do not analyze dependencies
 
         \(SymbolManglers.helpSummary)
         """
