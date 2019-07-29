@@ -22,6 +22,11 @@ struct ObjcOptions {
     var selectorsBlacklistRegex: [NSRegularExpression] = []
 }
 
+enum ReportTarget {
+    case None
+    case Console
+}
+
 struct Options {
     var unknownOption = false
     var help = false
@@ -45,6 +50,8 @@ struct Options {
     var manglerType: SymbolManglers? = SymbolManglers.defaultMangler
     var skippedSymbolsSources: [URL] = []
     var appDirectoryOrFile: URL?
+
+    var reportTarget: ReportTarget = .None
 }
 
 extension Options {
@@ -91,6 +98,9 @@ extension Options {
             case replaceCstring
             case replaceWith
 
+            // reporting options
+            case reportToConsole
+
             // extra/development options
             case xxNoAnalyzeDependencies
             case xxDumpMetadata
@@ -123,6 +133,9 @@ extension Options {
             option(name: Options.newCCharPtrFromStaticString("skip-all-frameworks"), has_arg: no_argument, flag: nil, val: OptLongCases.skipAllFrameworks.rawValue),
             option(name: Options.newCCharPtrFromStaticString("mangler"), has_arg: required_argument, flag: nil, val: OptLongChars.manglerKey),
             option(name: Options.newCCharPtrFromStaticString("skip-symbols-from-sources"), has_arg: required_argument, flag: nil, val: OptLongCases.skipSymbolsFromSources.rawValue),
+
+            // reporting options
+            option(name: Options.newCCharPtrFromStaticString("report-to-console"), has_arg: no_argument, flag: nil, val: OptLongCases.reportToConsole.rawValue),
 
             // extra options
             option(name: Options.newCCharPtrFromStaticString("xx-no-analyze-dependencies"), has_arg: no_argument, flag: nil, val: OptLongCases.xxNoAnalyzeDependencies.rawValue),
@@ -192,6 +205,10 @@ extension Options {
             case OptLongCases.skipSymbolsFromSources.rawValue:
                 let sourcesPath = URL(fileURLWithPath: String(cString: optarg))
                 skippedSymbolsSources.append(sourcesPath)
+
+            // reporting options
+            case OptLongCases.reportToConsole.rawValue:
+                reportTarget = .Console
 
             // extra options
             case OptLongCases.xxNoAnalyzeDependencies.rawValue:
@@ -267,6 +284,8 @@ extension Options {
                                   Don't obfuscate all the symbols found in PATH (searches for all nested *.[hm] files).
                                   This option can be used multiple times to add multiple paths.
         
+          --report-to-console     report obfuscated symbols mapping to console
+
         Development options:
           --xx-no-analyze-dependencies       do not analyze dependencies
           --xx-dump-metadata                 dump ObjC metadata of images being obfuscated

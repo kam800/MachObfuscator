@@ -8,7 +8,7 @@ class Obfuscator {
 
     private let options: Options
 
-    private let reporter: SymbolsReporter = ConsoleReporter()
+    private let reporter: SymbolsReporter
 
     init(directoryOrFileURL: URL, mangler: SymbolMangling, options: Options) {
         var isDir: ObjCBool = false
@@ -20,6 +20,13 @@ class Obfuscator {
 
         self.mangler = mangler
         self.options = options
+
+        switch options.reportTarget {
+        case .Console:
+            reporter = ConsoleReporter()
+        default:
+            reporter = NoReporter()
+        }
     }
 
     func run(loader: ImageLoader & SymbolsSourceLoader & DependencyNodeLoader = SimpleImageLoader(),
