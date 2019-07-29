@@ -8,6 +8,8 @@ class Obfuscator {
 
     private let options: Options
 
+    private let reporter: SymbolsReporter = ConsoleReporter()
+
     init(directoryOrFileURL: URL, mangler: SymbolMangling, options: Options) {
         var isDir: ObjCBool = false
         guard FileManager.default.fileExists(atPath: directoryOrFileURL.path, isDirectory: &isDir) else {
@@ -65,6 +67,8 @@ class Obfuscator {
         let manglingMap = mangler.mangleSymbols(symbols)
         LOGGER.info("\(manglingMap.selectors.count) mangled selectors")
         LOGGER.info("\(manglingMap.classNames.count) mangled classes")
+
+        reporter.reportObjcMangling(map: manglingMap)
 
         if options.swiftReflectionObfuscation {
             LOGGER.info("Will obfuscate Swift reflection sections")
