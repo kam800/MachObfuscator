@@ -47,9 +47,9 @@ Only sample changes are shown above. MachObfuscator changes more Mach-O sections
 
 ```
 $ ./MachObfuscator
-usage: ./MachObfuscator [-qvdhtD] [-m mangler_key] APP_BUNDLE
+usage: ./MachObfuscator [-qvdhtD] [-m mangler_key] APP_BUNDLE|FILE
 
-  Obfuscates application APP_BUNDLE in-place.
+  Obfuscates application in directory APP_BUNDLE or image (FILE) in-place.
 
 Options:
   -h, --help              help screen (this screen)

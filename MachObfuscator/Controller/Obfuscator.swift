@@ -1,28 +1,42 @@
 import Foundation
 
 class Obfuscator {
-    private let directoryURL: URL
+    private let directoryOrFileURL: URL
+    private let isDirectory: Bool
 
     private let mangler: SymbolMangling
 
     private let options: Options
 
-    init(directoryURL: URL, mangler: SymbolMangling, options: Options) {
-        self.directoryURL = directoryURL
+    init(directoryOrFileURL: URL, mangler: SymbolMangling, options: Options) {
+        var isDir: ObjCBool = false
+        guard FileManager.default.fileExists(atPath: directoryOrFileURL.path, isDirectory: &isDir) else {
+            fatalError("'\(directoryOrFileURL.path)' does not exist")
+        }
+        self.directoryOrFileURL = directoryOrFileURL
+        isDirectory = isDir.boolValue
+
         self.mangler = mangler
         self.options = options
     }
 
     func run(loader: ImageLoader & SymbolsSourceLoader & DependencyNodeLoader = SimpleImageLoader(),
              sourceSymbolsLoader: SourceSymbolsLoader = SimpleSourceSymbolsLoader()) {
-        LOGGER.info("Will obfuscate \(directoryURL)")
+        LOGGER.info("Will obfuscate \(directoryOrFileURL)")
 
         LOGGER.info("Looking for dependencies...")
-        let paths = time(withTag: "Looking for dependencies") {
-            ObfuscationPaths.forAllExecutables(inDirectory: directoryURL,
-                                               dependencyNodeLoader: loader,
-                                               obfuscableFilesFilter: options.obfuscableFilesFilter,
-                                               withDependencies: options.analyzeDependencies)
+        let paths = time(withTag: "Looking for dependencies") { () -> ObfuscationPaths in
+            if isDirectory {
+                return ObfuscationPaths.forAllExecutables(inDirectory: directoryOrFileURL,
+                                                          dependencyNodeLoader: loader,
+                                                          obfuscableFilesFilter: options.obfuscableFilesFilter,
+                                                          withDependencies: options.analyzeDependencies)
+            } else {
+                return ObfuscationPaths.forExecutable(executable: directoryOrFileURL,
+                                                      dependencyNodeLoader: loader,
+                                                      obfuscableFilesFilter: options.obfuscableFilesFilter,
+                                                      withDependencies: options.analyzeDependencies)
+            }
         }
         LOGGER.info("\(paths.obfuscableImages.count) obfuscable images")
         LOGGER.debug("Obfuscable images:")

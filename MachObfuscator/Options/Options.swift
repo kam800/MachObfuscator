@@ -42,7 +42,7 @@ struct Options {
     var analyzeDependencies = true
     var manglerType: SymbolManglers? = SymbolManglers.defaultMangler
     var skippedSymbolsSources: [URL] = []
-    var appDirectory: URL?
+    var appDirectoryOrFile: URL?
 }
 
 extension Options {
@@ -216,16 +216,16 @@ extension Options {
             appDirectory = argv[Int(optind)]
         }
 
-        self.appDirectory = appDirectory
+        appDirectoryOrFile = appDirectory
             .flatMap(URL.init(fileURLWithPath:))?
             .resolvingSymlinksInPath()
     }
 
     static var usage: String {
         return """
-        usage: \(CommandLine.arguments[0]) [-qvdhtD] [-m mangler_key] APP_BUNDLE
+        usage: \(CommandLine.arguments[0]) [-qvdhtD] [-m mangler_key] APP_BUNDLE|FILE
 
-          Obfuscates application APP_BUNDLE in-place.
+          Obfuscates application in directory APP_BUNDLE or image (FILE) in-place.
 
         Options:
           -h, --help              help screen (this screen)

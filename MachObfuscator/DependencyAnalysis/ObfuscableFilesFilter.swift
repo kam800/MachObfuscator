@@ -41,6 +41,12 @@ extension ObfuscableFilesFilter {
         }
     }
 
+    static func only(file: URL) -> ObfuscableFilesFilter {
+        return ObfuscableFilesFilter { url in
+            url == file
+        }
+    }
+
     static func onlyFiles(in obfuscableDirectory: URL) -> ObfuscableFilesFilter {
         return ObfuscableFilesFilter { url in
             obfuscableDirectory.contains(url)
