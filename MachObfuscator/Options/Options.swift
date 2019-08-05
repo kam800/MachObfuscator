@@ -22,7 +22,7 @@ struct Options {
     var verbose = false
     var debug = false
     var machOViewDoom = false
-    var methTypeObfuscation = false
+    var eraseMethType = false
     var eraseSymtab = true
     var swiftReflectionObfuscation = false
     var eraseSections: [EraseSectionConfiguration] = []
@@ -60,7 +60,6 @@ extension Options {
             static let verbose = Int32(Character("v").asciiValue!)
             static let quiet = Int32(Character("q").asciiValue!)
             static let debug = Int32(Character("d").asciiValue!)
-            static let methTypeObfuscation = Int32(Character("t").asciiValue!)
             static let machOViewDoom = Int32(Character("D").asciiValue!)
             static let manglerKey = Int32(Character("m").asciiValue!)
         }
@@ -69,6 +68,7 @@ extension Options {
             case preserveSymtab
             case swiftReflection
             case eraseSection
+            case eraseMethType
             case eraseSourceFileNames
             case skipFramework
             case skipAllFrameworks
@@ -84,7 +84,7 @@ extension Options {
             option(name: Options.newCCharPtrFromStaticString("help"), has_arg: no_argument, flag: nil, val: OptLongChars.help),
             option(name: Options.newCCharPtrFromStaticString("verbose"), has_arg: no_argument, flag: nil, val: OptLongChars.verbose),
             option(name: Options.newCCharPtrFromStaticString("dry-run"), has_arg: no_argument, flag: nil, val: OptLongCases.dryrun.rawValue),
-            option(name: Options.newCCharPtrFromStaticString("methtype"), has_arg: no_argument, flag: nil, val: OptLongChars.methTypeObfuscation),
+            option(name: Options.newCCharPtrFromStaticString("erase-methtype"), has_arg: no_argument, flag: nil, val: OptLongCases.eraseMethType.rawValue),
             option(name: Options.newCCharPtrFromStaticString("machoview-doom"), has_arg: no_argument, flag: nil, val: OptLongChars.machOViewDoom),
             option(name: Options.newCCharPtrFromStaticString("preserve-symtab"), has_arg: no_argument, flag: nil, val: OptLongCases.preserveSymtab.rawValue),
             option(name: Options.newCCharPtrFromStaticString("swift-reflection"), has_arg: no_argument, flag: nil, val: OptLongCases.swiftReflection.rawValue),
@@ -99,7 +99,7 @@ extension Options {
             option(), // { NULL, NULL, NULL, NULL }
         ]
 
-        while case let option = getopt_long(argc, unsafeArgv, "qvdhtDm:", longopts, nil), option != -1 {
+        while case let option = getopt_long(argc, unsafeArgv, "qvdhDm:", longopts, nil), option != -1 {
             switch option {
             case OptLongChars.quiet:
                 quiet = true
@@ -111,8 +111,8 @@ extension Options {
                 help = true
             case OptLongCases.dryrun.rawValue:
                 dryrun = true
-            case OptLongChars.methTypeObfuscation:
-                methTypeObfuscation = true
+            case OptLongCases.eraseMethType.rawValue:
+                eraseMethType = true
             case OptLongChars.machOViewDoom:
                 machOViewDoom = true
             case OptLongChars.manglerKey:
@@ -183,7 +183,7 @@ extension Options {
           -d, --debug             debug mode, output more verbose info to stdout
           --dry-run               analyze only, do not save obfuscated files
         
-          -t, --methtype          obfuscate methType section (objc/runtime.h methods may work incorrectly)
+          --erase-methtype        erase methType section (objc/runtime.h methods may work incorrectly)
           -D, --machoview-doom    MachOViewDoom, MachOView crashes after trying to open your binary (doesn't work with caesarMangler)
           --swift-reflection      obfuscate Swift reflection sections (typeref and reflstr). May cause problems for Swift >= 4.2
           --preserve-symtab       do not erase SYMTAB strings

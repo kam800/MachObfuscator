@@ -49,8 +49,8 @@ class Obfuscator {
         if options.swiftReflectionObfuscation {
             LOGGER.info("Will obfuscate Swift reflection sections")
         }
-        if options.methTypeObfuscation {
-            LOGGER.info("Will obfuscate methType sections")
+        if options.eraseMethType {
+            LOGGER.info("Will erase methType sections")
         }
 
         var savable: [Savable] = []
@@ -74,7 +74,7 @@ class Obfuscator {
             if options.swiftReflectionObfuscation {
                 image.eraseSwiftReflectiveSections()
             }
-            if options.methTypeObfuscation {
+            if options.eraseMethType {
                 image.eraseMethTypeSection()
             }
             for sectionDef in options.eraseSections {
