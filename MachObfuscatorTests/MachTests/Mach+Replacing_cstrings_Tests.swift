@@ -9,7 +9,7 @@ class Mach_Replacing_cstring_Tests: XCTestCase {
     
     var sut: Image!
     var originalCstrings: Set<String>!
-    //These propeties require that cstring reflects current state of image data (i.e. is not lazily computed and later not updated)
+    //These propeties require that `cstrings` reflects current state of image data (i.e. is not lazily computed and later not updated)
     var currentCstrings: Set<String> { return Set(sut.machs[0].cstrings) }
     var newCstrings: Set<String> { return currentCstrings.subtracting(originalCstrings) }
     var removedCstrings: Set<String> { return originalCstrings.subtracting(currentCstrings) }
@@ -26,9 +26,9 @@ class Mach_Replacing_cstring_Tests: XCTestCase {
         super.tearDown()
     }
     
-    private func assertNothingChanged() {
-        XCTAssert(newCstrings.isEmpty)
-        XCTAssert(removedCstrings.isEmpty)
+    private func assertNothingChanged(file: StaticString = #file, line: UInt = #line) {
+        XCTAssert(newCstrings.isEmpty, "newCstrings should be empty", file: file, line: line)
+        XCTAssert(removedCstrings.isEmpty, "removedCstrings should be empty", file: file, line: line)
     }
     
     //---------- Cstring replacing tests ----------

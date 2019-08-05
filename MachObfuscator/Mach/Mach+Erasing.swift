@@ -61,7 +61,11 @@ private extension Mach {
             return
         }
 
-        data.replaceStrings(inRange: cstringSection!.range.intRange, withMapping: {
+        guard let cstrings = cstringSection else {
+            return
+        }
+
+        data.replaceStrings(inRange: cstrings.range.intRange, withMapping: {
             LOGGER.debug("Removing filename \($0)")
             return replacement
         }, withFilter: {
