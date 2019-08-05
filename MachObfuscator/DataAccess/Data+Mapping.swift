@@ -31,8 +31,27 @@ extension Data {
         }
     }
 
+    mutating func replaceStrings(inRange range: Range<Int>, withMapping mapping: (String) -> String, withFilter filter: (String) -> Bool = { _ in true }) {
+        let rangesPerString = stringRangesPerString(inRange: range)
+        rangesPerString.filter { filter($0.key) }.forEach { originalString, ranges in
+            let mappedString = mapping(originalString)
+            precondition(originalString.utf8.count >= mappedString.utf8.count)
+            ranges.forEach {
+                replaceRangeWithPadding($0, with: mappedString)
+            }
+        }
+    }
+
     mutating func replaceBytes(inRange range: Range<Int>, withBytes bytes: [UInt8]) {
         precondition(range.count == bytes.count)
         replaceSubrange(range, with: Data(bytes))
+    }
+
+    mutating func replaceRangeWithPadding(_ range: Range<Int>, with targetValue: String) {
+        let targetData = targetValue.data(using: .utf8)!
+        precondition(range.count >= targetData.count)
+        let targetDataWithPadding = targetData + Array(repeating: UInt8(0), count: range.count - targetData.count)
+        assert(range.count == targetDataWithPadding.count)
+        replaceSubrange(range, with: targetDataWithPadding)
     }
 }

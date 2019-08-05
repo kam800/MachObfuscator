@@ -67,6 +67,10 @@ class Obfuscator {
                 LOGGER.warn("Leaving SYMTAB unobfuscated")
             }
 
+            // Some __cstrings operations
+            image.replaceCstrings(mapping: options.cstringsReplacements)
+            image.eraseFilePaths(options.sourceFileNamesPrefixes, usingReplacement: options.sourceFileNamesReplacement)
+
             if options.swiftReflectionObfuscation {
                 image.eraseSwiftReflectiveSections()
             }

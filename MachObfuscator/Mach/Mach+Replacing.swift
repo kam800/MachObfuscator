@@ -5,6 +5,10 @@ extension Image {
         let imageUrl = url
         updateMachs { $0.replaceSymbols(withMap: map, imageURL: imageUrl, paths: paths) }
     }
+
+    mutating func replaceCstrings(mapping: [String: String]) {
+        updateMachs { $0.replaceCstrings(mapping: mapping) }
+    }
 }
 
 private extension Mach {
@@ -51,5 +55,24 @@ private extension Mach {
         } else {
             fatalError("Didn't resolve dylibs for '\(imageURL)'. Probably a bug.")
         }
+    }
+
+    // Replace arbitrary CString
+    mutating func replaceCstrings(mapping: [String: String]) {
+        guard !mapping.isEmpty else {
+            // nothing to do
+            return
+        }
+
+        guard let cstrings = cstringSection else {
+            return
+        }
+
+        data.replaceStrings(inRange: cstrings.range.intRange, withMapping: {
+            let replacement = mapping[$0]!
+            return replacement
+        }, withFilter: {
+            cstring in mapping[cstring] != nil
+        })
     }
 }

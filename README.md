@@ -64,6 +64,11 @@ Options:
   --preserve-symtab       do not erase SYMTAB strings
   --erase-section SEGMENT,SECTION    erase given section, for example: __TEXT,__swift5_reflstr
   
+  --erase-source-file-names PREFIX   erase source file paths from binary. Erases paths starting with given prefix
+                                     by replacing them by constant string
+  --replace-cstring STRING           replace arbitrary __cstring with given replacement (use with caution). Matches entire string,
+  --replace-cstring-with STRING      adds padding 0's if needed. These options must be used as a pair.
+  
   --skip-all-frameworks       do not obfuscate frameworks
   --skip-framework framework  do not obfuscate given framework
   
