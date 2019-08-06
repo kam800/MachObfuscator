@@ -3,7 +3,7 @@ import XCTest
 class Trie_Parsing_Tests: XCTestCase {
     let samplePayload = Data([
         // Garbage
-        0xab, 0xab, 0xab, 0xab,
+        0xAB, 0xAB, 0xAB, 0xAB,
 
         // Root node exported symbol information length
         0x00,
@@ -12,7 +12,7 @@ class Trie_Parsing_Tests: XCTestCase {
         // #0 edge label
         0x41, 0x42, 0x00,
         // #0 node offset
-        0x0a,
+        0x0A,
         // #1 edge label
         0x41, 0x43, 0x00,
         // #1 node offset
@@ -21,7 +21,7 @@ class Trie_Parsing_Tests: XCTestCase {
         // #0 exported symbol information length
         0x03,
         // #0 exported symbol information
-        0x00, 0x90, 0x4e,
+        0x00, 0x90, 0x4E,
         // #0 child count
         0x01,
         // #2 edge label
@@ -32,7 +32,7 @@ class Trie_Parsing_Tests: XCTestCase {
         // #2 exported symbol information length
         0x03,
         // #2 exported symbol information
-        0x00, 0x90, 0x4e,
+        0x00, 0x90, 0x4E,
         // #2 child count
         0x00,
 
@@ -52,14 +52,14 @@ class Trie_Parsing_Tests: XCTestCase {
         // #3 exported symbol information length
         0x03,
         // #3 exported symbol information
-        0x00, 0x90, 0x4e,
+        0x00, 0x90, 0x4E,
         // #3 child count
         0x00,
 
         // #4 exported symbol information length
         0x03,
         // #4 exported symbol information
-        0x00, 0x90, 0x4e,
+        0x00, 0x90, 0x4E,
         // #4 child count
         0x00,
     ])
@@ -83,6 +83,6 @@ class Trie_Parsing_Tests: XCTestCase {
         // Then
         XCTAssertEqual(nodes.count, 6)
         XCTAssertEqual(nodes.map { $0.labelString },
-                       [ "", "AB", "AC", "DE", "FG", "CD" ])
+                       ["", "AB", "AC", "DE", "FG", "CD"])
     }
 }

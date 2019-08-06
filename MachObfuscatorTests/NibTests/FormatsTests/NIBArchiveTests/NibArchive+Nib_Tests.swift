@@ -1,7 +1,6 @@
 import XCTest
 
 class NibArchive_Nib_Tests: NibModifying_TestsBase {
-
     override func setUp() {
         super.setUp()
         createSut(type: NibArchive.self, fromURL: URL.iosNib)
@@ -12,7 +11,7 @@ class NibArchive_Nib_Tests: NibModifying_TestsBase {
             "actionButton",
             "actionWasTapped:",
             "associatedLabel",
-            "titleLabel"
+            "titleLabel",
         ]
         XCTAssertEqual(sut.selectors.sorted(),
                        expectedSelectors.sorted())
@@ -21,7 +20,7 @@ class NibArchive_Nib_Tests: NibModifying_TestsBase {
     func test_classNames_shouldReturnAllClassNames() {
         let expectedClassNames = [
             "CustomObjCButton",
-            "_TtC19MachObfuscatorTests7IosView"
+            "_TtC19MachObfuscatorTests7IosView",
         ]
         XCTAssertEqual(sut.classNames.sorted(),
                        expectedClassNames.sorted())
@@ -30,9 +29,9 @@ class NibArchive_Nib_Tests: NibModifying_TestsBase {
     func test_modifySelectors_shouldChangeOnlyMatchingOutletsAndActions() {
         // When
         sut.modifySelectors(withMapping: [
-            "titleLabel" : "doneButton",
-            "noSuch" : "selector",
-            "actionWasTapped:" : "timerElapsed"
+            "titleLabel": "doneButton",
+            "noSuch": "selector",
+            "actionWasTapped:": "timerElapsed",
         ])
 
         // Then
@@ -42,7 +41,7 @@ class NibArchive_Nib_Tests: NibModifying_TestsBase {
             "actionButton",
             "timerElapsed",
             "associatedLabel",
-            "doneButton"
+            "doneButton",
         ]
         XCTAssertEqual(sut.selectors.sorted(),
                        expectedSelectors.sorted())
@@ -51,8 +50,8 @@ class NibArchive_Nib_Tests: NibModifying_TestsBase {
     func test_modifyClassNames_shouldChangeOnlyMatchingClasses() {
         // When
         sut.modifyClassNames(withMapping: [
-            "_TtC19MachObfuscatorTests7IosView" : "bar",
-            "noSuch" : "class"
+            "_TtC19MachObfuscatorTests7IosView": "bar",
+            "noSuch": "class",
         ])
 
         // Then
@@ -60,7 +59,7 @@ class NibArchive_Nib_Tests: NibModifying_TestsBase {
         sut = NibArchive.load(from: sutURL)
         let expectedClassNames = [
             "CustomObjCButton",
-            "bar"
+            "bar",
         ]
         XCTAssertEqual(sut.classNames.sorted(),
                        expectedClassNames.sorted())

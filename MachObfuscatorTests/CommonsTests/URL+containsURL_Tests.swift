@@ -1,7 +1,6 @@
 import XCTest
 
 class URL_containsURL_Tests: XCTestCase {
-
     func test_shouldContainSelf() {
         // Given
         let url = URL(fileURLWithPath: "/tmp/dir1/nested")

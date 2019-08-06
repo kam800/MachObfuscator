@@ -1,12 +1,11 @@
-import UIKit
 import SampleIosAppViewModel
+import UIKit
 
 class ViewController: UIViewController {
-
     let viewModel = ViewModel()
 
-    @IBOutlet weak var counterLabel: UILabel!
-    
+    @IBOutlet var counterLabel: UILabel!
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -14,7 +13,7 @@ class ViewController: UIViewController {
         viewModel.delegate = self
     }
 
-    @IBAction func didTapIncrement(_ sender: UIButton) {
+    @IBAction func didTapIncrement(_: UIButton) {
         viewModel.increment()
     }
 }

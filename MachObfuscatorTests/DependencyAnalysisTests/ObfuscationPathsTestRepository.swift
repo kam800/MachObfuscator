@@ -2,12 +2,12 @@ import Foundation
 import XCTest
 
 class ObfuscationPathsTestRepository {
-    fileprivate enum Entry {
+    private enum Entry {
         case MachO(platform: Mach.Platform, isExecutable: Bool, dylibs: [String], rpaths: [String], cstrings: [String])
         case File
     }
 
-    fileprivate enum Error: Swift.Error {
+    private enum Error: Swift.Error {
         case noEntryForPath
     }
 

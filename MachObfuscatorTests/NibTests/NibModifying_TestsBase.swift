@@ -1,7 +1,6 @@
 import XCTest
 
 class NibModifying_TestsBase: XCTestCase {
-
     let sutURL = URL.tempFile
     var sut: Nib!
 

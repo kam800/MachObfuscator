@@ -1,7 +1,6 @@
 import XCTest
 
 class SimpleSourceSymbolsLoader_loadFromFrameworkURL_allSystemFrameworks_Tests: XCTestCase {
-
     // Disabled because it is very slow.
     func DISABLED_test_shouldParseSelectors() {
         // Given

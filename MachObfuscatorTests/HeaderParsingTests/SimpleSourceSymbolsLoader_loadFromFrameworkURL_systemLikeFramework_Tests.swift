@@ -1,7 +1,6 @@
 import XCTest
 
 class SimpleSourceSymbolsLoader_loadFromFrameworkURL_systemLikeFramework_Tests: XCTestCase {
-
     var symbols: SourceSymbols!
 
     override func setUp() {
@@ -21,7 +20,7 @@ class SimpleSourceSymbolsLoader_loadFromFrameworkURL_systemLikeFramework_Tests: 
         let expectedClassNames: Set<String> = [
             "UIApplication",
             "UIUserNotificationSettings",
-            "UIApplicationDelegate"
+            "UIApplicationDelegate",
         ]
         XCTAssertEqual(symbols.classNames, expectedClassNames)
     }
@@ -35,7 +34,7 @@ class SimpleSourceSymbolsLoader_loadFromFrameworkURL_systemLikeFramework_Tests: 
             "registerForRemoteNotificationTypes:",
             "applicationDidFinishLaunching:",
             "application:didFinishLaunchingWithOptions:",
-            "application:handleActionWithIdentifier:forLocalNotification:completionHandler:"
+            "application:handleActionWithIdentifier:forLocalNotification:completionHandler:",
         ]
         XCTAssertEqual(symbols.selectors, expectedSelectors)
     }

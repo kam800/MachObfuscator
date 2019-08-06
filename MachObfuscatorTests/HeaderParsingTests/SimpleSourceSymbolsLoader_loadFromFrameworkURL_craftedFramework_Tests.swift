@@ -1,7 +1,6 @@
 import XCTest
 
 class SimpleSourceSymbolsLoader_loadFromFrameworkURL_craftedFramework_Tests: XCTestCase {
-
     var symbols: SourceSymbols!
 
     override func setUp() {
@@ -29,7 +28,7 @@ class SimpleSourceSymbolsLoader_loadFromFrameworkURL_craftedFramework_Tests: XCT
             "methodThatReturnsTypedefedBlock",
             "methodThatTakesInt:andString:andVoid:",
             "methodWithMacros",
-            "methodWithDeprecationMsg:"
+            "methodWithDeprecationMsg:",
         ]
 
         let expectedPropertyNames: Set<String> = [
@@ -45,7 +44,7 @@ class SimpleSourceSymbolsLoader_loadFromFrameworkURL_craftedFramework_Tests: XCT
             "propertyWithDeprecationMsg",
             "property1",
             "property2",
-            "property3"
+            "property3",
         ]
 
         let expectedSelectors =

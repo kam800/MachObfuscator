@@ -29,18 +29,18 @@ extension Trie {
     static func with(label: String) -> Trie {
         let labelBytes: [UInt8] = [UInt8](label.utf8)
         return Trie(exportsSymbol: false,
-                    labelRange: (UInt64(0)..<UInt64(0)),
+                    labelRange: UInt64(0) ..< UInt64(0),
                     label: labelBytes,
                     children: [])
     }
+
     var labelString: String? {
         return String(bytes: label, encoding: .utf8)
     }
 }
 
 class ObfuscationSymbolsTestSymbolsSourceLoader {
-
-    fileprivate enum Error: Swift.Error {
+    private enum Error: Swift.Error {
         case noEntryForPath
     }
 

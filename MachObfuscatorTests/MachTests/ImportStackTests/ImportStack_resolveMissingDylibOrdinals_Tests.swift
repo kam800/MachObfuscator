@@ -1,21 +1,20 @@
 import XCTest
 
 class ImportStack_resolveMissingDylibOrdinals_Tests: XCTestCase {
-
     var sut: ImportStack! = ImportStack()
 
     override func setUp() {
         super.setUp()
 
         // Given
-        sut.append(ImportStackEntry(dylibOrdinal: 1, symbol: [0x41], symbolRange: 0..<1, weak: false))
-        sut.append(ImportStackEntry(dylibOrdinal: 2, symbol: [0x42], symbolRange: 0..<1, weak: false))
-        sut.append(ImportStackEntry(dylibOrdinal: 3, symbol: [0x43], symbolRange: 0..<1, weak: false))
-        sut.append(ImportStackEntry(dylibOrdinal: 4, symbol: [0x43], symbolRange: 0..<1, weak: false))
-        sut.append(ImportStackEntry(dylibOrdinal: 0, symbol: [0x42], symbolRange: 0..<1, weak: false))
-        sut.append(ImportStackEntry(dylibOrdinal: 0, symbol: [0x43], symbolRange: 0..<1, weak: false))
-        sut.append(ImportStackEntry(dylibOrdinal: 0, symbol: [0x43], symbolRange: 0..<1, weak: true))
-        sut.append(ImportStackEntry(dylibOrdinal: 0, symbol: [0x44], symbolRange: 0..<1, weak: true))
+        sut.append(ImportStackEntry(dylibOrdinal: 1, symbol: [0x41], symbolRange: 0 ..< 1, weak: false))
+        sut.append(ImportStackEntry(dylibOrdinal: 2, symbol: [0x42], symbolRange: 0 ..< 1, weak: false))
+        sut.append(ImportStackEntry(dylibOrdinal: 3, symbol: [0x43], symbolRange: 0 ..< 1, weak: false))
+        sut.append(ImportStackEntry(dylibOrdinal: 4, symbol: [0x43], symbolRange: 0 ..< 1, weak: false))
+        sut.append(ImportStackEntry(dylibOrdinal: 0, symbol: [0x42], symbolRange: 0 ..< 1, weak: false))
+        sut.append(ImportStackEntry(dylibOrdinal: 0, symbol: [0x43], symbolRange: 0 ..< 1, weak: false))
+        sut.append(ImportStackEntry(dylibOrdinal: 0, symbol: [0x43], symbolRange: 0 ..< 1, weak: true))
+        sut.append(ImportStackEntry(dylibOrdinal: 0, symbol: [0x44], symbolRange: 0 ..< 1, weak: true))
 
         // When
         sut.resolveMissingDylibOrdinals()

@@ -1,12 +1,11 @@
 import Foundation
 import SampleIosAppModel
 
-public protocol ViewModelDelegate: class {
+public protocol ViewModelDelegate: AnyObject {
     func viewModelDidChange(counterText: String)
 }
 
 public class ViewModel {
-
     private let model: SampleModel
     private var observation: NSKeyValueObservation?
 
@@ -20,7 +19,7 @@ public class ViewModel {
 
     public init(model: SampleModel = SampleModel()) {
         self.model = model
-        self.observation = self.model.observe(\SampleModel.counter, options:.initial) { [weak self] (model, change) in
+        observation = self.model.observe(\SampleModel.counter, options: .initial) { [weak self] model, _ in
             self?.counterText = String(model.counter)
         }
     }

@@ -1,14 +1,13 @@
 import XCTest
 
 class Trie_Loading_Tests: XCTestCase {
-
     func test_trieShouldHaveNoChildren_whenChildCountIsZero() {
         // Given
         let payload = Data([
             // Root node exported symbol information length
             0x00,
             // Root node child count
-            0x00
+            0x00,
         ])
 
         // When
@@ -28,13 +27,13 @@ class Trie_Loading_Tests: XCTestCase {
             // #0 edge label
             0x41, 0x42, 0x00,
             // #0 node offset
-            0x0a,
+            0x0A,
             // #1 edge label
             0x41, 0x43, 0x00,
             // #1 node offset
-            0x0a,
+            0x0A,
             // Empty node
-            0x00, 0x00
+            0x00, 0x00,
         ])
 
         // When
@@ -65,7 +64,7 @@ class Trie_Loading_Tests: XCTestCase {
         // Given
         let payload = Data([
             // Garbage
-            0xab, 0xab, 0xab, 0xab,
+            0xAB, 0xAB, 0xAB, 0xAB,
             // Root node exported symbol information length
             0x00,
             // Root node child count
@@ -73,13 +72,13 @@ class Trie_Loading_Tests: XCTestCase {
             // #0 edge label
             0x41, 0x42, 0x00,
             // #0 node offset
-            0x0a,
+            0x0A,
             // #1 edge label
             0x41, 0x43, 0x00,
             // #1 node offset
-            0x0a,
+            0x0A,
             // Empty node
-            0x00, 0x00
+            0x00, 0x00,
         ])
 
         // When
@@ -87,16 +86,16 @@ class Trie_Loading_Tests: XCTestCase {
 
         // Then
         XCTAssertEqual(sut.children[0].label, [0x41, 0x42])
-        XCTAssertEqual(sut.children[0].labelRange, 6..<8)
+        XCTAssertEqual(sut.children[0].labelRange, 6 ..< 8)
         XCTAssertEqual(sut.children[1].label, [0x41, 0x43])
-        XCTAssertEqual(sut.children[1].labelRange, 10..<12)
+        XCTAssertEqual(sut.children[1].labelRange, 10 ..< 12)
     }
 
     func test_childTrieShouldExportSymbol_whenChildHasExportedSymbolInformation() {
         // Given
-        let payload = Data( [
+        let payload = Data([
             // Garbage
-            0xab, 0xab, 0xab, 0xab,
+            0xAB, 0xAB, 0xAB, 0xAB,
             // Root node exported symbol information length
             0x00,
             // Root node child count
@@ -108,11 +107,11 @@ class Trie_Loading_Tests: XCTestCase {
             // Subnode exported symbol information length
             0x03,
             // Subnode exported symbol information
-            0x00, 0x90, 0x4e,
+            0x00, 0x90, 0x4E,
             // Subnode child count
             0x00,
             // Empty node
-            0x00, 0x00
+            0x00, 0x00,
         ])
 
         // When
@@ -126,7 +125,7 @@ class Trie_Loading_Tests: XCTestCase {
         // Given
         let payload = Data([
             // Garbage
-            0xab, 0xab, 0xab, 0xab,
+            0xAB, 0xAB, 0xAB, 0xAB,
             // Root node exported symbol information length
             0x00,
             // Root node child count
@@ -140,7 +139,7 @@ class Trie_Loading_Tests: XCTestCase {
             // Subnode child count
             0x00,
             // Empty node
-            0x00, 0x00
+            0x00, 0x00,
         ])
 
         // When
@@ -154,7 +153,7 @@ class Trie_Loading_Tests: XCTestCase {
         // Given
         let payload = Data([
             // Garbage
-            0xab, 0xab, 0xab, 0xab,
+            0xAB, 0xAB, 0xAB, 0xAB,
 
             // Root node exported symbol information length
             0x00,
@@ -163,7 +162,7 @@ class Trie_Loading_Tests: XCTestCase {
             // #0 edge label
             0x41, 0x42, 0x00,
             // #0 node offset
-            0x0a,
+            0x0A,
             // #1 edge label
             0x41, 0x43, 0x00,
             // #1 node offset
@@ -172,7 +171,7 @@ class Trie_Loading_Tests: XCTestCase {
             // #0 exported symbol information length
             0x03,
             // #0 exported symbol information
-            0x00, 0x90, 0x4e,
+            0x00, 0x90, 0x4E,
             // #0 child count
             0x01,
             // #2 edge label
@@ -183,7 +182,7 @@ class Trie_Loading_Tests: XCTestCase {
             // #2 exported symbol information length
             0x03,
             // #2 exported symbol information
-            0x00, 0x90, 0x4e,
+            0x00, 0x90, 0x4E,
             // #2 child count
             0x00,
 
@@ -203,14 +202,14 @@ class Trie_Loading_Tests: XCTestCase {
             // #3 exported symbol information length
             0x03,
             // #3 exported symbol information
-            0x00, 0x90, 0x4e,
+            0x00, 0x90, 0x4E,
             // #3 child count
             0x00,
 
             // #4 exported symbol information length
             0x03,
             // #4 exported symbol information
-            0x00, 0x90, 0x4e,
+            0x00, 0x90, 0x4E,
             // #4 child count
             0x00,
         ])
@@ -223,23 +222,23 @@ class Trie_Loading_Tests: XCTestCase {
         XCTAssertEqual(sut.children.count, 2)
         // #0 node
         XCTAssert(sut.children[0].exportsSymbol)
-        XCTAssertEqual(sut.children[0].label, [ 0x41, 0x42 ])
+        XCTAssertEqual(sut.children[0].label, [0x41, 0x42])
         XCTAssertEqual(sut.children[0].children.count, 1)
         // #2 node
         XCTAssert(sut.children[0].children[0].exportsSymbol)
-        XCTAssertEqual(sut.children[0].children[0].label, [ 0x43, 0x44 ])
+        XCTAssertEqual(sut.children[0].children[0].label, [0x43, 0x44])
         XCTAssert(sut.children[0].children[0].children.isEmpty)
         // #1 node
         XCTAssertFalse(sut.children[1].exportsSymbol)
-        XCTAssertEqual(sut.children[1].label, [ 0x41, 0x43 ])
+        XCTAssertEqual(sut.children[1].label, [0x41, 0x43])
         XCTAssertEqual(sut.children[1].children.count, 2)
         // #3 node
         XCTAssert(sut.children[1].children[0].exportsSymbol)
-        XCTAssertEqual(sut.children[1].children[0].label, [ 0x44, 0x45 ])
+        XCTAssertEqual(sut.children[1].children[0].label, [0x44, 0x45])
         XCTAssert(sut.children[1].children[0].children.isEmpty)
         // #4 node
         XCTAssert(sut.children[1].children[1].exportsSymbol)
-        XCTAssertEqual(sut.children[1].children[1].label, [ 0x46, 0x47 ])
+        XCTAssertEqual(sut.children[1].children[1].label, [0x46, 0x47])
         XCTAssert(sut.children[1].children[1].children.isEmpty)
     }
 }

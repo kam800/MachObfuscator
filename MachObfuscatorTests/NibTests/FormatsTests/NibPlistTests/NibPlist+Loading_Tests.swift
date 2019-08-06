@@ -2,7 +2,6 @@ import Foundation
 import XCTest
 
 class NibPlist_Loading_Tests: XCTestCase {
-
     func test_canLoad_shouldBeTrueForMacNib() {
         XCTAssert(NibPlist.canLoad(from: URL.macNib))
     }
