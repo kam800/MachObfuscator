@@ -110,7 +110,8 @@ class ObfuscationSymbols_Building_buildForObfuscationPaths_Tests: XCTestCase {
                            .union(unobfuscableDependenciesSymbols)
                            .union(cstringsSymbols)
                            .union(frameworkHeaderSymbols)
-                           .union(skippedSymbols))
+                           .union(skippedSymbols)
+                           .union(Mach.libobjcSelectors))
     }
 
     func test_blacklistClassNames_shouldContainUnobfuscableDependenciesClassNames_andAllCstringsClassNames_andFrameworkHeaderClassNames() {
