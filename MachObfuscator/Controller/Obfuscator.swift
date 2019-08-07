@@ -76,6 +76,8 @@ class Obfuscator {
         LOGGER.info("\(manglingMap.classNames.count) mangled classes")
 
         reporter.reportObjcMangling(map: manglingMap)
+        reporter.reportBlacklistedSymbols(symbolKind: "ObjC selectors", symbols: Array(symbols.removedList.selectors))
+        reporter.reportBlacklistedSymbols(symbolKind: "ObjC classes", symbols: Array(symbols.removedList.classes))
 
         if options.swiftReflectionObfuscation {
             LOGGER.info("Will obfuscate Swift reflection sections")

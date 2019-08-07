@@ -67,7 +67,9 @@ extension ObfuscationSymbols {
 
         let whiteList = ObjCSymbols(selectors: whitelistSelectors, classes: whitelistClasses)
         let blackList = ObjCSymbols(selectors: blacklistSelectors, classes: blacklistClasses)
-        return ObfuscationSymbols(whitelist: whiteList, blacklist: blackList, exportTriesPerCpuIdPerURL: whitelistExportTriePerCpuIdPerURL)
+        let removedList = ObjCSymbols(selectors: userSelectors.intersection(blacklistSelectors), classes: userClasses.intersection(blacklistClasses))
+
+        return ObfuscationSymbols(whitelist: whiteList, blacklist: blackList, removedList: removedList, exportTriesPerCpuIdPerURL: whitelistExportTriePerCpuIdPerURL)
     }
 }
 
