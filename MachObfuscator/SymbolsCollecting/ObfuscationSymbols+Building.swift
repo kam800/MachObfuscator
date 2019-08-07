@@ -4,7 +4,8 @@ extension ObfuscationSymbols {
     static func buildFor(obfuscationPaths: ObfuscationPaths,
                          loader: SymbolsSourceLoader,
                          sourceSymbolsLoader: SourceSymbolsLoader,
-                         skippedSymbolsSources: [URL]) -> ObfuscationSymbols {
+                         skippedSymbolsSources: [URL],
+                         objcOptions: ObjcOptions = ObjcOptions()) -> ObfuscationSymbols {
         let systemSources = time(withTag: "systemSources") { try! obfuscationPaths.unobfuscableDependencies.flatMap { try loader.load(forURL: $0) } }
 
         let userSourcesPerPath = time(withTag: "userSources") { [URL: [SymbolsSource]](uniqueKeysWithValues: obfuscationPaths.obfuscableImages.map { ($0, try! loader.load(forURL: $0)) }) }
@@ -37,7 +38,17 @@ extension ObfuscationSymbols {
             .union(skippedSymbols.selectors)
         let blacklistSetters = blackListGetters.map { $0.asSetter }.uniq
 
-        let blacklistSelectors = (Array(blackListGetters) + Array(blacklistSetters)).uniq
+        let blacklistedSelectorsByRegex = userSelectors.filter { selector in
+            objcOptions.selectorsBlacklistRegex.contains(where: { regex in
+                selector.range(of: regex, options: .regularExpression, range: nil, locale: nil) != nil
+            })
+        }
+        let notFoundBlacklistedSelectors = Set(objcOptions.selectorsBlacklist).subtracting(userSelectors)
+        if !notFoundBlacklistedSelectors.isEmpty {
+            LOGGER.warn("Some selectors specified on blacklist were not found: \(notFoundBlacklistedSelectors)")
+        }
+
+        let blacklistSelectors = (Array(blackListGetters) + Array(blacklistSetters) + objcOptions.selectorsBlacklist + blacklistedSelectorsByRegex).uniq
         // TODO: Array(userCStrings) should be opt-in
         let blacklistClasses: Set<String> =
             systemHeaderSymbols.classNames

@@ -61,6 +61,10 @@ Options:
   --erase-methtype        erase methType section (objc/runtime.h methods may work incorrectly)
   -D, --machoview-doom    MachOViewDoom, MachOView crashes after trying to open your binary (doesn't work with caesarMangler)
   --swift-reflection      obfuscate Swift reflection sections (typeref and reflstr). May cause problems for Swift >= 4.2
+
+  --objc-blacklist-selector NAME[,NAME...]  do not obfuscate given selectors
+  --objc-blacklist-selector-regex REGEXP    do not obfuscate selectors matching given regular expression
+
   --preserve-symtab       do not erase SYMTAB strings
   --erase-section SEGMENT,SECTION    erase given section, for example: __TEXT,__swift5_reflstr
   
