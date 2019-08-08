@@ -69,8 +69,9 @@ Options:
   --replace-cstring STRING           replace arbitrary __cstring with given replacement (use with caution). Matches entire string,
   --replace-cstring-with STRING      adds padding 0's if needed. These options must be used as a pair.
   
-  --skip-all-frameworks       do not obfuscate frameworks
-  --skip-framework framework  do not obfuscate given framework
+  --skip-all-frameworks              do not obfuscate frameworks
+  --skip-framework framework         do not obfuscate given framework
+  --obfuscate-framework framework    obfuscate given framework (whitelist for --skip-all-frameworks)
   
   -m mangler_key,
   --mangler mangler_key   select mangler to generate obfuscated symbols

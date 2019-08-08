@@ -71,6 +71,7 @@ extension Options {
             case eraseSection
             case eraseMethType
             case eraseSourceFileNames
+            case obfuscateFramework
             case skipFramework
             case skipAllFrameworks
             case skipSymbolsFromSources
@@ -99,6 +100,7 @@ extension Options {
             option(name: Options.newCCharPtrFromStaticString("erase-source-file-names"), has_arg: required_argument, flag: nil, val: OptLongCases.eraseSourceFileNames.rawValue),
             option(name: Options.newCCharPtrFromStaticString("replace-cstring"), has_arg: required_argument, flag: nil, val: OptLongCases.replaceCstring.rawValue),
             option(name: Options.newCCharPtrFromStaticString("replace-with"), has_arg: required_argument, flag: nil, val: OptLongCases.replaceWith.rawValue),
+            option(name: Options.newCCharPtrFromStaticString("obfuscate-framework"), has_arg: required_argument, flag: nil, val: OptLongCases.obfuscateFramework.rawValue),
             option(name: Options.newCCharPtrFromStaticString("skip-framework"), has_arg: required_argument, flag: nil, val: OptLongCases.skipFramework.rawValue),
             option(name: Options.newCCharPtrFromStaticString("skip-all-frameworks"), has_arg: no_argument, flag: nil, val: OptLongCases.skipAllFrameworks.rawValue),
             option(name: Options.newCCharPtrFromStaticString("mangler"), has_arg: required_argument, flag: nil, val: OptLongChars.manglerKey),
@@ -152,6 +154,8 @@ extension Options {
                 cstringsReplacements[currentCstring] = replacement
                 // wait for next pair
                 currentCstringToReplace = nil
+            case OptLongCases.obfuscateFramework.rawValue:
+                obfuscableFilesFilter = obfuscableFilesFilter.whitelist(ObfuscableFilesFilter.isFramework(framework: String(cString: optarg)))
             case OptLongCases.skipFramework.rawValue:
                 obfuscableFilesFilter = obfuscableFilesFilter.and(ObfuscableFilesFilter.skipFramework(framework: String(cString: optarg)))
             case OptLongCases.skipAllFrameworks.rawValue:
@@ -209,8 +213,9 @@ extension Options {
           --replace-cstring STRING           replace arbitrary __cstring with given replacement (use with caution). Matches entire string,
           --replace-cstring-with STRING      adds padding 0's if needed. These options must be used as a pair.
         
-          --skip-all-frameworks       do not obfuscate frameworks
-          --skip-framework framework  do not obfuscate given framework
+          --skip-all-frameworks              do not obfuscate frameworks
+          --skip-framework framework         do not obfuscate given framework
+          --obfuscate-framework framework    obfuscate given framework (whitelist for --skip-all-frameworks)
         
           -m mangler_key,
           --mangler mangler_key   select mangler to generate obfuscated symbols
