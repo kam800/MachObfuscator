@@ -1,7 +1,6 @@
 import XCTest
 
 class RealWordsExportTrieMangler_Tests: XCTestCase {
-
     var sut: RealWordsExportTrieMangler!
 
     var rootTrie: Trie!
@@ -19,9 +18,9 @@ class RealWordsExportTrieMangler_Tests: XCTestCase {
         childrenLayer0 = assignChildren(childrenLayer1, to: childrenLayer0)
 
         rootTrie = Trie(exportsSymbol: false,
-                labelRange: 0..<1,
-                label: [0],
-                children: childrenLayer0)
+                        labelRange: 0 ..< 1,
+                        label: [0],
+                        children: childrenLayer0)
     }
 
     override func tearDown() {
@@ -53,22 +52,22 @@ class RealWordsExportTrieMangler_Tests: XCTestCase {
     }
 
     private func trieChildren(number: Int) -> [Trie] {
-        return (1...number).map { index in
-            return Trie(exportsSymbol: index % 2 == 0,
-                    labelRange: 0..<UInt64(number),
-                    label: randomLabels(count: number),
-                    children: [])
+        return (1 ... number).map { index in
+            Trie(exportsSymbol: index % 2 == 0,
+                 labelRange: 0 ..< UInt64(number),
+                 label: randomLabels(count: number),
+                 children: [])
         }
     }
 
     private func randomLabels(count: Int) -> [UInt8] {
-        return  (0..<count).map { _ in
-           return (UInt8.random(in: 1...UInt8.max))
+        return (0 ..< count).map { _ in
+            UInt8.random(in: 1 ... UInt8.max)
         }
     }
 
     private func assignChildren(_ children: [Trie], to parent: [Trie]) -> [Trie] {
-        return parent.map { (trie) in
+        return parent.map { trie in
             var copy = trie
             copy.children = children
             return copy

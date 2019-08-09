@@ -2,10 +2,9 @@ import Cocoa
 import SampleMacAppViewModel
 
 class ViewController: NSViewController {
-
     let viewModel = ViewModel()
 
-    @IBOutlet weak var counterLabel: NSTextField!
+    @IBOutlet var counterLabel: NSTextField!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -14,7 +13,7 @@ class ViewController: NSViewController {
         viewModel.delegate = self
     }
 
-    @IBAction func didTapIncrement(_ sender: NSButton) {
+    @IBAction func didTapIncrement(_: NSButton) {
         viewModel.increment()
     }
 }

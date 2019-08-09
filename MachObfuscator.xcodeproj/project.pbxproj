@@ -1006,6 +1006,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D4F7925F1FD74E4800EE6EBE /* Build configuration list for PBXNativeTarget "MachObfuscatorTests" */;
 			buildPhases = (
+				84A378CE22E8AE3C00F53C35 /* Swift Format */,
 				D4F792541FD74E4800EE6EBE /* Sources */,
 				D4F792551FD74E4800EE6EBE /* Frameworks */,
 				D4F792561FD74E4800EE6EBE /* Resources */,
@@ -1079,6 +1080,24 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		84A378CE22E8AE3C00F53C35 /* Swift Format */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Swift Format";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if type swiftformat > /dev/null\nthen\nswiftformat MachObfuscatorTests\nelse\necho \"warning: swiftformat missing\"\nfi\n";
+		};
 		D481608B211CF068008671D8 /* Swift Format */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;

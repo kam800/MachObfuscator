@@ -1,7 +1,6 @@
 import XCTest
 
 class Mach_Replacing_importEntries_Tests: XCTestCase {
-
     var sut: Image!
     var firstImportEntry: ImportStackEntry!
     var originalSymbolBytes: [UInt8]!
@@ -34,14 +33,16 @@ class Mach_Replacing_importEntries_Tests: XCTestCase {
             URL.machoMacExecutable: [
                 sut.machs[0].cpu.asCpuId:
                     (unobfuscated: Trie.empty,
-                     obfuscated: Trie.empty)],
+                     obfuscated: Trie.empty),
+            ],
             URL.sampleDylib: [
                 sut.machs[0].cpu.asCpuId:
                     (unobfuscated: Trie.with(labelBytes: originalSymbolBytes),
-                     obfuscated: Trie.with(labelBytes: randomSubstitutionBytes))],
+                     obfuscated: Trie.with(labelBytes: randomSubstitutionBytes)),
+            ],
         ])
         let paths = ObfuscationPaths(resolvedDylibMapPerImageURL:
-            [URL.machoMacExecutable:[symbolDylib: URL.sampleDylib]])
+            [URL.machoMacExecutable: [symbolDylib: URL.sampleDylib]])
 
         // When
         sut.replaceSymbols(withMap: map, paths: paths)
@@ -57,14 +58,16 @@ class Mach_Replacing_importEntries_Tests: XCTestCase {
             URL.machoMacExecutable: [
                 sut.machs[0].cpu.asCpuId:
                     (unobfuscated: Trie.empty,
-                     obfuscated: Trie.empty)],
+                     obfuscated: Trie.empty),
+            ],
             URL.sampleDylib: [
                 sut.machs[0].cpu.asCpuId:
                     (unobfuscated: Trie.empty,
-                     obfuscated: Trie.empty)],
-            ])
+                     obfuscated: Trie.empty),
+            ],
+        ])
         let paths = ObfuscationPaths(resolvedDylibMapPerImageURL:
-            [URL.machoMacExecutable:[symbolDylib: URL.sampleDylib]])
+            [URL.machoMacExecutable: [symbolDylib: URL.sampleDylib]])
 
         // When
         sut.replaceSymbols(withMap: map, paths: paths)
@@ -80,10 +83,11 @@ class Mach_Replacing_importEntries_Tests: XCTestCase {
             URL.machoMacExecutable: [
                 sut.machs[0].cpu.asCpuId:
                     (unobfuscated: Trie.empty,
-                     obfuscated: Trie.empty)]]
-        )
+                     obfuscated: Trie.empty),
+            ],
+        ])
         let paths = ObfuscationPaths(resolvedDylibMapPerImageURL:
-            [URL.machoMacExecutable:[symbolDylib: URL.sampleDylib]])
+            [URL.machoMacExecutable: [symbolDylib: URL.sampleDylib]])
 
         // When
         sut.replaceSymbols(withMap: map, paths: paths)
@@ -99,8 +103,9 @@ class Mach_Replacing_importEntries_Tests: XCTestCase {
             URL.machoMacExecutable: [
                 sut.machs[0].cpu.asCpuId:
                     (unobfuscated: Trie.empty,
-                     obfuscated: Trie.empty)]]
-        )
+                     obfuscated: Trie.empty),
+            ],
+        ])
         let paths = ObfuscationPaths(resolvedDylibMapPerImageURL: [URL.machoMacExecutable: [:]])
 
         // When
@@ -114,18 +119,17 @@ class Mach_Replacing_importEntries_Tests: XCTestCase {
 
 private extension Array where Element == UInt8 {
     var randomSymbolSubstitution: [UInt8] {
-        return map { _ in UInt8.random(in: 0x20...0x7E) }
+        return map { _ in UInt8.random(in: 0x20 ... 0x7E) }
     }
 }
 
 private extension Trie {
-    static let empty = Trie(exportsSymbol: false, labelRange: 0..<0, label: [], children: [])
+    static let empty = Trie(exportsSymbol: false, labelRange: 0 ..< 0, label: [], children: [])
     static func with(labelBytes: [UInt8]) -> Trie {
         return Trie(exportsSymbol: false,
-                    labelRange: 0..<0,
+                    labelRange: 0 ..< 0,
                     label: labelBytes,
-                    children: [ Trie(exportsSymbol: true, labelRange: 0..<0, label: [], children: []) ])
-
+                    children: [Trie(exportsSymbol: true, labelRange: 0 ..< 0, label: [], children: [])])
     }
 }
 

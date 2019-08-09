@@ -1,7 +1,7 @@
 import Foundation
 
 class ObfuscationSymbolsTestSourceSymbolsLoader {
-    fileprivate enum Error: Swift.Error {
+    private enum Error: Swift.Error {
         case noEntryForPath
     }
 
@@ -15,7 +15,6 @@ class ObfuscationSymbolsTestSourceSymbolsLoader {
             symbolsPerUrl[path] = newValue
         }
     }
-
 }
 
 extension ObfuscationSymbolsTestSourceSymbolsLoader: SourceSymbolsLoader {

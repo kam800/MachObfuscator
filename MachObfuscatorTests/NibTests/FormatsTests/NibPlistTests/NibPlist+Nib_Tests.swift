@@ -1,7 +1,6 @@
 import XCTest
 
 class NibPlist_Nib_Tests: NibModifying_TestsBase {
-
     override func setUp() {
         super.setUp()
         createSut(type: NibPlist.self, fromURL: URL.macNib)
@@ -13,7 +12,7 @@ class NibPlist_Nib_Tests: NibModifying_TestsBase {
             "titleLabel",
             "nextKeyView",
             "nextKeyView",
-            "actionWasTapped:"
+            "actionWasTapped:",
         ]
         XCTAssertEqual(sut.selectors.sorted(),
                        expectedSelectors.sorted())
@@ -24,7 +23,7 @@ class NibPlist_Nib_Tests: NibModifying_TestsBase {
             "NSApplication",
             "NSObject",
             "_TtC19MachObfuscatorTests7MacView",
-            "CustomObjCButton"
+            "CustomObjCButton",
         ]
         XCTAssertEqual(sut.classNames.sorted(),
                        expectedClassNames.sorted())
@@ -33,9 +32,9 @@ class NibPlist_Nib_Tests: NibModifying_TestsBase {
     func test_modifySelectors_shouldChangeOnlyMatchingOutletsAndActions() {
         // When
         sut.modifySelectors(withMapping: [
-            "nextKeyView" : "nkv",
-            "noSuch" : "selector",
-            "actionWasTapped:" : "memoryMonitor"
+            "nextKeyView": "nkv",
+            "noSuch": "selector",
+            "actionWasTapped:": "memoryMonitor",
         ])
 
         // Then
@@ -46,7 +45,7 @@ class NibPlist_Nib_Tests: NibModifying_TestsBase {
             "titleLabel",
             "nkv",
             "nkv",
-            "memoryMonitor"
+            "memoryMonitor",
         ]
         XCTAssertEqual(sut.selectors.sorted(),
                        expectedSelectors.sorted())
@@ -55,8 +54,8 @@ class NibPlist_Nib_Tests: NibModifying_TestsBase {
     func test_modifyClassNames_shouldChangeOnlyMatchingClasses() {
         // When
         sut.modifyClassNames(withMapping: [
-            "_TtC19MachObfuscatorTests7MacView" : "foo",
-            "noSuch" : "class"
+            "_TtC19MachObfuscatorTests7MacView": "foo",
+            "noSuch": "class",
         ])
 
         // Then
@@ -66,7 +65,7 @@ class NibPlist_Nib_Tests: NibModifying_TestsBase {
             "NSApplication",
             "NSObject",
             "foo",
-            "CustomObjCButton"
+            "CustomObjCButton",
         ]
         XCTAssertEqual(sut.classNames.sorted(),
                        expectedClassNames.sorted())

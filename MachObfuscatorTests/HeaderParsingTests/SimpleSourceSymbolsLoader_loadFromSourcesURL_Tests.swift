@@ -1,7 +1,6 @@
 import XCTest
 
 class SimpleSourceSymbolsLoader_loadFromSourcesURL_Tests: XCTestCase {
-
     var symbols: SourceSymbols!
 
     override func setUp() {

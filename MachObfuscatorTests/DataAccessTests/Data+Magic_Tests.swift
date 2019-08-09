@@ -1,12 +1,11 @@
 import XCTest
 
 class Data_Magic_Tests: XCTestCase {
-
     func test_magicFromData() {
         // Given
-        let data = Data( [ 0xca, 0xfe, 0xba, 0xbe, 0x01, 0x02, 0x03, 0x04 ])
+        let data = Data([0xCA, 0xFE, 0xBA, 0xBE, 0x01, 0x02, 0x03, 0x04])
 
         // Expect
-        XCTAssertEqual(data.magic, 0xbebafeca)
+        XCTAssertEqual(data.magic, 0xBEBA_FECA)
     }
 }
