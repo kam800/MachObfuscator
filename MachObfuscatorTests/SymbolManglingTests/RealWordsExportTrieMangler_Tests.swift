@@ -1,26 +1,20 @@
 import XCTest
 
 class RealWordsExportTrieMangler_Tests: XCTestCase {
-    var sut: RealWordsExportTrieMangler!
-
-    var rootTrie: Trie!
+    private var sut: RealWordsExportTrieMangler!
+    private var rootTrie: Trie!
 
     override func setUp() {
         super.setUp()
         sut = RealWordsExportTrieMangler(machOViewDoomEnabled: false)
-        var childrenLayer0 = trieChildren(number: 3)
-        var childrenLayer1 = trieChildren(number: 2)
-        var childrenLayer2 = trieChildren(number: 2)
-        let childrenLayer3 = trieChildren(number: 2)
 
-        childrenLayer2 = assignChildren(childrenLayer3, to: childrenLayer2)
-        childrenLayer1 = assignChildren(childrenLayer2, to: childrenLayer1)
-        childrenLayer0 = assignChildren(childrenLayer1, to: childrenLayer0)
-
-        rootTrie = Trie(exportsSymbol: false,
-                        labelRange: 0 ..< 1,
-                        label: [0],
-                        children: childrenLayer0)
+        rootTrie = Trie.testTrie(levels: [
+            (labelLength: 1, childrenCount: 3),
+            (labelLength: 3, childrenCount: 3),
+            (labelLength: 2, childrenCount: 2),
+            (labelLength: 2, childrenCount: 2),
+            (labelLength: 2, childrenCount: 0),
+        ])
     }
 
     override func tearDown() {
@@ -29,8 +23,8 @@ class RealWordsExportTrieMangler_Tests: XCTestCase {
     }
 
     func test_exportTrieObfuscationWithoutMachoViewDoom() {
-        let obfuscatedTrie = sut.mangle(trie: rootTrie, fillingRootLabelWith: 0)
-        XCTAssertEqual(obfuscatedTrie.label, [0])
+        let obfuscatedTrie = sut.mangle(trie: rootTrie)
+        XCTAssertEqual(obfuscatedTrie.label, [1])
         XCTAssertEqual(obfuscatedTrie.children[0].label, [1, 1, 1])
         XCTAssertEqual(obfuscatedTrie.children[0].children[1].label, [2, 2])
         XCTAssertEqual(obfuscatedTrie.children[1].label, [2, 2, 2])
@@ -41,8 +35,8 @@ class RealWordsExportTrieMangler_Tests: XCTestCase {
 
     func test_exportTrieObfuscationWithMachoViewDoom() {
         sut = RealWordsExportTrieMangler(machOViewDoomEnabled: true)
-        let obfuscatedTrie = sut.mangle(trie: rootTrie, fillingRootLabelWith: 0)
-        XCTAssertEqual(obfuscatedTrie.label, [0])
+        let obfuscatedTrie = sut.mangle(trie: rootTrie)
+        XCTAssertEqual(obfuscatedTrie.label, [1])
         XCTAssertEqual(obfuscatedTrie.children[0].label, [0, 0, 0])
         XCTAssertEqual(obfuscatedTrie.children[0].children[1].label, [1, 1])
         XCTAssertEqual(obfuscatedTrie.children[0].label, [0, 0, 0])
@@ -51,26 +45,48 @@ class RealWordsExportTrieMangler_Tests: XCTestCase {
         XCTAssertEqual(obfuscatedTrie.children[2].children[1].label, [1, 1])
     }
 
-    private func trieChildren(number: Int) -> [Trie] {
-        return (1 ... number).map { index in
-            Trie(exportsSymbol: index % 2 == 0,
-                 labelRange: 0 ..< UInt64(number),
-                 label: randomLabels(count: number),
-                 children: [])
-        }
-    }
-
-    private func randomLabels(count: Int) -> [UInt8] {
-        return (0 ..< count).map { _ in
-            UInt8.random(in: 1 ... UInt8.max)
-        }
-    }
-
     private func assignChildren(_ children: [Trie], to parent: [Trie]) -> [Trie] {
         return parent.map { trie in
             var copy = trie
             copy.children = children
             return copy
         }
+    }
+}
+
+private typealias TrieLevel = (labelLength: UInt, childrenCount: UInt)
+
+private extension Trie {
+    static func testTrie(levels: [TrieLevel]) -> Trie {
+        guard !levels.isEmpty else {
+            return Trie(exportsSymbol: true,
+                        labelRange: 0 ..< 3,
+                        label: [UInt8].random(count: 3),
+                        children: [])
+        }
+
+        let headLevel = levels[0]
+        let tailLevels = Array(levels.suffix(from: 1))
+        let children = tailLevels.isEmpty
+            ? []
+            : (0 ..< headLevel.childrenCount).map { _ in testTrie(levels: tailLevels) }
+        return Trie(exportsSymbol: tailLevels.count % 2 == 0,
+                    labelRange: 0 ..< UInt64(headLevel.labelLength),
+                    label: [UInt8].random(count: headLevel.labelLength),
+                    children: children)
+    }
+}
+
+private extension Array where Element == UInt8 {
+    static func random(count: UInt) -> [UInt8] {
+        return (0 ..< count).map { _ in
+            UInt8.random(in: 1 ... UInt8.max)
+        }
+    }
+}
+
+private extension Array where Element: Hashable {
+    var containsUniqueElements: Bool {
+        return count == Set(self).count
     }
 }

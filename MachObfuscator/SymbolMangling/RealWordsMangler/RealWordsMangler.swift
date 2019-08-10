@@ -86,7 +86,7 @@ private extension ObfuscationSymbols {
         return exportTriesPerCpuIdPerURL
             .mapValues { exportTriesPerCpuId in
                 exportTriesPerCpuId.mapValues {
-                    ($0, exportTrieMangler.mangle(trie: $0, fillingRootLabelWith: 0))
+                    ($0, exportTrieMangler.mangle(trie: $0))
                 }
             }
     }
