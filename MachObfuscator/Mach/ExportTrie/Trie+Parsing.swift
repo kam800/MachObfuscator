@@ -8,7 +8,7 @@ extension Trie {
     private var exportedLabels: [[UInt8]] {
         let childrenLabels = children.flatMap { $0.exportedLabels }.map { label + $0 }
         if exportsSymbol {
-            return childrenLabels + [label]
+            return [label] + childrenLabels
         } else {
             return childrenLabels
         }
