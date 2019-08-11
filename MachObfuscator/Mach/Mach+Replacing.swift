@@ -46,7 +46,8 @@ private extension Mach {
             fatalError()
         }
 
-        if let importStack = importStack,
+        let localImportStack = importStack
+        if !localImportStack.isEmpty,
             let resolvedDylibsMap = paths.resolvedDylibMapPerImageURL[imageURL] {
             let resolvedDylibs = dylibs.map { resolvedDylibsMap[$0] }
             let obfuscatedSymbolPerUnobfuscatedSymbolPerImageURL: [URL: [String: String]] =
@@ -59,7 +60,7 @@ private extension Mach {
                             obfuscatedTrie.exportedLabelStrings)
                     return Dictionary(uniqueKeysWithValues: unobfuscatedObfuscatedExportedLabelPairs)
                 }
-            for importEntry in importStack where importEntry.dylibOrdinal > 0 {
+            for importEntry in localImportStack where importEntry.dylibOrdinal > 0 {
                 let dylibIndex = importEntry.dylibOrdinal - 1
                 if let dylibURL = resolvedDylibs[dylibIndex],
                     let obfuscatedSymbolPerUnobfuscatedSymbol =

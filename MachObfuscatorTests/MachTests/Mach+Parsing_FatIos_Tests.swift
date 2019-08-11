@@ -18,13 +18,40 @@ class Mach_Parsing_FatIos_Tests: XCTestCase {
         }
         XCTAssertFalse(fat.architectures.isEmpty)
         let mach = fat.architectures[0].mach
+
         XCTAssertEqual(Set(mach.selectors), Set(expectedSelectors))
         XCTAssertEqual(Set(mach.classNames), Set(expectedClassNames))
         XCTAssertEqual(Set(mach.cstrings), Set(expectedCstrings))
         XCTAssertEqual(Set(mach.dynamicPropertyNames), Set(expectedDynamicProperties))
         XCTAssertEqual(mach.exportedTrie?.children.count, 1)
-        XCTAssertEqual(mach.importStack?.count, 67)
+        XCTAssertEqual(mach.importStack.count, 67)
         // TODO: sample should have some weak bindings
-        XCTAssertEqual(mach.importStack?.filter { $0.weak }.count, 0)
+        XCTAssertEqual(mach.importStack.filter { $0.weak }.count, 0)
+    }
+
+    func test_shouldNotFailOnEmptyRangeInLoadCommand() {
+        guard case let .fat(fat) = sut.contents else {
+            XCTFail("Unexpected contents")
+            return
+        }
+        XCTAssertFalse(fat.architectures.isEmpty)
+        var mach = fat.architectures[0].mach
+
+        mach.setEmptyRegionFor(section: "__objc_methname", segment: "__TEXT")
+        mach.setEmptyRegionFor(section: "__objc_classname", segment: "__TEXT")
+        mach.setEmptyRegionFor(section: "__cstring", segment: "__TEXT")
+        mach.setEmptyRegionFor(section: "__objc_classlist", segment: "__DATA")
+        mach.setEmptyRegionFor(section: "__objc_catlist", segment: "__DATA")
+        mach.dyldInfo!.bind = 0 ..< 0
+        mach.dyldInfo!.exportRange = 0 ..< 0
+        mach.dyldInfo!.lazyBind = 0 ..< 0
+        mach.dyldInfo!.weakBind = 0 ..< 0
+
+        XCTAssert(mach.selectors.isEmpty)
+        XCTAssert(mach.classNames.isEmpty)
+        XCTAssert(mach.cstrings.isEmpty)
+        XCTAssert(mach.dynamicPropertyNames.isEmpty)
+        XCTAssertNil(mach.exportedTrie)
+        XCTAssert(mach.importStack.isEmpty)
     }
 }
