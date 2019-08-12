@@ -76,7 +76,7 @@ Options:
   --mangler mangler_key   select mangler to generate obfuscated symbols
 
 Development options:
-  --xx-without-dependencies          do not analyze dependencies
+  --xx-no-analyze-dependencies       do not analyze dependencies
 
 Available manglers by mangler_key:
   caesar - ROT13 all objc symbols and dyld info

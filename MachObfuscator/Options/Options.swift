@@ -79,11 +79,14 @@ extension Options {
             case replaceWith
 
             // extra/development options
-            case xxWithoutDependencies
+            case xxNoAnalyzeDependencies
         }
 
         var currentCstringToReplace: String?
 
+        // Command line options should be named according to following rules:
+        // - be consistent with GNU standards (https://www.gnu.org/prep/standards/html_node/Command_002dLine-Interfaces.html, https://www.gnu.org/prep/standards/html_node/Option-Table.html)
+        // - for options that disable some default behaviour prefer to use `no-` prefix
         let longopts: [option] = [
             option(name: Options.newCCharPtrFromStaticString("help"), has_arg: no_argument, flag: nil, val: OptLongChars.help),
             option(name: Options.newCCharPtrFromStaticString("verbose"), has_arg: no_argument, flag: nil, val: OptLongChars.verbose),
@@ -102,7 +105,7 @@ extension Options {
             option(name: Options.newCCharPtrFromStaticString("skip-symbols-from-sources"), has_arg: required_argument, flag: nil, val: OptLongCases.skipSymbolsFromSources.rawValue),
 
             // extra options
-            option(name: Options.newCCharPtrFromStaticString("xx-without-dependencies"), has_arg: no_argument, flag: nil, val: OptLongCases.xxWithoutDependencies.rawValue),
+            option(name: Options.newCCharPtrFromStaticString("xx-no-analyze-dependencies"), has_arg: no_argument, flag: nil, val: OptLongCases.xxNoAnalyzeDependencies.rawValue),
             option(), // { NULL, NULL, NULL, NULL }
         ]
 
@@ -158,7 +161,7 @@ extension Options {
                 skippedSymbolsSources.append(sourcesPath)
 
             // extra options
-            case OptLongCases.xxWithoutDependencies.rawValue:
+            case OptLongCases.xxNoAnalyzeDependencies.rawValue:
                 analyzeDependencies = false
 
             case OptLongChars.unknownOption:
@@ -217,7 +220,7 @@ extension Options {
                                   This option can be used multiple times to add multiple paths.
         
         Development options:
-          --xx-without-dependencies          do not analyze dependencies
+          --xx-no-analyze-dependencies       do not analyze dependencies
 
         \(SymbolManglers.helpSummary)
         """
