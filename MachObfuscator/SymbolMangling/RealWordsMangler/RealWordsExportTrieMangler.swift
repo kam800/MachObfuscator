@@ -29,7 +29,7 @@ private extension Trie {
 
     @discardableResult mutating func fillRecursively(startingWithFillValue initialFillValue: UInt8,
                                                      minimumFillValue: UInt8) -> FillResult {
-        label.fill(with: initialFillValue)
+        label = Array(repeating: initialFillValue, count: label.count)
         var childFillValue = label.isEmpty
             ? initialFillValue // children won't get any prefix from their parent, need to iterate the parent's fillValue
             : minimumFillValue // children are safe to be filled with independent enumeration
@@ -50,11 +50,5 @@ private extension Trie {
             }
             return FillResult(finalFillValue: addResult.partialValue)
         }
-    }
-}
-
-private extension Array where Element == UInt8 {
-    mutating func fill(with fillValue: UInt8) {
-        self = map { _ in fillValue }
     }
 }
