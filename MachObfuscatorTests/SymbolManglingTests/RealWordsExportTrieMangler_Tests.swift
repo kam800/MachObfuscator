@@ -47,7 +47,7 @@ class RealWordsExportTrieMangler_Tests: XCTestCase {
     }
 }
 
-private typealias TrieLevel = (labelLength: UInt, childrenCount: UInt)
+private typealias TrieLevel = (labelLength: Int, childrenCount: Int)
 
 private extension Trie {
     static func testTrie(levels: [TrieLevel]) -> Trie {
@@ -71,7 +71,7 @@ private extension Trie {
 }
 
 private extension Array where Element == UInt8 {
-    static func random(count: UInt) -> [UInt8] {
+    static func random(count: Int) -> [UInt8] {
         return (0 ..< count).map { _ in
             UInt8.random(in: 1 ... UInt8.max)
         }
