@@ -31,6 +31,7 @@ struct Options {
     var sourceFileNamesPrefixes: [String] = []
     var cstringsReplacements: [String: String] = [:]
     var obfuscableFilesFilter = ObfuscableFilesFilter.defaultObfuscableFilesFilter()
+    var analyzeDependencies = true
     var manglerType: SymbolManglers? = SymbolManglers.defaultMangler
     var skippedSymbolsSources: [URL] = []
     var appDirectory: URL?
@@ -76,10 +77,16 @@ extension Options {
             case dryrun
             case replaceCstring
             case replaceWith
+
+            // extra/development options
+            case xxNoAnalyzeDependencies
         }
 
         var currentCstringToReplace: String?
 
+        // Command line options should be named according to following rules:
+        // - be consistent with GNU standards (https://www.gnu.org/prep/standards/html_node/Command_002dLine-Interfaces.html, https://www.gnu.org/prep/standards/html_node/Option-Table.html)
+        // - for options that disable some default behaviour prefer to use `no-` prefix
         let longopts: [option] = [
             option(name: Options.newCCharPtrFromStaticString("help"), has_arg: no_argument, flag: nil, val: OptLongChars.help),
             option(name: Options.newCCharPtrFromStaticString("verbose"), has_arg: no_argument, flag: nil, val: OptLongChars.verbose),
@@ -96,6 +103,9 @@ extension Options {
             option(name: Options.newCCharPtrFromStaticString("skip-all-frameworks"), has_arg: no_argument, flag: nil, val: OptLongCases.skipAllFrameworks.rawValue),
             option(name: Options.newCCharPtrFromStaticString("mangler"), has_arg: required_argument, flag: nil, val: OptLongChars.manglerKey),
             option(name: Options.newCCharPtrFromStaticString("skip-symbols-from-sources"), has_arg: required_argument, flag: nil, val: OptLongCases.skipSymbolsFromSources.rawValue),
+
+            // extra options
+            option(name: Options.newCCharPtrFromStaticString("xx-no-analyze-dependencies"), has_arg: no_argument, flag: nil, val: OptLongCases.xxNoAnalyzeDependencies.rawValue),
             option(), // { NULL, NULL, NULL, NULL }
         ]
 
@@ -149,6 +159,11 @@ extension Options {
             case OptLongCases.skipSymbolsFromSources.rawValue:
                 let sourcesPath = URL(fileURLWithPath: String(cString: optarg))
                 skippedSymbolsSources.append(sourcesPath)
+
+            // extra options
+            case OptLongCases.xxNoAnalyzeDependencies.rawValue:
+                analyzeDependencies = false
+
             case OptLongChars.unknownOption:
                 help = true
             default:
@@ -203,6 +218,9 @@ extension Options {
           --skip-symbols-from-sources PATH
                                   Don't obfuscate all the symbols found in PATH (searches for all nested *.[hm] files).
                                   This option can be used multiple times to add multiple paths.
+        
+        Development options:
+          --xx-no-analyze-dependencies       do not analyze dependencies
 
         \(SymbolManglers.helpSummary)
         """
