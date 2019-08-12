@@ -16,8 +16,8 @@ final class RealWordsExportTrieMangler: RealWordsExportTrieMangling {
         // That's why it is always empty in the `Trie` struct. But it feels unsafe to pass `0` for
         // `fillingRootLabelWith`, because `0` is a cstring end marker.
         var mutableTrie = trie
-        mutableTrie.fillRecursively(startingWithFillValue: minimumFillValue,
-                                    minimumFillValue: minimumFillValue)
+        _ = mutableTrie.fillRecursively(startingWithFillValue: minimumFillValue,
+                                        minimumFillValue: minimumFillValue)
         return mutableTrie
     }
 }
@@ -27,8 +27,8 @@ private extension Trie {
         var finalFillValue: UInt8
     }
 
-    @discardableResult mutating func fillRecursively(startingWithFillValue initialFillValue: UInt8,
-                                                     minimumFillValue: UInt8) -> FillResult {
+    mutating func fillRecursively(startingWithFillValue initialFillValue: UInt8,
+                                  minimumFillValue: UInt8) -> FillResult {
         label = Array(repeating: initialFillValue, count: label.count)
         var childFillValue = label.isEmpty
             ? initialFillValue // children won't get any prefix from their parent, need to iterate the parent's fillValue
