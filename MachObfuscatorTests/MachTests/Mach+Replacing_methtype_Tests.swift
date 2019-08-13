@@ -48,7 +48,7 @@ class Mach_Replacing_methtype_Tests: XCTestCase {
 
         // Prepare test obfuscation configuration satisfying requirements of replaceSymbols
         let emptyTrie = Trie(exportsSymbol: false, labelRange: 0 ..< 0, label: [], children: [])
-        let firstImportEntry = sut.machs[0].importStack![0]
+        let firstImportEntry = sut.machs[0].importStack[0]
         let symbolDylib = sut.machs[0].dylibs[firstImportEntry.dylibOrdinal - 1]
 
         let map = SymbolManglingMap(selectors: [:], classNames: testMap.classNames, exportTrieObfuscationMap: [

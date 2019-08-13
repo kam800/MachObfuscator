@@ -1,6 +1,6 @@
 import XCTest
 
-class ObfuscationPaths_Building_forAllExecutablesWithDependencies_Tests: XCTestCase {
+class ObfuscationPaths_Building_forAllExecutables_Tests: XCTestCase {
     let sampleAppURL = "/tmp/SampleApp.app".asURL
     var testRepository: ObfuscationPathsTestRepository! = ObfuscationPathsTestRepository()
 
@@ -19,9 +19,10 @@ class ObfuscationPaths_Building_forAllExecutablesWithDependencies_Tests: XCTestC
     }
 
     func buildSUT() -> ObfuscationPaths {
-        return ObfuscationPaths.forAllExecutablesWithDependencies(inDirectory: sampleAppURL,
-                                                                  fileRepository: testRepository,
-                                                                  dependencyNodeLoader: testRepository, obfuscableFilesFilter: ObfuscableFilesFilter.defaultObfuscableFilesFilter())
+        return ObfuscationPaths.forAllExecutables(inDirectory: sampleAppURL,
+                                                  fileRepository: testRepository,
+                                                  dependencyNodeLoader: testRepository, obfuscableFilesFilter: ObfuscableFilesFilter.defaultObfuscableFilesFilter(),
+                                                  withDependencies: true)
     }
 
     func test_shouldCollectAllExecutables() {

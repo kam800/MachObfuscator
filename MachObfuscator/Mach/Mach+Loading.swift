@@ -104,6 +104,9 @@ private extension Mach {
             case UInt32(LC_VERSION_MIN_IPHONEOS), UInt32(LC_VERSION_MIN_MACOSX):
                 let version_min_command: version_min_command = data.getStruct(atOffset: cursor)
                 platform = Platform(version_min_command)
+            case UInt32(LC_BUILD_VERSION):
+                let build_version_command: build_version_command = data.getStruct(atOffset: cursor)
+                platform = Platform(buildVersion: build_version_command)
             default:
                 break
             }
@@ -155,6 +158,9 @@ private extension Mach {
             case UInt32(LC_VERSION_MIN_IPHONEOS), UInt32(LC_VERSION_MIN_MACOSX):
                 let version_min_command: version_min_command = data.getStruct(atOffset: cursor)
                 platform = Platform(version_min_command)
+            case UInt32(LC_BUILD_VERSION):
+                let build_version_command: build_version_command = data.getStruct(atOffset: cursor)
+                platform = Platform(buildVersion: build_version_command)
             default:
                 break
             }
@@ -174,6 +180,21 @@ private extension Mach.Platform {
             self = .ios
         default:
             fatalError("unsupported version_min_command.cmd = \(String(versionMin.cmd, radix: 0x10, uppercase: true))")
+        }
+    }
+
+    init(buildVersion: build_version_command) {
+        switch buildVersion.platform {
+        case UInt32(PLATFORM_IOS):
+            self = .ios
+        case UInt32(PLATFORM_MACOS):
+            self = .macos
+        case UInt32(PLATFORM_IOSSIMULATOR):
+            self = .ios
+        case UInt32(PLATFORM_IOSMAC):
+            self = .macos
+        default:
+            fatalError("unsupported build_version_command.platform = \(String(buildVersion.platform, uppercase: true))")
         }
     }
 }

@@ -47,9 +47,9 @@ extension Mach {
         propertyNameAccessor: (PropertyEntry) -> Ptr,
         propertyAttributesAccessor: (PropertyEntry) -> Ptr
     ) -> [Property] {
-        guard let objcClasslist = objcClasslist else {
-            return []
-        }
+        guard let objcClasslist = objcClasslist,
+            !objcClasslist.range.isEmpty
+        else { return [] }
         let objcClasslistStart = objcClasslist.range.intRange.lowerBound
         let classCount = objcClasslist.range.count / MemoryLayout<UInt64>.size
         let classVMAddresses: [Ptr] = data.getStructs(atOffset: Int(objcClasslistStart), count: classCount)
@@ -115,9 +115,9 @@ extension Mach {
         propertyNameAccessor: (PropertyType) -> Ptr,
         propertyAttributesAccessor: (PropertyType) -> Ptr
     ) -> [Property] {
-        guard let objcCatlist = objcCatlist else {
-            return []
-        }
+        guard let objcCatlist = objcCatlist,
+            !objcCatlist.range.isEmpty
+        else { return [] }
         let objcCatlistStart = objcCatlist.range.intRange.lowerBound
         let categoryCount = objcCatlist.range.count / MemoryLayout<Ptr>.size
         let categoryVMAddresses: [Ptr] = data.getStructs(atOffset: Int(objcCatlistStart), count: categoryCount)

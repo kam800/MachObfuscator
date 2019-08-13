@@ -19,9 +19,10 @@ class Obfuscator {
 
         LOGGER.info("Looking for dependencies...")
         let paths = time(withTag: "Looking for dependencies") {
-            ObfuscationPaths.forAllExecutablesWithDependencies(inDirectory: directoryURL,
-                                                               dependencyNodeLoader: loader,
-                                                               obfuscableFilesFilter: options.obfuscableFilesFilter)
+            ObfuscationPaths.forAllExecutables(inDirectory: directoryURL,
+                                               dependencyNodeLoader: loader,
+                                               obfuscableFilesFilter: options.obfuscableFilesFilter,
+                                               withDependencies: options.analyzeDependencies)
         }
         LOGGER.info("\(paths.obfuscableImages.count) obfuscable images")
         LOGGER.debug("Obfuscable images:")
