@@ -11,7 +11,7 @@ class Mach_Replacing_importEntries_Tests: XCTestCase {
         super.setUp()
 
         sut = try! Image.load(url: URL.machoMacExecutable)
-        firstImportEntry = sut.machs[0].importStack![0]
+        firstImportEntry = sut.machs[0].importStack[0]
         originalSymbolBytes = firstImportEntry.symbol
         randomSubstitutionBytes = originalSymbolBytes.randomSymbolSubstitution
         symbolDylib = sut.machs[0].dylibs[firstImportEntry.dylibOrdinal - 1]
