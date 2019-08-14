@@ -4,7 +4,7 @@ class RealWordsMangler_Tests: XCTestCase {
     // TODO: tests missing
 
     private class IdentityRealWordsExportTrieMangling: RealWordsExportTrieMangling {
-        func mangle(trie: Trie, fillingRootLabelWith _: UInt8) -> Trie {
+        func mangle(trie: Trie) -> Trie {
             return trie
         }
     }

@@ -70,7 +70,7 @@ class Trie_Parsing_Tests: XCTestCase {
 
         // Expect
         XCTAssertEqual(sut.exportedLabelStrings,
-                       ["ABCD", "AB", "ACDE", "ACFG"])
+                       ["AB", "ABCD", "ACDE", "ACFG"])
     }
 
     func test_flatNodes_shouldReturnFlatNodesList() {
