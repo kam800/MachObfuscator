@@ -20,7 +20,7 @@
 		84684FC722E5B2F600342566 /* Concurrent_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84684FC622E5B2F600342566 /* Concurrent_Tests.swift */; };
 		84684FCC22E608D900342566 /* Mach+Replacing_methtype_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84684FCB22E608D900342566 /* Mach+Replacing_methtype_Tests.swift */; };
 		84684FCE22E6EDC100342566 /* Mach+Replacing_cstrings_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84684FCD22E6EDC100342566 /* Mach+Replacing_cstrings_Tests.swift */; };
-		84B46C3122FD524F00BD4984 /* ObfuscableFilesFilter_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B46C3022FD524F00BD4984 /* ObfuscableFilesFilter_Tests.swift */; };
+		84B46C3122FD524F00BD4984 /* Options+ObfuscableFilesFilter_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B46C3022FD524F00BD4984 /* Options+ObfuscableFilesFilter_Tests.swift */; };
 		8831AF4C22081D63006BEB91 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48B8F471F7FEBC200E73BBD /* main.swift */; };
 		8831AF4D22081D93006BEB91 /* CaesarExportTrieMangler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4F47C81529825A2DAB1FCAC /* CaesarExportTrieMangler.swift */; };
 		8831AF4E22081DA5006BEB91 /* CaesarCypher.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4F47D828D5B299A6471F1BA /* CaesarCypher.swift */; };
@@ -306,7 +306,7 @@
 		84684FC622E5B2F600342566 /* Concurrent_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Concurrent_Tests.swift; sourceTree = "<group>"; };
 		84684FCB22E608D900342566 /* Mach+Replacing_methtype_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Mach+Replacing_methtype_Tests.swift"; sourceTree = "<group>"; };
 		84684FCD22E6EDC100342566 /* Mach+Replacing_cstrings_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Mach+Replacing_cstrings_Tests.swift"; sourceTree = "<group>"; };
-		84B46C3022FD524F00BD4984 /* ObfuscableFilesFilter_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObfuscableFilesFilter_Tests.swift; sourceTree = "<group>"; };
+		84B46C3022FD524F00BD4984 /* Options+ObfuscableFilesFilter_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Options+ObfuscableFilesFilter_Tests.swift"; sourceTree = "<group>"; };
 		88A1F2AD21F5F1FD00C8389E /* RealWordsExportTrieMangler_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealWordsExportTrieMangler_Tests.swift; sourceTree = "<group>"; };
 		D403A4F1217FACB300285492 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		D4065D3722612357004DCA7D /* Pipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pipe.swift; sourceTree = "<group>"; };
@@ -519,6 +519,7 @@
 		D41FCFF02152FC4600BE3C7A /* OptionsTests */ = {
 			isa = PBXGroup;
 			children = (
+				84B46C3022FD524F00BD4984 /* Options+ObfuscableFilesFilter_Tests.swift */,
 				D4F9B81C214075C600253065 /* Options_Tests.swift */,
 			);
 			path = OptionsTests;
@@ -775,7 +776,6 @@
 			children = (
 				D4816063211C6577008671D8 /* ObfuscationPaths+Building_forAllExecutables_Tests.swift */,
 				D4816089211C7252008671D8 /* ObfuscationPathsTestRepository.swift */,
-				84B46C3022FD524F00BD4984 /* ObfuscableFilesFilter_Tests.swift */,
 			);
 			path = DependencyAnalysisTests;
 			sourceTree = "<group>";
@@ -1264,7 +1264,7 @@
 				D41FCFEA2152FB1D00BE3C7A /* CaesarMangler_Tests.swift in Sources */,
 				D44D732C2118876200DE002B /* URL+containsURL.swift in Sources */,
 				D481609821205D6C008671D8 /* SymbolsSourceLoader.swift in Sources */,
-				84B46C3122FD524F00BD4984 /* ObfuscableFilesFilter_Tests.swift in Sources */,
+				84B46C3122FD524F00BD4984 /* Options+ObfuscableFilesFilter_Tests.swift in Sources */,
 				D4E365FA227CF5DE00FF7B9A /* SimpleSourceSymbolsLoader_loadFromFrameworkURL_allSystemFrameworks_Tests.swift in Sources */,
 				D4C48E9421E2B5A700498A62 /* Image+updateMachs_Tests.swift in Sources */,
 				8416FC0F22FEDF3900963596 /* Mach+Loading_MachoIos12_0_Tests.swift in Sources */,

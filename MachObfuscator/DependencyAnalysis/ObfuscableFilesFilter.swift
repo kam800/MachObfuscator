@@ -15,15 +15,15 @@ extension ObfuscableFilesFilter {
         return ObfuscableFilesFilter { !self.isObfuscable($0) }
     }
 
-    func whitelist(_ other: ObfuscableFilesFilter) -> ObfuscableFilesFilter {
+    func or(_ other: ObfuscableFilesFilter) -> ObfuscableFilesFilter {
         return ObfuscableFilesFilter { url in
-            // Order of checks is important.
-            // Adding whitelisted frameworks at the beginning and blacklisted at the end
-            // makes the system behave as might be expected,
-            // because it creates following expression:
-            // isObfuscable = whitelist3 || whitelist2 || whitelist1 || ( !blacklist1 && !blacklist2 )
-            other.isObfuscable(url) || self.isObfuscable(url)
+            self.isObfuscable(url) || other.isObfuscable(url)
         }
+    }
+
+    /// Filter that does not match any files
+    static func none() -> ObfuscableFilesFilter {
+        return ObfuscableFilesFilter { _ in false }
     }
 
     static func defaultObfuscableFilesFilter() -> ObfuscableFilesFilter {

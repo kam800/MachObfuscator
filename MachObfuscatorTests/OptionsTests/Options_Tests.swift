@@ -1,11 +1,13 @@
 import XCTest
 
-class Options_Tests: XCTestCase {
+class OptionsTestsSupport: XCTestCase {
     var argc: Int32!
     var argv: [String]!
     var unsafePtr: UnsafeMutablePointer<UnsafeMutablePointer<Int8>?>!
 
-    func setUp(with argv: [String]) {
+    func setUp(with _argv: [String]) {
+        // First `argv` is path to executable. Add it here to not bother user in each `setUp` invocation.
+        let argv = ["/path/to/obfuscator"] + _argv
         argc = Int32(argv.count)
         self.argv = argv
         let unsafePtr = UnsafeMutablePointer<UnsafeMutablePointer<Int8>?>.allocate(capacity: argv.count)
@@ -18,6 +20,12 @@ class Options_Tests: XCTestCase {
             unsafePtr.advanced(by: offset).pointee = nestedPtr
         }
         self.unsafePtr = unsafePtr
+
+        // Reset `getopt_long` for each test. According to man getopt(3):
+        //
+        // The variable optind is the index of the next element to be processed in argv. The system initializes this value to 1.
+        // The caller can reset it to 1 to restart scanning of the same argv, or when scanning a new argument vector.
+        optind = 1
     }
 
     override func tearDown() {
@@ -28,7 +36,9 @@ class Options_Tests: XCTestCase {
 
         super.tearDown()
     }
+}
 
+class Options_Tests: OptionsTestsSupport {
     func test_init_withCommandLineParams_shouldLeaveDefaultParams_whenEmptyArgv() {
         // Given
         setUp(with: [])
@@ -54,7 +64,7 @@ class Options_Tests: XCTestCase {
                           argv: argv)
 
         // Then
-        XCTAssertFalse(sut.quiet)
+        XCTAssertTrue(sut.quiet)
     }
 
     func test_init_withCommandLineParams_shouldSetVerbose_whenVSwitchPresent() {
@@ -67,7 +77,7 @@ class Options_Tests: XCTestCase {
                           argv: argv)
 
         // Then
-        XCTAssertFalse(sut.verbose)
+        XCTAssertTrue(sut.verbose)
     }
 
     func test_init_withCommandLineParams_shouldSetAppDirectory_whenAdditionalArgumentPresent() {
