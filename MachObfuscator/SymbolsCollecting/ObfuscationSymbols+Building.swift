@@ -40,7 +40,7 @@ extension ObfuscationSymbols {
 
         let blacklistedSelectorsByRegex = userSelectors.filter { selector in
             objcOptions.selectorsBlacklistRegex.contains(where: { regex in
-                selector.range(of: regex, options: .regularExpression, range: nil, locale: nil) != nil
+                regex.firstMatch(in: selector) != nil
             })
         }
         let notFoundBlacklistedSelectors = Set(objcOptions.selectorsBlacklist).subtracting(userSelectors)

@@ -19,7 +19,7 @@ struct ObjcOptions {
     // Do not obfuscate given selector
     var selectorsBlacklist: [String] = []
     // Do not obfuscate selectors matching regexes
-    var selectorsBlacklistRegex: [String] = []
+    var selectorsBlacklistRegex: [NSRegularExpression] = []
 }
 
 struct Options {
@@ -146,7 +146,10 @@ extension Options {
             case OptLongCases.objcBlacklistSelector.rawValue:
                 objcOptions.selectorsBlacklist += String(cString: optarg).split(separator: ",").map { String($0) }
             case OptLongCases.objcBlacklistSelectorRegex.rawValue:
-                objcOptions.selectorsBlacklistRegex.append(String(cString: optarg))
+                guard let regex = try? NSRegularExpression(pattern: String(cString: optarg), options: []) else {
+                    fatalError("Selector blacklist regex is invalid: \(String(cString: optarg))")
+                }
+                objcOptions.selectorsBlacklistRegex.append(regex)
             case OptLongCases.eraseSection.rawValue:
                 eraseSections.append(EraseSectionConfiguration(sectionDef: String(cString: optarg)))
             case OptLongCases.eraseSourceFileNames.rawValue:

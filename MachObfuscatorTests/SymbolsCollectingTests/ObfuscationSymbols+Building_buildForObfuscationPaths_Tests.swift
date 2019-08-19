@@ -89,7 +89,8 @@ class ObfuscationSymbols_Building_buildForObfuscationPaths_Tests: XCTestCase {
     }
 
     func test_whitelistSelectors_shouldContainObfuscableImagesAccessors_withoutBlacklistedAccessorsAndCustomBlacklistRegex() {
-        sut = buildSUT(objcOptions: ObjcOptions(selectorsBlacklist: [], selectorsBlacklistRegex: ["^s[17]$", "notexisting"]))
+        sut = buildSUT(objcOptions: ObjcOptions(selectorsBlacklist: [],
+                                                selectorsBlacklistRegex: [try! NSRegularExpression(pattern: "^s[17]$", options: []), try! NSRegularExpression(pattern: "notexisting", options: [])]))
         XCTAssertEqual(sut.whitelist.selectors, ["s3"])
         XCTAssert(sut.blacklist.selectors.contains("s1"))
 
