@@ -64,11 +64,12 @@ class ObfuscationSymbols_Building_buildForObfuscationPaths_Tests: XCTestCase {
         sut = buildSUT()
     }
 
-    func buildSUT() -> ObfuscationSymbols {
+    func buildSUT(objcOptions: ObjcOptions = ObjcOptions()) -> ObfuscationSymbols {
         return ObfuscationSymbols.buildFor(obfuscationPaths: sampleObfuscationPaths,
                                            loader: testLoader,
                                            sourceSymbolsLoader: testSymbolsLoader,
-                                           skippedSymbolsSources: ["/tmp/githubLibrary/".asURL]) // TODO!!!!
+                                           skippedSymbolsSources: ["/tmp/githubLibrary/".asURL], // TODO!!!!
+                                           objcOptions: objcOptions)
     }
 
     func test_whitelistSelectors_shouldContainObfuscableImagesAccessors_withoutBlacklistedAccessors() {
@@ -79,6 +80,21 @@ class ObfuscationSymbols_Building_buildForObfuscationPaths_Tests: XCTestCase {
     func test_whitelistClassNames_shouldContainObfuscableImagesClassNames_withoutBlacklistedClassNames() {
         XCTAssertEqual(sut.whitelist.classes, ["c1", "c3", "c7"])
         XCTAssert(sut.whitelist.classes.intersection(sut.blacklist.classes).isEmpty)
+    }
+
+    func test_whitelistSelectors_shouldContainObfuscableImagesAccessors_withoutBlacklistedAccessorsAndCustomBlacklist() {
+        sut = buildSUT(objcOptions: ObjcOptions(selectorsBlacklist: ["s3", "notexisting"], selectorsBlacklistRegex: []))
+        XCTAssertEqual(sut.whitelist.selectors, ["s1", "s7"])
+        XCTAssert(sut.whitelist.selectors.intersection(sut.blacklist.selectors).isEmpty)
+    }
+
+    func test_whitelistSelectors_shouldContainObfuscableImagesAccessors_withoutBlacklistedAccessorsAndCustomBlacklistRegex() {
+        sut = buildSUT(objcOptions: ObjcOptions(selectorsBlacklist: [], selectorsBlacklistRegex: ["^s[17]$", "notexisting"]))
+        XCTAssertEqual(sut.whitelist.selectors, ["s3"])
+        XCTAssert(sut.blacklist.selectors.contains("s1"))
+
+        XCTAssert(sut.blacklist.selectors.contains("s7"))
+        XCTAssert(sut.whitelist.selectors.intersection(sut.blacklist.selectors).isEmpty)
     }
 
     // TODO: make it opt-out
