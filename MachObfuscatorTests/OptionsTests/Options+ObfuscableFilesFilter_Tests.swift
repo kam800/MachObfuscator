@@ -114,7 +114,7 @@ class Options_ObfuscableFilesFilter_Tests: OptionsTestsSupport {
         XCTAssertFalse(withWhitelist.isObfuscable(URL(fileURLWithPath: "/usr/lib/system/libswift.dylib")))
     }
 
-    func test_shouldObfuscateCorrectFrameworksAndNotOthers_whenSkipFrameworkAndWhitelist() {
+    func test_shouldObfuscateAllFrameworksExceptBlacklisted_whenSkipFrameworkAndWhitelist() {
         // Given
         setUp(with: ["--skip-framework", "BadFramework",
                      "--obfuscate-framework", "GoodFramework",
