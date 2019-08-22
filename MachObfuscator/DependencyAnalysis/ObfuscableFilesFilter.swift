@@ -11,6 +11,21 @@ extension ObfuscableFilesFilter {
         }
     }
 
+    func negate() -> ObfuscableFilesFilter {
+        return ObfuscableFilesFilter { !self.isObfuscable($0) }
+    }
+
+    func or(_ other: ObfuscableFilesFilter) -> ObfuscableFilesFilter {
+        return ObfuscableFilesFilter { url in
+            self.isObfuscable(url) || other.isObfuscable(url)
+        }
+    }
+
+    /// Filter that does not match any files
+    static func none() -> ObfuscableFilesFilter {
+        return ObfuscableFilesFilter { _ in false }
+    }
+
     static func defaultObfuscableFilesFilter() -> ObfuscableFilesFilter {
         // > Swift apps no longer include dynamically linked libraries
         // > for the Swift standard library and Swift SDK overlays in
@@ -32,11 +47,15 @@ extension ObfuscableFilesFilter {
         }
     }
 
-    static func skipFramework(framework: String) -> ObfuscableFilesFilter {
+    static func isFramework(framework: String) -> ObfuscableFilesFilter {
         let frameworkComponent = framework + ".framework"
         return ObfuscableFilesFilter { url in
-            !url.pathComponents.contains(frameworkComponent)
+            url.pathComponents.contains(frameworkComponent)
         }
+    }
+
+    static func skipFramework(framework: String) -> ObfuscableFilesFilter {
+        return isFramework(framework: framework).negate()
     }
 
     static func skipAllFrameworks() -> ObfuscableFilesFilter {
