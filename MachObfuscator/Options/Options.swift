@@ -146,10 +146,12 @@ extension Options {
             case OptLongCases.objcBlacklistSelector.rawValue:
                 objcOptions.selectorsBlacklist += String(cString: optarg).split(separator: ",").map { String($0) }
             case OptLongCases.objcBlacklistSelectorRegex.rawValue:
-                guard let regex = try? NSRegularExpression(pattern: String(cString: optarg), options: []) else {
-                    fatalError("Selector blacklist regex is invalid: \(String(cString: optarg))")
+                do {
+                    let regex = try NSRegularExpression(pattern: String(cString: optarg), options: [])
+                    objcOptions.selectorsBlacklistRegex.append(regex)
+                } catch {
+                    fatalError("Selector blacklist regex '\(String(cString: optarg))' is invalid: \(error.localizedDescription)")
                 }
-                objcOptions.selectorsBlacklistRegex.append(regex)
             case OptLongCases.eraseSection.rawValue:
                 eraseSections.append(EraseSectionConfiguration(sectionDef: String(cString: optarg)))
             case OptLongCases.eraseSourceFileNames.rawValue:
