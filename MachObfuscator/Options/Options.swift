@@ -15,6 +15,13 @@ private extension EraseSectionConfiguration {
     }
 }
 
+struct ObjcOptions {
+    // Do not obfuscate given selector
+    var selectorsBlacklist: [String] = []
+    // Do not obfuscate selectors matching regexes
+    var selectorsBlacklistRegex: [NSRegularExpression] = []
+}
+
 struct Options {
     var help = false
     var dryrun = false
@@ -25,6 +32,7 @@ struct Options {
     var eraseMethType = false
     var eraseSymtab = true
     var swiftReflectionObfuscation = false
+    var objcOptions = ObjcOptions()
     var eraseSections: [EraseSectionConfiguration] = []
     // TODO: paths could be replaced by something more useful
     var sourceFileNamesReplacement = "FILENAME_REMOVED"
@@ -68,6 +76,8 @@ extension Options {
             case OPT_FIRST = 256
             case preserveSymtab
             case swiftReflection
+            case objcBlacklistSelector
+            case objcBlacklistSelectorRegex
             case eraseSection
             case eraseMethType
             case eraseSourceFileNames
@@ -99,6 +109,8 @@ extension Options {
             option(name: Options.newCCharPtrFromStaticString("machoview-doom"), has_arg: no_argument, flag: nil, val: OptLongChars.machOViewDoom),
             option(name: Options.newCCharPtrFromStaticString("preserve-symtab"), has_arg: no_argument, flag: nil, val: OptLongCases.preserveSymtab.rawValue),
             option(name: Options.newCCharPtrFromStaticString("swift-reflection"), has_arg: no_argument, flag: nil, val: OptLongCases.swiftReflection.rawValue),
+            option(name: Options.newCCharPtrFromStaticString("objc-blacklist-selector"), has_arg: required_argument, flag: nil, val: OptLongCases.objcBlacklistSelector.rawValue),
+            option(name: Options.newCCharPtrFromStaticString("objc-blacklist-selector-regex"), has_arg: required_argument, flag: nil, val: OptLongCases.objcBlacklistSelectorRegex.rawValue),
             option(name: Options.newCCharPtrFromStaticString("erase-section"), has_arg: required_argument, flag: nil, val: OptLongCases.eraseSection.rawValue),
             option(name: Options.newCCharPtrFromStaticString("erase-source-file-names"), has_arg: required_argument, flag: nil, val: OptLongCases.eraseSourceFileNames.rawValue),
             option(name: Options.newCCharPtrFromStaticString("replace-cstring"), has_arg: required_argument, flag: nil, val: OptLongCases.replaceCstring.rawValue),
@@ -136,6 +148,15 @@ extension Options {
                 eraseSymtab = false
             case OptLongCases.swiftReflection.rawValue:
                 swiftReflectionObfuscation = true
+            case OptLongCases.objcBlacklistSelector.rawValue:
+                objcOptions.selectorsBlacklist += String(cString: optarg).split(separator: ",").map { String($0) }
+            case OptLongCases.objcBlacklistSelectorRegex.rawValue:
+                do {
+                    let regex = try NSRegularExpression(pattern: String(cString: optarg), options: [])
+                    objcOptions.selectorsBlacklistRegex.append(regex)
+                } catch {
+                    fatalError("Selector blacklist regex '\(String(cString: optarg))' is invalid: \(error.localizedDescription)")
+                }
             case OptLongCases.eraseSection.rawValue:
                 eraseSections.append(EraseSectionConfiguration(sectionDef: String(cString: optarg)))
             case OptLongCases.eraseSourceFileNames.rawValue:
@@ -216,6 +237,10 @@ extension Options {
           --erase-methtype        erase methType section (objc/runtime.h methods may work incorrectly)
           -D, --machoview-doom    MachOViewDoom, MachOView crashes after trying to open your binary (doesn't work with caesarMangler)
           --swift-reflection      obfuscate Swift reflection sections (typeref and reflstr). May cause problems for Swift >= 4.2
+        
+          --objc-blacklist-selector NAME[,NAME...]  do not obfuscate given selectors
+          --objc-blacklist-selector-regex REGEXP    do not obfuscate selectors matching given regular expression
+
           --preserve-symtab       do not erase SYMTAB strings
           --erase-section SEGMENT,SECTION    erase given section, for example: __TEXT,__swift5_reflstr
         

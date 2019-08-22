@@ -35,7 +35,8 @@ class Obfuscator {
             ObfuscationSymbols.buildFor(obfuscationPaths: paths,
                                         loader: loader,
                                         sourceSymbolsLoader: sourceSymbolsLoader,
-                                        skippedSymbolsSources: options.skippedSymbolsSources)
+                                        skippedSymbolsSources: options.skippedSymbolsSources,
+                                        objcOptions: options.objcOptions)
         }
         LOGGER.info("\(symbols.whitelist.selectors.count) obfuscable selectors")
         LOGGER.info("\(symbols.whitelist.classes.count) obfuscable classes")
