@@ -114,7 +114,7 @@ extension Options {
             option(name: Options.newCCharPtrFromStaticString("erase-section"), has_arg: required_argument, flag: nil, val: OptLongCases.eraseSection.rawValue),
             option(name: Options.newCCharPtrFromStaticString("erase-source-file-names"), has_arg: required_argument, flag: nil, val: OptLongCases.eraseSourceFileNames.rawValue),
             option(name: Options.newCCharPtrFromStaticString("replace-cstring"), has_arg: required_argument, flag: nil, val: OptLongCases.replaceCstring.rawValue),
-            option(name: Options.newCCharPtrFromStaticString("replace-with"), has_arg: required_argument, flag: nil, val: OptLongCases.replaceWith.rawValue),
+            option(name: Options.newCCharPtrFromStaticString("replace-cstring-with"), has_arg: required_argument, flag: nil, val: OptLongCases.replaceWith.rawValue),
             option(name: Options.newCCharPtrFromStaticString("obfuscate-framework"), has_arg: required_argument, flag: nil, val: OptLongCases.obfuscateFramework.rawValue),
             option(name: Options.newCCharPtrFromStaticString("skip-framework"), has_arg: required_argument, flag: nil, val: OptLongCases.skipFramework.rawValue),
             option(name: Options.newCCharPtrFromStaticString("skip-all-frameworks"), has_arg: no_argument, flag: nil, val: OptLongCases.skipAllFrameworks.rawValue),
