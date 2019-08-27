@@ -44,3 +44,9 @@ extension Data {
         return R(value: value, range: range)
     }
 }
+
+extension Mach.Section {
+    func contains(string: ContainedInData) -> Bool {
+        return range.intRange.overlaps(string.range)
+    }
+}

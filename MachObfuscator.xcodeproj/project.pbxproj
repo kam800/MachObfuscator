@@ -21,6 +21,10 @@
 		84684FC722E5B2F600342566 /* Concurrent_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84684FC622E5B2F600342566 /* Concurrent_Tests.swift */; };
 		84684FCC22E608D900342566 /* Mach+Replacing_methtype_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84684FCB22E608D900342566 /* Mach+Replacing_methtype_Tests.swift */; };
 		84684FCE22E6EDC100342566 /* Mach+Replacing_cstrings_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84684FCD22E6EDC100342566 /* Mach+Replacing_cstrings_Tests.swift */; };
+		84ABA3062313FC6D0048B829 /* ObjcSymbols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84ABA3052313FC6D0048B829 /* ObjcSymbols.swift */; };
+		84ABA30723142A700048B829 /* ObjcSymbols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84ABA3052313FC6D0048B829 /* ObjcSymbols.swift */; };
+		84ABA30B2315364B0048B829 /* ObjcSymbols+Impl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84ABA30A2315364B0048B829 /* ObjcSymbols+Impl.swift */; };
+		84ABA30C2315364B0048B829 /* ObjcSymbols+Impl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84ABA30A2315364B0048B829 /* ObjcSymbols+Impl.swift */; };
 		84ABA30E231695380048B829 /* MachStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84ABA30D231695380048B829 /* MachStrings.swift */; };
 		84ABA30F231695630048B829 /* MachStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84ABA30D231695380048B829 /* MachStrings.swift */; };
 		84B46C3122FD524F00BD4984 /* Options+ObfuscableFilesFilter_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B46C3022FD524F00BD4984 /* Options+ObfuscableFilesFilter_Tests.swift */; };
@@ -312,6 +316,8 @@
 		84684FC622E5B2F600342566 /* Concurrent_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Concurrent_Tests.swift; sourceTree = "<group>"; };
 		84684FCB22E608D900342566 /* Mach+Replacing_methtype_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Mach+Replacing_methtype_Tests.swift"; sourceTree = "<group>"; };
 		84684FCD22E6EDC100342566 /* Mach+Replacing_cstrings_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Mach+Replacing_cstrings_Tests.swift"; sourceTree = "<group>"; };
+		84ABA3052313FC6D0048B829 /* ObjcSymbols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjcSymbols.swift; sourceTree = "<group>"; };
+		84ABA30A2315364B0048B829 /* ObjcSymbols+Impl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ObjcSymbols+Impl.swift"; sourceTree = "<group>"; };
 		84ABA30D231695380048B829 /* MachStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MachStrings.swift; sourceTree = "<group>"; };
 		84B46C3022FD524F00BD4984 /* Options+ObfuscableFilesFilter_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Options+ObfuscableFilesFilter_Tests.swift"; sourceTree = "<group>"; };
 		88A1F2AD21F5F1FD00C8389E /* RealWordsExportTrieMangler_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealWordsExportTrieMangler_Tests.swift; sourceTree = "<group>"; };
@@ -498,10 +504,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		84ABA3162316AC0E0048B829 /* ObjC */ = {
+		84ABA3042313FC510048B829 /* ObjC */ = {
 			isa = PBXGroup;
 			children = (
 				84ABA30D231695380048B829 /* MachStrings.swift */,
+				D4298B972251039E0092BF14 /* ObjcStructs.swift */,
+				84ABA3052313FC6D0048B829 /* ObjcSymbols.swift */,
+				84ABA30A2315364B0048B829 /* ObjcSymbols+Impl.swift */,
 			);
 			path = ObjC;
 			sourceTree = "<group>";
@@ -744,7 +753,6 @@
 				D455EB20223E637000E4B1E7 /* Mach+classNames.swift */,
 				D455EB21223E637000E4B1E7 /* Mach+exportTrie.swift */,
 				D455EB30223E63DE00E4B1E7 /* Mach+properties.swift */,
-				D4298B972251039E0092BF14 /* ObjcStructs.swift */,
 				D455EB22223E637000E4B1E7 /* Mach+selectors.swift */,
 			);
 			path = Parsing;
@@ -900,7 +908,7 @@
 		D49873781FB4F76000F33E84 /* Mach */ = {
 			isa = PBXGroup;
 			children = (
-				84ABA3162316AC0E0048B829 /* ObjC */,
+				84ABA3042313FC510048B829 /* ObjC */,
 				D44D73AA211AF71900DE002B /* ExportTrie */,
 				D44D73AB211AF72600DE002B /* ImportStack */,
 				D455EB1D223E637000E4B1E7 /* Parsing */,
@@ -1216,6 +1224,7 @@
 				D44D73F8211C3CE900DE002B /* DependencyNodeLoader.swift in Sources */,
 				D46627D8215446610050EADA /* Data+nullify.swift in Sources */,
 				D49455401FC23C5600969202 /* Trie.swift in Sources */,
+				84ABA3062313FC6D0048B829 /* ObjcSymbols.swift in Sources */,
 				D4E76351201CDF05004300EB /* NibArchive+Nib.swift in Sources */,
 				D4FC251F1FDBE72F005E351D /* UnsafeRawPointer+CString.swift in Sources */,
 				D432EADC213DDF0400C2ADA0 /* Image+machs.swift in Sources */,
@@ -1256,6 +1265,7 @@
 				D467A10E227456E600BA953A /* FileRepository+FrameworkLocationResolving.swift in Sources */,
 				84684FC122E1CE5100342566 /* Profiling.swift in Sources */,
 				D4CA46A220CB2E8F00A31809 /* CFKeyedArchiverUIDGetValue.swift in Sources */,
+				84ABA30B2315364B0048B829 /* ObjcSymbols+Impl.swift in Sources */,
 				D432EAF1213DE83D00C2ADA0 /* LoggerProtocol.swift in Sources */,
 				D44D73A02119FA6300DE002B /* Range+Sugar.swift in Sources */,
 				D4FFAC9322667BA6007684FF /* SourceSymbols.swift in Sources */,
@@ -1312,6 +1322,7 @@
 				D412C67A214076A200AA9A07 /* Options.swift in Sources */,
 				D44D73A32119FB5700DE002B /* Range+Sugar_Tests.swift in Sources */,
 				D41FCFE52152FA5700BE3C7A /* Mach+Replacing_importEntries_Tests.swift in Sources */,
+				84ABA30C2315364B0048B829 /* ObjcSymbols+Impl.swift in Sources */,
 				D48161792125699B008671D8 /* Mach+Parsing_FatIos_Tests.swift in Sources */,
 				D432EAE9213DE06900C2ADA0 /* Image+Savable.swift in Sources */,
 				D44D73812119E87300DE002B /* NibPlist+Loading_Tests.swift in Sources */,
@@ -1352,6 +1363,7 @@
 				D41FCFDF2152F34D00BE3C7A /* CpuId_Tests.swift in Sources */,
 				D44D73172118453200DE002B /* Data+Magic.swift in Sources */,
 				D41FCFE82152FAF400BE3C7A /* RealWordsMangler_Tests.swift in Sources */,
+				84ABA30723142A700048B829 /* ObjcSymbols.swift in Sources */,
 				D481609A2120681C008671D8 /* ObfuscationSymbols+Building.swift in Sources */,
 				D44D739B2119F9D400DE002B /* NibArchive+Loading.swift in Sources */,
 				8831AF4F22081DB5006BEB91 /* CaesarStringMangler.swift in Sources */,

@@ -17,6 +17,10 @@ extension Data {
         }
     }
 
+    func getStructs<T>(fromRange range: Range<Int>) -> [T] {
+        return getStructs(atOffset: range.startIndex, count: range.count / MemoryLayout<T>.stride)
+    }
+
     func getCString(atOffset offset: Int) -> String {
         return withUnsafeBytes {
             $0.bindMemory(to: UInt8.self)
