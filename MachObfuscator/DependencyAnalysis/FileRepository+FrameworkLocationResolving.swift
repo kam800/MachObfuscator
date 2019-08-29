@@ -25,13 +25,15 @@ private extension String {
 
 private extension DependencyNodeLoader {
     func platforms(forURL url: URL) -> [Mach.Platform] {
-        let nodes: [DependencyNode]
-        do {
-            nodes = try load(forURL: url)
-        } catch {
-            fatalError("Failed loading \(url) because: \(error)")
+        return autoreleasepool {
+            let nodes: [DependencyNode]
+            do {
+                nodes = try load(forURL: url)
+            } catch {
+                fatalError("Failed loading \(url) because: \(error)")
+            }
+            return nodes.map { $0.platform }
         }
-        return nodes.map { $0.platform }
     }
 }
 

@@ -31,30 +31,38 @@ extension ObfuscationPaths {
         var imagesQueue: [URL] = [executableURL]
 
         while let nextImageURL = imagesQueue.popLast() {
-            if obfuscableFilesFilter.isObfuscable(nextImageURL) {
-                obfuscableImages.insert(nextImageURL)
-            } else {
-                unobfuscableDependencies.insert(nextImageURL)
-            }
-            let resolvedLocationPerDylibPath =
-                fileRepository.resolvedDylibLocations(loader: nextImageURL,
-                                                      rpathsAccumulator: rpathsAccumulator,
-                                                      dependencyNodeLoader: dependencyNodeLoader)
-            if let previouslyResolvedLocationDylibPath = resolvedDylibMapPerImageURL[nextImageURL] {
-                if previouslyResolvedLocationDylibPath != resolvedLocationPerDylibPath {
-                    fatalError("Image dylib locations already resolved for \(nextImageURL), subsequent resolution is different. This is unsupported in this version.")
+            // Data/NSData leaves much garbage in autoreleasepool that is not refereced and could be freed.
+            // This pool is not released automatically in console app during application run time
+            // and causes constant growth of memory usage.
+            // Therefore release is triggered in critical moments - after processing of given binary file,
+            // when its data should be no more needed (beware of leaving references to `Mach.data`).
+            // See also https://medium.com/swift2go/autoreleasepool-uses-in-2019-swift-9e8fd7b1cd3f
+            autoreleasepool {
+                if obfuscableFilesFilter.isObfuscable(nextImageURL) {
+                    obfuscableImages.insert(nextImageURL)
+                } else {
+                    unobfuscableDependencies.insert(nextImageURL)
                 }
-            } else {
-                resolvedDylibMapPerImageURL[nextImageURL] = resolvedLocationPerDylibPath
-            }
-            if withDependencies {
-                let stillUntraversedDependencies =
-                    resolvedLocationPerDylibPath.values
-                    .uniq
-                    .subtracting(obfuscableImages)
-                    .subtracting(unobfuscableDependencies)
+                let resolvedLocationPerDylibPath =
+                    fileRepository.resolvedDylibLocations(loader: nextImageURL,
+                                                          rpathsAccumulator: rpathsAccumulator,
+                                                          dependencyNodeLoader: dependencyNodeLoader)
+                if let previouslyResolvedLocationDylibPath = resolvedDylibMapPerImageURL[nextImageURL] {
+                    if previouslyResolvedLocationDylibPath != resolvedLocationPerDylibPath {
+                        fatalError("Image dylib locations already resolved for \(nextImageURL), subsequent resolution is different. This is unsupported in this version.")
+                    }
+                } else {
+                    resolvedDylibMapPerImageURL[nextImageURL] = resolvedLocationPerDylibPath
+                }
+                if withDependencies {
+                    let stillUntraversedDependencies =
+                        resolvedLocationPerDylibPath.values
+                        .uniq
+                        .subtracting(obfuscableImages)
+                        .subtracting(unobfuscableDependencies)
 
-                imagesQueue.append(contentsOf: stillUntraversedDependencies.reversed())
+                    imagesQueue.append(contentsOf: stillUntraversedDependencies.reversed())
+                }
             }
         }
 
