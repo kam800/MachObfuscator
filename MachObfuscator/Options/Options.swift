@@ -23,6 +23,7 @@ struct ObjcOptions {
 }
 
 struct Options {
+    var unknownOption = false
     var help = false
     var dryrun = false
     var quiet = false
@@ -193,7 +194,7 @@ extension Options {
                 analyzeDependencies = false
 
             case OptLongChars.unknownOption:
-                help = true
+                unknownOption = true
             default:
                 fatalError("Unexpected argument: \(option)")
             }
