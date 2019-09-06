@@ -1,15 +1,6 @@
 import Foundation
 
 extension Mach {
-    // Classnames in __objc_classname section. Do not use for obfuscation.
-    var classNamesInSection: [String] {
-        guard let classNameSection = objcClassNameSection,
-            !classNameSection.range.isEmpty
-        else { return [] }
-        let classNamesData = data.subdata(in: classNameSection.range.intRange)
-        return classNamesData.split(separator: 0).compactMap { String(bytes: $0, encoding: .utf8) }
-    }
-
     // Only ObjC class names
     var classNamesInData: [MangledObjcClassNameInData] {
         // TODO: should category names be treated as classnames? Currently they are because they used to be,
@@ -27,6 +18,6 @@ extension Mach {
     }
 
     func isPureObjCCategory(_ name: MangledObjcClassNameInData) -> Bool {
-        return objcClassNameSection?.contains(string: name) ?? false
+        return objcClassNameSection?.contains(data: name) ?? false
     }
 }

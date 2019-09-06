@@ -57,10 +57,7 @@ extension Mach {
 
 extension Mach {
     func fileOffset<I: UnsignedInteger>(fromVmOffset vmOffset: I) -> Int {
-        return segments
-            .first(where: { $0.vmRange.contains(UInt64(vmOffset)) })
-            .flatMap { Int(UInt64(vmOffset) - ($0.vmRange.lowerBound - $0.fileRange.lowerBound)) }
-            ?? Int(vmOffset)
+        return fileOffsetIfExists(fromVmOffset: vmOffset) ?? Int(vmOffset)
     }
 
     func fileOffsetIfExists<I: UnsignedInteger>(fromVmOffset vmOffset: I) -> Int? {

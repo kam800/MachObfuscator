@@ -122,6 +122,7 @@ enum ObjC {
         // entsize_list_tt does not depend on architecture
         var entsizeAndFlags: UInt32
         var count: UInt32
+        // Elements follow immediately after the header
         // var first:Element
     }
 

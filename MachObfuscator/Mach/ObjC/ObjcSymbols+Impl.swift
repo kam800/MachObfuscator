@@ -7,7 +7,6 @@ import Foundation
 
 /// Architecture-erased protocol for 32/64 ObjC images
 private protocol ObjcImage {
-    func getObjectsOffsetsFromList(section list: Mach.Section?) -> [Int]
     func getObjectsFromList<Element>(section list: Mach.Section?, creator: (Int) -> Element) -> [Element]
     func create(offset: Int) -> ObjcClass
     func create(offset: Int) -> ObjcCategory
@@ -238,7 +237,7 @@ private class MachArchitecture<PointerType: UnsignedInteger, Me: ObjcArchitectur
         self.mach = mach
     }
 
-    func getObjectsOffsetsFromList(section list: Mach.Section?) -> [Int] {
+    private func getObjectsOffsetsFromList(section list: Mach.Section?) -> [Int] {
         guard let objcList = list else {
             return []
         }
@@ -269,15 +268,15 @@ private class Mach32: MachArchitecture<Mach32.PointerType, Mach32>, ObjcArchitec
 private class Mach64: MachArchitecture<Mach64.PointerType, Mach64>, ObjcArchitecture64 {}
 
 extension Mach {
-    fileprivate var as32: Mach32 {
+    private var as32: Mach32 {
         return Mach32(mach: self)
     }
 
-    fileprivate var as64: Mach64 {
+    private var as64: Mach64 {
         return Mach64(mach: self)
     }
 
-    fileprivate var asArchitecture: ObjcImage {
+    private var asArchitecture: ObjcImage {
         switch data.magic {
         case MH_MAGIC_64:
             return as64
@@ -311,7 +310,7 @@ private extension Mach {
         return getStruct(atFileOffset: objectFileAddress)
     }
 
-    func getCString<R, I: UnsignedInteger>(fromVmOffset offset: I) -> R where R: ContainedInData {
+    func getCString<R, I: UnsignedInteger>(fromVmOffset offset: I) -> R where R: StringInData {
         return data.getCString(atOffset: fileOffsetIfExists(fromVmOffset: offset)!)
     }
 

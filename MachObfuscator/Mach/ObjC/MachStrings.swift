@@ -6,14 +6,14 @@
 import Foundation
 
 protocol ContainedInData {
-    // associatedtype ValueType
-    init(value: String, range: Range<Int>)
-    var value: String { get }
+    associatedtype ValueType
+    init(value: ValueType, range: Range<Int>)
+    var value: ValueType { get }
     var range: Range<Int> { get }
 }
 
 class StringInData: ContainedInData, CustomStringConvertible {
-    //typealias ValueType = String
+    typealias ValueType = String
     let value: String
     let range: Range<Int>
     required init(value: String, range: Range<Int>) {
@@ -25,7 +25,7 @@ class StringInData: ContainedInData, CustomStringConvertible {
 
     var description: String { return "'\(value)'[\(range)]" }
 
-    static let Empty = StringInData(value: "", range: 0 ..< 0)
+    static let empty = StringInData(value: "", range: 0 ..< 0)
 }
 
 /// Class/protocol/etc name class in objc class definition that can also contain names of Swift types that are visible from ObjC
@@ -38,7 +38,7 @@ class MangledObjcClassNameInData: StringInData {
 }
 
 extension Data {
-    func getCString<R>(atOffset offset: Int) -> R where R: ContainedInData {
+    func getCString<R>(atOffset offset: Int) -> R where R: StringInData {
         let value = getCString(atOffset: offset)
         let range = offset ..< offset + value.utf8.count
         return R(value: value, range: range)
@@ -46,7 +46,7 @@ extension Data {
 }
 
 extension Mach.Section {
-    func contains(string: ContainedInData) -> Bool {
-        return range.intRange.overlaps(string.range)
+    func contains<ContainedInDataType: ContainedInData>(data: ContainedInDataType) -> Bool {
+        return range.intRange.overlaps(data.range)
     }
 }

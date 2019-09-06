@@ -245,7 +245,7 @@
 		D4AAA5FE201C8AEC009BB8FA /* NibArchive.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4AAA5FD201C8AEC009BB8FA /* NibArchive.swift */; };
 		D4AAA600201C9A3B009BB8FA /* UnsafeRawPointer+Structs.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4AAA5FF201C9A3B009BB8FA /* UnsafeRawPointer+Structs.swift */; };
 		D4B2C83722FF793800BF89C8 /* RealWordsExportTrieMangler_emptyLabeledNodes_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B2C83622FF793800BF89C8 /* RealWordsExportTrieMangler_emptyLabeledNodes_Tests.swift */; };
-		D4B2C83A230091FE00BF89C8 /* Mach+setEmptyRegionFor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B2C839230091FE00BF89C8 /* Mach+setEmptyRegionFor.swift */; };
+		D4B2C83A230091FE00BF89C8 /* Mach+Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B2C839230091FE00BF89C8 /* Mach+Tests.swift */; };
 		D4BACD6A2156845E009F6E34 /* Data+nullify_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BACD692156845E009F6E34 /* Data+nullify_Tests.swift */; };
 		D4BACD6C2156E109009F6E34 /* SymbolManglers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BACD6B2156E109009F6E34 /* SymbolManglers.swift */; };
 		D4BACD6D2156E5D5009F6E34 /* SymbolManglers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BACD6B2156E109009F6E34 /* SymbolManglers.swift */; };
@@ -453,7 +453,7 @@
 		D4AAA5FD201C8AEC009BB8FA /* NibArchive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NibArchive.swift; sourceTree = "<group>"; };
 		D4AAA5FF201C9A3B009BB8FA /* UnsafeRawPointer+Structs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UnsafeRawPointer+Structs.swift"; sourceTree = "<group>"; };
 		D4B2C83622FF793800BF89C8 /* RealWordsExportTrieMangler_emptyLabeledNodes_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealWordsExportTrieMangler_emptyLabeledNodes_Tests.swift; sourceTree = "<group>"; };
-		D4B2C839230091FE00BF89C8 /* Mach+setEmptyRegionFor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Mach+setEmptyRegionFor.swift"; sourceTree = "<group>"; };
+		D4B2C839230091FE00BF89C8 /* Mach+Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Mach+Tests.swift"; sourceTree = "<group>"; };
 		D4BACD692156845E009F6E34 /* Data+nullify_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+nullify_Tests.swift"; sourceTree = "<group>"; };
 		D4BACD6B2156E109009F6E34 /* SymbolManglers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolManglers.swift; sourceTree = "<group>"; };
 		D4C48E9321E2B5A700498A62 /* Image+updateMachs_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Image+updateMachs_Tests.swift"; sourceTree = "<group>"; };
@@ -954,7 +954,7 @@
 		D4B2C838230091E600BF89C8 /* Commons */ = {
 			isa = PBXGroup;
 			children = (
-				D4B2C839230091FE00BF89C8 /* Mach+setEmptyRegionFor.swift */,
+				D4B2C839230091FE00BF89C8 /* Mach+Tests.swift */,
 			);
 			path = Commons;
 			sourceTree = "<group>";
@@ -1299,7 +1299,7 @@
 				844CD9D6230E6F52007796E7 /* OptionsTestsSupport.swift in Sources */,
 				D44D73922119F21A00DE002B /* URL+tempFile.swift in Sources */,
 				D41FCFE12152F53100BE3C7A /* URL+NibLoading_loadNib_Tests.swift in Sources */,
-				D4B2C83A230091FE00BF89C8 /* Mach+setEmptyRegionFor.swift in Sources */,
+				D4B2C83A230091FE00BF89C8 /* Mach+Tests.swift in Sources */,
 				D44D739D2119F9D400DE002B /* NibArchive+Nib.swift in Sources */,
 				D481606F211C69AD008671D8 /* ImportStack+Loading.swift in Sources */,
 				D44D7316211844B500DE002B /* Data+Magic_Tests.swift in Sources */,
