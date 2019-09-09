@@ -20,3 +20,10 @@ extension Mach {
         return objcCategories.flatMap { $0.properties }
     }
 }
+
+private extension ObjcProperty {
+    var isDynamic: Bool {
+        // https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/ObjCRuntimeGuide/Articles/ocrtPropertyIntrospection.html#//apple_ref/doc/uid/TP40008048-CH101-SW6
+        return attributes.value.split(separator: ",").contains("D")
+    }
+}
