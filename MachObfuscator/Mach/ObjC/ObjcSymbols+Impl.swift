@@ -52,11 +52,11 @@ private struct ObjcMethodImpl<Arch: ObjcArchitecture>: ObjcMethod, FromMach, Cus
         self.offset = offset
     }
 
-    var name: StringInData {
+    var name: PlainStringInData {
         return mach.getCString(fromVmOffset: raw.name)
     }
 
-    var methType: StringInData {
+    var methType: PlainStringInData {
         return mach.getCString(fromVmOffset: raw.types)
     }
 
@@ -76,11 +76,11 @@ private struct ObjcIvarImpl<Arch: ObjcArchitecture>: ObjcIvar, FromMach, CustomS
         self.offset = offset
     }
 
-    var name: StringInData {
+    var name: PlainStringInData {
         return mach.getCString(fromVmOffset: raw.name)
     }
 
-    var type: StringInData {
+    var type: PlainStringInData {
         return mach.getCString(fromVmOffset: raw.type)
     }
 
@@ -100,11 +100,11 @@ private struct ObjcPropertyImpl<Arch: ObjcArchitecture>: ObjcProperty, FromMach,
         self.offset = offset
     }
 
-    var name: StringInData {
+    var name: PlainStringInData {
         return mach.getCString(fromVmOffset: raw.name)
     }
 
-    var attributes: StringInData {
+    var attributes: PlainStringInData {
         return mach.getCString(fromVmOffset: raw.attributes)
     }
 
@@ -123,7 +123,7 @@ private struct ObjcClassImpl<Arch: ObjcArchitecture>: ObjcClass, FromMach, Custo
         self.offset = offset
     }
 
-    var ivarLayout: StringInData? {
+    var ivarLayout: PlainStringInData? {
         guard class_ro.ivarLayout != 0 else {
             return nil
         }
@@ -310,7 +310,7 @@ private extension Mach {
         return getStruct(atFileOffset: objectFileAddress)
     }
 
-    func getCString<R, I: UnsignedInteger>(fromVmOffset offset: I) -> R where R: StringInData {
+    func getCString<R, I: UnsignedInteger>(fromVmOffset offset: I) -> R where R: ContainedInData, R.ValueType == String {
         return data.getCString(atOffset: fileOffset(fromVmOffset: offset))
     }
 

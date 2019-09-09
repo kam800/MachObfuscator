@@ -9,13 +9,13 @@ import Foundation
 /// for accessing ObjC metadata.
 
 protocol ObjcIvar {
-    var name: StringInData { get }
-    var type: StringInData { get }
+    var name: PlainStringInData { get }
+    var type: PlainStringInData { get }
 }
 
 protocol ObjcProperty {
-    var name: StringInData { get }
-    var attributes: StringInData { get }
+    var name: PlainStringInData { get }
+    var attributes: PlainStringInData { get }
 }
 
 extension ObjcProperty {
@@ -26,12 +26,12 @@ extension ObjcProperty {
 }
 
 protocol ObjcMethod {
-    var name: StringInData { get }
-    var methType: StringInData { get }
+    var name: PlainStringInData { get }
+    var methType: PlainStringInData { get }
 }
 
 protocol ObjcClass {
-    var ivarLayout: StringInData? { get }
+    var ivarLayout: PlainStringInData? { get }
     var name: MangledObjcClassNameInData { get }
     var ivars: [ObjcIvar] { get }
     var methods: [ObjcMethod] { get }
