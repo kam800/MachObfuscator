@@ -11,15 +11,15 @@ extension ObfuscationPaths {
         return paths
     }
 
-    static func forExecutable(executable executableURL: URL, fileRepository: FileRepository = FileManager.default, dependencyNodeLoader: DependencyNodeLoader, obfuscableFilesFilter: ObfuscableFilesFilter, withDependencies: Bool = true) -> ObfuscationPaths {
-        guard dependencyNodeLoader.isMachOFile(atURL: executableURL) else {
-            fatalError("File \(executableURL) is not Mach-O file")
+    static func forExecutable(machOFile machOFileURL: URL, fileRepository: FileRepository = FileManager.default, dependencyNodeLoader: DependencyNodeLoader, obfuscableFilesFilter: ObfuscableFilesFilter, withDependencies: Bool = true) -> ObfuscationPaths {
+        guard dependencyNodeLoader.isMachOFile(atURL: machOFileURL) else {
+            fatalError("File \(machOFileURL) is not Mach-O file")
         }
         var paths = ObfuscationPaths()
-        paths.addExecutable(executableURL: executableURL,
+        paths.addExecutable(executableURL: machOFileURL,
                             fileRepository: fileRepository,
                             dependencyNodeLoader: dependencyNodeLoader,
-                            obfuscableFilesFilter: obfuscableFilesFilter.and(ObfuscableFilesFilter.only(file: executableURL)),
+                            obfuscableFilesFilter: obfuscableFilesFilter.and(ObfuscableFilesFilter.only(file: machOFileURL)),
                             withDependencies: withDependencies)
         return paths
     }

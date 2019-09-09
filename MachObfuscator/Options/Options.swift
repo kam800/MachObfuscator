@@ -225,7 +225,7 @@ extension Options {
         return """
         usage: \(CommandLine.arguments[0]) [-qvdhtD] [-m mangler_key] APP_BUNDLE|FILE
 
-          Obfuscates application in directory APP_BUNDLE or image (FILE) in-place.
+          Obfuscates application bundle in given directory (APP_BUNDLE) or Mach-O file (FILE) in-place.
 
         Options:
           -h, --help              help screen (this screen)

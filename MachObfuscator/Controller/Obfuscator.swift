@@ -32,7 +32,7 @@ class Obfuscator {
                                                           obfuscableFilesFilter: options.obfuscableFilesFilter,
                                                           withDependencies: options.analyzeDependencies)
             } else {
-                return ObfuscationPaths.forExecutable(executable: directoryOrFileURL,
+                return ObfuscationPaths.forExecutable(machOFile: directoryOrFileURL,
                                                       dependencyNodeLoader: loader,
                                                       obfuscableFilesFilter: options.obfuscableFilesFilter,
                                                       withDependencies: options.analyzeDependencies)
