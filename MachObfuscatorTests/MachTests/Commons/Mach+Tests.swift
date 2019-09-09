@@ -7,14 +7,3 @@ extension Mach {
         segments[segmentIndex].sections[sectionIndex].range = 0 ..< 0
     }
 }
-
-extension Mach {
-    // Classnames in __objc_classname section.
-    var classNamesInSection: [String] {
-        guard let classNameSection = objcClassNameSection,
-            !classNameSection.range.isEmpty
-        else { return [] }
-        let classNamesData = data.subdata(in: classNameSection.range.intRange)
-        return classNamesData.split(separator: 0).compactMap { String(bytes: $0, encoding: .utf8) }
-    }
-}

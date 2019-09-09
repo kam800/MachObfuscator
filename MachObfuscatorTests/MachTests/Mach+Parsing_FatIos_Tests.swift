@@ -21,7 +21,6 @@ class Mach_Parsing_FatIos_Tests: XCTestCase {
         let mach = fat.architectures[0].mach
 
         XCTAssertEqual(Set(mach.selectors), Set(expectedSelectors))
-        XCTAssertEqual(Set(mach.classNamesInSection), Set(expectedClassNamesInSecion))
         XCTAssertEqual(Set(mach.classNames), Set(expectedClassNames))
         XCTAssertEqual(Set(mach.cstrings), Set(expectedCstrings))
         XCTAssertEqual(Set(mach.dynamicPropertyNames), Set(expectedDynamicProperties))
@@ -50,7 +49,6 @@ class Mach_Parsing_FatIos_Tests: XCTestCase {
         mach.dyldInfo!.weakBind = 0 ..< 0
 
         XCTAssert(mach.selectors.isEmpty)
-        XCTAssert(mach.classNamesInSection.isEmpty)
         XCTAssert(mach.cstrings.isEmpty)
         XCTAssert(mach.dynamicPropertyNames.isEmpty)
         XCTAssertNil(mach.exportedTrie)

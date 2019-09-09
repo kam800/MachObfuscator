@@ -179,7 +179,7 @@ private struct ObjcCategoryImpl<Arch: ObjcArchitecture>: ObjcCategory, FromMach,
         guard raw.cls != 0 else {
             return nil
         }
-        let offset = mach.fileOffsetIfExists(fromVmOffset: raw.cls)!
+        let offset = mach.fileOffset(fromVmOffset: raw.cls)
         return ObjcClassImpl<Arch>(mach: mach, offset: offset)
     }
 
@@ -306,12 +306,12 @@ private extension Mach {
     }
 
     func getStruct<T, I: UnsignedInteger>(fromVmOffset offset: I) -> T {
-        let objectFileAddress = fileOffsetIfExists(fromVmOffset: offset)!
+        let objectFileAddress = fileOffset(fromVmOffset: offset)
         return getStruct(atFileOffset: objectFileAddress)
     }
 
     func getCString<R, I: UnsignedInteger>(fromVmOffset offset: I) -> R where R: StringInData {
-        return data.getCString(atOffset: fileOffsetIfExists(fromVmOffset: offset)!)
+        return data.getCString(atOffset: fileOffset(fromVmOffset: offset))
     }
 
     func get_entsize_list_tt<Element: FromMach, I: UnsignedInteger>(fromVmOffset offset: I, flags: UInt32 = 0) -> [Element] {
@@ -319,8 +319,8 @@ private extension Mach {
             // No list
             return []
         }
-        let fileOffset = fileOffsetIfExists(fromVmOffset: offset)!
-        let list: ObjC.entsize_list_tt = getStruct(atFileOffset: fileOffset)
+        let listFileOffset = fileOffset(fromVmOffset: offset)
+        let list: ObjC.entsize_list_tt = getStruct(atFileOffset: listFileOffset)
         let elementSize = list.entsizeAndFlags & ~flags
 
         let expectedSize = MemoryLayout<Element.Raw>.size
@@ -334,7 +334,7 @@ private extension Mach {
         }
 
         let elements: [Element] = (0 ..< list.count).map { idx in
-            Element(mach: self, offset: fileOffset + MemoryLayout<ObjC.entsize_list_tt>.size + Int(idx * elementSize))
+            Element(mach: self, offset: listFileOffset + MemoryLayout<ObjC.entsize_list_tt>.size + Int(idx * elementSize))
         }
         return elements
     }
