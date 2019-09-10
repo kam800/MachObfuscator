@@ -20,11 +20,15 @@ extension Mach {
         return section("__objc_classname", segment: "__TEXT")
     }
 
-    var objcClasslist: Section? {
+    var objcClasslistSection: Section? {
         return section("__objc_classlist", segment: "__DATA")
     }
 
-    var objcCatlist: Section? {
+    var objcProtocollistSection: Section? {
+        return section("__objc_protolist", segment: "__DATA")
+    }
+
+    var objcCatlistSection: Section? {
         return section("__objc_catlist", segment: "__DATA")
     }
 
@@ -48,5 +52,16 @@ extension Mach {
             .sections
             .filter { Mach.swiftReflectiveSections.contains($0.name) }
             ?? []
+    }
+}
+
+extension Mach {
+    func fileOffset<I: UnsignedInteger>(fromVmOffset vmOffset: I) -> Int {
+        guard let segment = segments.first(where: { $0.vmRange.contains(UInt64(vmOffset)) }) else {
+            fatalError("vmOffset \(vmOffset) does not exist in the image")
+        }
+
+        let fileOffset = Int(segment.fileRange.lowerBound + (UInt64(vmOffset) - segment.vmRange.lowerBound))
+        return fileOffset
     }
 }
