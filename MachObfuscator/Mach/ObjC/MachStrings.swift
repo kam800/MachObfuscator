@@ -5,6 +5,7 @@
 
 import Foundation
 
+/// Value that is loaded from Mach-O image and is stored at a specific location in it
 protocol ContainedInData {
     associatedtype ValueType
     init(value: ValueType, range: Range<Int>)
