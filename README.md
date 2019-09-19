@@ -88,6 +88,50 @@ Available manglers by mangler_key:
   realWords - replace objc symbols with random words (dyld info obfuscation supported)
 ```
 
+## Integration with fastlane 🚀
+
+MachObfuscator can be easily integrated with fastlane builds:
+
+0. Make sure that you have compiled MachObfuscator and [`obfuscate.sh`](obfuscate.sh) script available for fastlane.
+1. Build the application IPA as usual. You may sign it, but it can be skipped at this point because after obfuscation the application will have to be resigned.
+2. Use `obfuscate.sh` to obfuscate your IPA:
+    1. The script requires that path to compiled MachObfuscator is in `MACH_OBFUSCATOR` environment variable.
+    2. Pass in absolute path to the IPA you want to obfuscate.
+    3. `obfuscate.sh` can also resign the application if you pass certificate name or pass `NO_RESIGN` to resign later using fastlane.
+    4. Pass additional MachObfuscator options that you need.
+    5. Obfuscated IPA is named like original one with added `_obf.ipa` suffix.   
+3. Resign obfuscated IPA from fastlane if you have not used script to do it.
+4. You may retain unobfuscated IPA and MachObfuscator logs.
+
+Here is an example fastlane configuration assuming that compiled MachObfuscator and the script are in main project directory, IPA was built to `./exported_ipa/#{TARGET_NAME}.ipa`  and you want final products in `./app` directory:
+
+```ruby
+  # Copy unobfusated app 
+  rsync(
+    destination: "./app/#{IPA_NAME}_unobfuscated.ipa",
+    source: "./exported_ipa/#{TARGET_NAME}.ipa"
+  )
+
+  # Obfuscate
+  # sh runs in fastlane directory not main project directory
+  sh("MACH_OBFUSCATOR=../MachObfuscator ../obfuscate.sh ../exported_ipa/#{TARGET_NAME}.ipa NO_RESIGN -v --swift-obfuscation | tee ../app/obfuscation.log")
+
+  # Copy obfuscated app
+  rsync(
+    destination: "./app/#{IPA_NAME}.ipa",
+    source: "./exported_ipa/#{TARGET_NAME}.ipa_obf.ipa"
+  )
+
+  # Sign obfuscated app
+  resign(
+    ipa: "./app/#{IPA_NAME}.ipa",
+    signing_identity: "[IDENTITY]",
+    provisioning_profile: {
+      "#{APP_IDENTIFIER}" => "#{PROVISION_PATH}"
+    }
+  )
+```
+
 ## Under the hood 🔧
 
 In a great simplification, MachObfuscator:
