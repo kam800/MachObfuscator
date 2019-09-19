@@ -15,6 +15,9 @@ extension ObfuscationPaths {
         guard dependencyNodeLoader.isMachOFile(atURL: machOFileURL) else {
             fatalError("File \(machOFileURL) is not Mach-O file")
         }
+        if !dependencyNodeLoader.isMachOExecutable(atURL: machOFileURL) {
+            LOGGER.warn("File \(machOFileURL) is not Mach-O executable file. Not-executable files are not useful when obfuscated alone and obfuscator may be unable to resolve their dependencies.")
+        }
         var paths = ObfuscationPaths()
         paths.addExecutable(executableURL: machOFileURL,
                             fileRepository: fileRepository,
