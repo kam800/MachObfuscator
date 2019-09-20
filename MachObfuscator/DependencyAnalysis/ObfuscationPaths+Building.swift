@@ -11,17 +11,32 @@ extension ObfuscationPaths {
         return paths
     }
 
+    static func forExecutable(machOFile machOFileURL: URL, fileRepository: FileRepository = FileManager.default, dependencyNodeLoader: DependencyNodeLoader, obfuscableFilesFilter: ObfuscableFilesFilter, withDependencies: Bool = true) -> ObfuscationPaths {
+        guard dependencyNodeLoader.isMachOFile(atURL: machOFileURL) else {
+            fatalError("File \(machOFileURL) is not Mach-O file")
+        }
+        if !dependencyNodeLoader.isMachOExecutable(atURL: machOFileURL) {
+            LOGGER.warn("File \(machOFileURL) is not Mach-O executable file. Not-executable files are not useful when obfuscated alone and obfuscator may be unable to resolve their dependencies.")
+        }
+        var paths = ObfuscationPaths()
+        paths.addExecutable(executableURL: machOFileURL,
+                            fileRepository: fileRepository,
+                            dependencyNodeLoader: dependencyNodeLoader,
+                            obfuscableFilesFilter: obfuscableFilesFilter.and(ObfuscableFilesFilter.only(file: machOFileURL)),
+                            withDependencies: withDependencies)
+        return paths
+    }
+
     private mutating func addAllExecutables(inDirectory dir: URL, fileRepository: FileRepository, imageLoader: DependencyNodeLoader, obfuscableFilesFilter: ObfuscableFilesFilter, withDependencies: Bool = true) {
         let files = fileRepository.listFilesRecursively(atURL: dir)
         let executables = files.filter { imageLoader.isMachOExecutable(atURL: $0) }
         executables.forEach {
-            addExecutable(executableURL: $0, limitingObfuscationToDirectory: dir, fileRepository: fileRepository, dependencyNodeLoader: imageLoader, obfuscableFilesFilter: obfuscableFilesFilter, withDependencies: withDependencies)
+            addExecutable(executableURL: $0, fileRepository: fileRepository, dependencyNodeLoader: imageLoader, obfuscableFilesFilter: obfuscableFilesFilter, withDependencies: withDependencies)
         }
         nibs.formUnion(files.filter { $0.pathExtension.lowercased() == "nib" })
     }
 
     private mutating func addExecutable(executableURL: URL,
-                                        limitingObfuscationToDirectory _: URL,
                                         fileRepository: FileRepository,
                                         dependencyNodeLoader: DependencyNodeLoader,
                                         obfuscableFilesFilter: ObfuscableFilesFilter,

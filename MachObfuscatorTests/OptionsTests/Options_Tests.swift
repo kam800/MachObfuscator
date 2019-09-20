@@ -13,7 +13,7 @@ class Options_Tests: OptionsTestsSupport {
         // Then
         XCTAssertFalse(sut.quiet)
         XCTAssertFalse(sut.verbose)
-        XCTAssertNil(sut.appDirectory)
+        XCTAssertNil(sut.appDirectoryOrFile)
     }
 
     func test_init_withCommandLineParams_shouldSetQuiet_whenQSwitchPresent() {
@@ -53,6 +53,6 @@ class Options_Tests: OptionsTestsSupport {
                           argv: argv)
 
         // Then
-        XCTAssertEqual(sut.appDirectory?.path, expectedAppDirectory)
+        XCTAssertEqual(sut.appDirectoryOrFile?.path, expectedAppDirectory)
     }
 }
