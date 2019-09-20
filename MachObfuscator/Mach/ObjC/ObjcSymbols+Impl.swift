@@ -153,7 +153,7 @@ private struct ObjcClassImpl<Arch: ObjcArchitecture>: ObjcClass, FromMach, Custo
     }
 
     var description: String {
-        return "Class \(name) methods: \(methods) properties:\(properties) ivars: \(ivars)"
+        return "Class \(name)\n  methods: \(methods)\n  properties: \(properties)\n  ivars: \(ivars)"
     }
 
     private var class_ro: Arch.ClassData.RODataType {
@@ -196,7 +196,7 @@ private struct ObjcCategoryImpl<Arch: ObjcArchitecture>: ObjcCategory, FromMach,
     }
 
     var description: String {
-        return "Category \(cls?.name.value ?? "")+\(name) methods: \(methods) properties:\(properties)"
+        return "Category \(cls?.name.value ?? "")+\(name)\n  methods: \(methods)\n  properties: \(properties)"
     }
 }
 
@@ -227,7 +227,7 @@ private struct ObjcProtocolImpl<Arch: ObjcArchitecture>: ObjcProtocol, FromMach,
     }
 
     var description: String {
-        return "Protocol \(name) methods: \(methods) properties:\(properties)"
+        return "Protocol \(name)\n  methods: \(methods)\n  properties: \(properties)"
     }
 }
 
