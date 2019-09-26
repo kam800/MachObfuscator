@@ -29,6 +29,7 @@ struct Options {
     var quiet = false
     var verbose = false
     var debug = false
+    var dumpMetadata = false
     var machOViewDoom = false
     var eraseMethType = false
     var eraseSymtab = true
@@ -92,6 +93,7 @@ extension Options {
 
             // extra/development options
             case xxNoAnalyzeDependencies
+            case xxDumpMetadata
         }
 
         var currentCstringToReplace: String?
@@ -124,6 +126,8 @@ extension Options {
 
             // extra options
             option(name: Options.newCCharPtrFromStaticString("xx-no-analyze-dependencies"), has_arg: no_argument, flag: nil, val: OptLongCases.xxNoAnalyzeDependencies.rawValue),
+            option(name: Options.newCCharPtrFromStaticString("xx-dump-metadata"), has_arg: no_argument, flag: nil, val: OptLongCases.xxDumpMetadata.rawValue),
+
             option(), // { NULL, NULL, NULL, NULL }
         ]
 
@@ -192,6 +196,8 @@ extension Options {
             // extra options
             case OptLongCases.xxNoAnalyzeDependencies.rawValue:
                 analyzeDependencies = false
+            case OptLongCases.xxDumpMetadata.rawValue:
+                dumpMetadata = true
 
             case OptLongChars.unknownOption:
                 unknownOption = true
@@ -263,6 +269,7 @@ extension Options {
         
         Development options:
           --xx-no-analyze-dependencies       do not analyze dependencies
+          --xx-dump-metadata                 dump ObjC metadata of images being obfuscated
 
         \(SymbolManglers.helpSummary)
         """
