@@ -34,11 +34,7 @@ extension ObfuscationSymbols {
             .union(skippedSymbols.selectors)
         let blacklistSetters = blackListGetters.map { $0.asSetter }.uniq
 
-        let blacklistedSelectorsByRegex = userSelectors.filter { selector in
-            objcOptions.selectorsBlacklistRegex.contains(where: { regex in
-                regex.firstMatch(in: selector) != nil
-            })
-        }
+        let blacklistedSelectorsByRegex = userSelectors.matching(regexes: objcOptions.selectorsBlacklistRegex)
         let notFoundBlacklistedSelectors = Set(objcOptions.selectorsBlacklist).subtracting(userSelectors)
         if !notFoundBlacklistedSelectors.isEmpty {
             LOGGER.warn("Some selectors specified on blacklist were not found: \(notFoundBlacklistedSelectors)")
@@ -50,12 +46,22 @@ extension ObfuscationSymbols {
             .union(objcOptions.selectorsBlacklist)
             .union(blacklistedSelectorsByRegex)
         // TODO: Array(userCStrings) should be opt-in
+
+        let blacklistedClassesByRegex = userClasses.matching(regexes: objcOptions.classesBlacklistRegex)
+        let notFoundBlacklistedClasses = Set(objcOptions.classesBlacklist).subtracting(userClasses)
+        if !notFoundBlacklistedClasses.isEmpty {
+            LOGGER.warn("Some classes specified on blacklist were not found: \(notFoundBlacklistedClasses)")
+        }
+
         let blacklistClasses: Set<String> =
             systemHeaderSymbols.classNames
             .union(systemClasses)
             .union(systemCStrings)
             .union(userCStrings)
             .union(skippedSymbols.classNames)
+            .union(objcOptions.classesBlacklist)
+            .union(blacklistedClassesByRegex)
+
         let whitelistSelectors = userSelectors.subtracting(blacklistSelectors)
         let whitelistClasses = userClasses.subtracting(blacklistClasses)
 

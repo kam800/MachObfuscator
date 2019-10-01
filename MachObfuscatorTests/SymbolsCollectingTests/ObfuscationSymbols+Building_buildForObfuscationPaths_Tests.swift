@@ -78,15 +78,38 @@ class ObfuscationSymbols_Building_buildForObfuscationPaths_Tests: XCTestCase {
         XCTAssert(sut.whitelist.classes.intersection(sut.blacklist.classes).isEmpty)
     }
 
+    func test_whitelistClasses_shouldContainObfuscableClasses_withoutBlacklistedClassesAndCustomBlacklist() {
+        var objcOptions = ObjcOptions()
+        objcOptions.classesBlacklist = ["c3", "notexisting"]
+        sut = buildSUT(objcOptions: objcOptions)
+        XCTAssertEqual(sut.whitelist.classes, ["c1", "c7"])
+        XCTAssert(sut.whitelist.classes.intersection(sut.blacklist.classes).isEmpty)
+    }
+
+    func test_whitelistClasses_shouldContainObfuscableClasses_withoutBlacklistedClassesAndCustomBlacklistRegex() {
+        var objcOptions = ObjcOptions()
+        objcOptions.classesBlacklistRegex = [try! NSRegularExpression(pattern: "^c[17]$", options: []),
+                                             try! NSRegularExpression(pattern: "notexisting", options: [])]
+        sut = buildSUT(objcOptions: objcOptions)
+        XCTAssertEqual(sut.whitelist.classes, ["c3"])
+        XCTAssert(sut.blacklist.classes.contains("c1"))
+        XCTAssert(sut.blacklist.classes.contains("c7"))
+        XCTAssert(sut.whitelist.selectors.intersection(sut.blacklist.selectors).isEmpty)
+    }
+
     func test_whitelistSelectors_shouldContainObfuscableImagesAccessors_withoutBlacklistedAccessorsAndCustomBlacklist() {
-        sut = buildSUT(objcOptions: ObjcOptions(selectorsBlacklist: ["s3", "notexisting"], selectorsBlacklistRegex: []))
+        var objcOptions = ObjcOptions()
+        objcOptions.selectorsBlacklist = ["s3", "notexisting"]
+        sut = buildSUT(objcOptions: objcOptions)
         XCTAssertEqual(sut.whitelist.selectors, ["s1", "s7"])
         XCTAssert(sut.whitelist.selectors.intersection(sut.blacklist.selectors).isEmpty)
     }
 
     func test_whitelistSelectors_shouldContainObfuscableImagesAccessors_withoutBlacklistedAccessorsAndCustomBlacklistRegex() {
-        sut = buildSUT(objcOptions: ObjcOptions(selectorsBlacklist: [],
-                                                selectorsBlacklistRegex: [try! NSRegularExpression(pattern: "^s[17]$", options: []), try! NSRegularExpression(pattern: "notexisting", options: [])]))
+        var objcOptions = ObjcOptions()
+        objcOptions.selectorsBlacklistRegex = [try! NSRegularExpression(pattern: "^s[17]$", options: []),
+                                               try! NSRegularExpression(pattern: "notexisting", options: [])]
+        sut = buildSUT(objcOptions: objcOptions)
         XCTAssertEqual(sut.whitelist.selectors, ["s3"])
         XCTAssert(sut.blacklist.selectors.contains("s1"))
 
