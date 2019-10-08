@@ -191,9 +191,13 @@ private extension Mach.Platform {
             self = .macos
         case UInt32(PLATFORM_IOSSIMULATOR):
             self = .ios
-        case 6: // `PLATFORM_IOSMAC` renamed to `PLATFORM_MACCATALYST` in Xcode 11.0.
-            // TODO: replace above 6 with `PLATFORM_MACCATALYST` after a Xcode migration grace period
-            self = .macos
+        #if compiler(>=5.1) // Xcode 11.0 -> Swift 5.1
+            case UInt32(PLATFORM_MACCATALYST):
+                self = .macos
+        #else // Xcode 10.2 -> Swift 5.0
+            case UInt32(PLATFORM_IOSMAC):
+                self = .macos
+        #endif
         default:
             fatalError("unsupported build_version_command.platform = \(String(buildVersion.platform, uppercase: true))")
         }
