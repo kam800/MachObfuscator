@@ -26,7 +26,16 @@ class ConsoleReporter: SymbolsReporter {
 
     func reportBlacklistedSymbols(symbolKind: String, symbols: [String]) {
         if !symbols.isEmpty {
-            LOGGER.info("\(symbolKind) removed by blacklist: \(symbols.sorted())")
+            // Very long lines cause problems with some tools
+            LOGGER.info("\(symbolKind) removed by blacklist:\n\(symbols.sorted().chunked(into: 10).map { "\($0.joined(separator: ", "))" }.joined(separator: ",\n"))")
+        }
+    }
+}
+
+private extension Array {
+    func chunked(into size: Int) -> [[Element]] {
+        return stride(from: 0, to: count, by: size).map {
+            Array(self[$0 ..< Swift.min($0 + size, count)])
         }
     }
 }
