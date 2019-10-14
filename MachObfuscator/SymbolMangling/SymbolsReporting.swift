@@ -6,11 +6,13 @@
 import Foundation
 
 protocol SymbolsReporter {
+    func report(options: Options)
     func reportObjcMangling(map: SymbolManglingMap)
     func reportBlacklistedSymbols(symbolKind: String, symbols: [String])
 }
 
 extension SymbolsReporter {
+    func report(options _: Options) {}
     func reportObjcMangling(map _: SymbolManglingMap) {}
     func reportBlacklistedSymbols(symbolKind _: String, symbols _: [String]) {}
 }
@@ -18,6 +20,15 @@ extension SymbolsReporter {
 class NoReporter: SymbolsReporter {}
 
 class ConsoleReporter: SymbolsReporter {
+    func report(options: Options) {
+        // Try to make this text more readable by splitting in to multiple lines.
+        // Hopefully this will not break anything, but commas in values will be replaced
+        let optionsString = "\(options)".replacingOccurrences(of: ", ", with: "\n")
+            .replacingOccurrences(of: "Options(", with: "", options: .anchored, range: nil)
+            .dropLast(1)
+        LOGGER.info("===== Obfuscator options =====\n\(optionsString)")
+    }
+
     func reportObjcMangling(map: SymbolManglingMap) {
         LOGGER.info("===== ObjC obfuscation report =====")
         LOGGER.info("Classes mapping:\n\(map.classNames.sorted(by: <).map { "\($0) -> \($1)" }.joined(separator: "\n"))")
