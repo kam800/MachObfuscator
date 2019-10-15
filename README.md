@@ -115,7 +115,7 @@ Here is an example fastlane configuration assuming that compiled MachObfuscator 
 
   # Obfuscate
   # sh runs in fastlane directory not main project directory
-  sh("MACH_OBFUSCATOR=../MachObfuscator ../obfuscate.sh ../exported_ipa/#{TARGET_NAME}.ipa NO_RESIGN -v --swift-obfuscation | tee ../app/obfuscation.log")
+  sh("MACH_OBFUSCATOR=../MachObfuscator ../obfuscate.sh ../exported_ipa/#{TARGET_NAME}.ipa NO_RESIGN -v | tee ../app/obfuscation.log")
 
   # Copy obfuscated app
   rsync(
