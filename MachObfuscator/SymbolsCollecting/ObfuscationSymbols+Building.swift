@@ -48,7 +48,11 @@ extension ObfuscationSymbols {
             LOGGER.warn("Some selectors specified on blacklist were not found: \(notFoundBlacklistedSelectors)")
         }
 
-        let blacklistSelectors = (Array(blackListGetters) + Array(blacklistSetters) + Mach.libobjcSelectors + objcOptions.selectorsBlacklist + blacklistedSelectorsByRegex).uniq
+        let blacklistSelectors = blackListGetters
+            .union(blacklistSetters)
+            .union(Mach.libobjcSelectors)
+            .union(objcOptions.selectorsBlacklist)
+            .union(blacklistedSelectorsByRegex)
         // TODO: Array(userCStrings) should be opt-in
         let blacklistClasses: Set<String> =
             systemHeaderSymbols.classNames

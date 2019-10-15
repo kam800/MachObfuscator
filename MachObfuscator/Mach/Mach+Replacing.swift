@@ -49,8 +49,10 @@ private extension Mach {
             }
         }
 
-        if let classNameSection = objcClassNameSection {
-            data.replaceStrings(inRange: classNameSection.range.intRange, withMapping: map.classNames)
+        classNamesInData.forEach { classNameInData in
+            if let obfuscatedName = map.classNames[classNameInData.value] {
+                data.replaceRangeWithPadding(classNameInData.range, with: obfuscatedName)
+            }
         }
 
         if let (_, obfuscatedTrie) = map
