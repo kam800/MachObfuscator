@@ -28,8 +28,10 @@ private extension Mach {
         if let methNameSection = objcMethNameSection {
             data.replaceStrings(inRange: methNameSection.range.intRange, withMapping: map.selectors)
         }
-        if let classNameSection = objcClassNameSection {
-            data.replaceStrings(inRange: classNameSection.range.intRange, withMapping: map.classNames)
+        classNamesInData.forEach { classNameInData in
+            if let obfuscatedName = map.classNames[classNameInData.value] {
+                data.replaceRangeWithPadding(classNameInData.range, with: obfuscatedName)
+            }
         }
 
         if let methTypeSection = objcMethTypeSection {
