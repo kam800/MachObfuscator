@@ -2,9 +2,13 @@ import Foundation
 
 private func main() {
     let options = Options.fromCommandLine()
-    guard !options.help, let manglerType = options.manglerType, let appDirectoryOrFile = options.appDirectoryOrFile else {
+    guard !options.help, !options.unknownOption, let manglerType = options.manglerType, let appDirectoryOrFile = options.appDirectoryOrFile else {
         print(Options.usage)
-        return
+        if options.help {
+            return
+        } else {
+            exit(EXIT_FAILURE)
+        }
     }
 
     LOGGER = SoutLogger(options: options)

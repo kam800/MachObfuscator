@@ -77,6 +77,10 @@ class Obfuscator {
             LOGGER.info("Obfuscating \(obfuscableImage)")
             var image: Image = try! loader.load(forURL: obfuscableImage)
 
+            if options.dumpMetadata {
+                image.dumpMetadata()
+            }
+
             image.replaceSymbols(withMap: manglingMap, paths: paths)
 
             if options.eraseSymtab {
