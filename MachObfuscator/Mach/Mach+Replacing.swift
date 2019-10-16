@@ -25,18 +25,34 @@ private extension String {
 
 private extension Mach {
     mutating func replaceSymbols(withMap map: SymbolManglingMap, imageURL: URL, paths: ObfuscationPaths) {
-        if let methNameSection = objcMethNameSection {
-            data.replaceStrings(inRange: methNameSection.range.intRange, withMapping: map.selectors)
-        }
-        classNamesInData.forEach { classNameInData in
-            if let obfuscatedName = map.classNames[classNameInData.value] {
-                data.replaceRangeWithPadding(classNameInData.range, with: obfuscatedName)
-            }
-        }
+        // Obfuscate from more specific to less specific objects
+        // When class name is not overwritten debugging other obfuscations is simpler.
 
         if let methTypeSection = objcMethTypeSection {
             data.replaceStrings(inRange: methTypeSection.range.intRange,
                                 withMapping: MethTypeObfuscator(withMap: map).generateObfuscatedMethType(methType:))
+        }
+
+        if let methNameSection = objcMethNameSection {
+            data.replaceStrings(inRange: methNameSection.range.intRange, withMapping: map.selectors)
+        }
+
+        // Obfuscate property types
+        objcClasses.flatMap { $0.properties }.forEach { property in
+            var attrs = property.attributeValues
+            let typename = property.typeAttribute
+            let newTypename = MethTypeObfuscator(withMap: map).generateObfuscatedMethType(methType: typename)
+            if newTypename != typename {
+                attrs[0] = newTypename
+                let newAttrsString = attrs.joined(separator: ",")
+                data.replaceRangeWithPadding(property.attributes.range, with: newAttrsString)
+            }
+        }
+
+        classNamesInData.forEach { classNameInData in
+            if let obfuscatedName = map.classNames[classNameInData.value] {
+                data.replaceRangeWithPadding(classNameInData.range, with: obfuscatedName)
+            }
         }
 
         if let (_, obfuscatedTrie) = map
@@ -98,9 +114,13 @@ private extension Mach {
 }
 
 struct MethTypeObfuscator {
-    private let manglingMap: SymbolManglingMap
+    private let typeMapping: [String: String]
     init(withMap map: SymbolManglingMap) {
-        manglingMap = map
+        typeMapping = map.classNames
+    }
+
+    init(withMapping map: [String: String]) {
+        typeMapping = map
     }
 
     // Generate obfuscated methtype from original one. If there is no matching obfuscation, returns input unchanged
@@ -108,7 +128,7 @@ struct MethTypeObfuscator {
         // This is very naive and simple algorithm and not efficient at all.
         // Its main advantage is that it does not require parsing and generating methType strings
         // Class names seem to be always surrounded by some kind of special characters, like " or < and >
-        let newMethType = manglingMap.classNames.reduce(methType) { (curResult, mapping) -> String in
+        let newMethType = typeMapping.reduce(methType) { (curResult, mapping) -> String in
             guard curResult.contains(mapping.key) else {
                 // There is small possibility of match, so it better to search once in case of no-match
                 // for the cost of searching one more time in case of match.
