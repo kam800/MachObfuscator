@@ -5,9 +5,9 @@ class ObfuscationSymbolsTestSourceSymbolsLoader {
         case noEntryForPath
     }
 
-    private var symbolsPerUrl: [String: SourceSymbols] = [:]
+    private var symbolsPerUrl: [String: ObjectSymbols] = [:]
 
-    subscript(path: String) -> SourceSymbols? {
+    subscript(path: String) -> ObjectSymbols? {
         get {
             return symbolsPerUrl[path]
         }
@@ -17,8 +17,8 @@ class ObfuscationSymbolsTestSourceSymbolsLoader {
     }
 }
 
-extension ObfuscationSymbolsTestSourceSymbolsLoader: SourceSymbolsLoader {
-    func load(forFrameworkURL frameworkURL: URL) throws -> SourceSymbols {
+extension ObfuscationSymbolsTestSourceSymbolsLoader: ObjectSymbolsLoader {
+    func load(forFrameworkURL frameworkURL: URL) throws -> ObjectSymbols {
         let path = frameworkURL.resolvingSymlinksInPath().path
         if let symbols = symbolsPerUrl[path] {
             return symbols

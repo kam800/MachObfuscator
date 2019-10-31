@@ -21,7 +21,7 @@ class Obfuscator {
     }
 
     func run(loader: ImageLoader & SymbolsSourceLoader & DependencyNodeLoader = SimpleImageLoader(),
-             sourceSymbolsLoader: SourceSymbolsLoader = SimpleSourceSymbolsLoader()) {
+             sourceSymbolsLoader: ObjectSymbolsLoader = SimpleObjectSymbolsLoader()) {
         LOGGER.info("Will obfuscate \(directoryOrFileURL)")
 
         LOGGER.info("Looking for dependencies...")

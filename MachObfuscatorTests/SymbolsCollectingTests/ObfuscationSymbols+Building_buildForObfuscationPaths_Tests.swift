@@ -48,15 +48,15 @@ class ObfuscationSymbols_Building_buildForObfuscationPaths_Tests: XCTestCase {
                                    classNames: ["c5"],
                                    cstrings: ["s6", "c6"]),
         ]
-        testSymbolsLoader["/tmp/sys1.framework"] = SourceSymbols(
+        testSymbolsLoader["/tmp/sys1.framework"] = ObjectSymbols(
             selectors: ["sys1s"],
             classNames: ["sys1c"]
         )
-        testSymbolsLoader["/tmp/sys2.framework"] = SourceSymbols(
+        testSymbolsLoader["/tmp/sys2.framework"] = ObjectSymbols(
             selectors: ["sys2s"],
             classNames: ["sys2c"]
         )
-        testSymbolsLoader["/tmp/githubLibrary"] = SourceSymbols(
+        testSymbolsLoader["/tmp/githubLibrary"] = ObjectSymbols(
             selectors: ["sourceSelector"],
             classNames: ["sourceClass"]
         )

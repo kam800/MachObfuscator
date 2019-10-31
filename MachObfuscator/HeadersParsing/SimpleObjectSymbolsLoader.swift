@@ -1,13 +1,13 @@
 import Foundation
 
-class SimpleSourceSymbolsLoader: SourceSymbolsLoader {
-    func load(forFrameworkURL frameworkURL: URL) throws -> SourceSymbols {
+class SimpleObjectSymbolsLoader: ObjectSymbolsLoader {
+    func load(forFrameworkURL frameworkURL: URL) throws -> ObjectSymbols {
         return try load(forFrameworkURL: frameworkURL, fileManager: FileManager.default)
     }
 
-    func load(forFrameworkURL frameworkURL: URL, fileManager: FileManager) throws -> SourceSymbols {
+    func load(forFrameworkURL frameworkURL: URL, fileManager: FileManager) throws -> ObjectSymbols {
         let headers = fileManager.listSourceFilesRecursively(atURL: frameworkURL)
-        return headers.map(SourceSymbols.load(url:)).flatten()
+        return headers.map(ObjectSymbols.load(url:)).flatten()
     }
 }
 
@@ -25,8 +25,8 @@ private extension URL {
     }
 }
 
-private extension SourceSymbols {
-    static func load(url: URL) -> SourceSymbols {
+private extension ObjectSymbols {
+    static func load(url: URL) -> ObjectSymbols {
         let sourceContents: String
         do {
             sourceContents = try String(contentsOf: url, encoding: .ascii)
@@ -36,13 +36,13 @@ private extension SourceSymbols {
         let selectors = Set(sourceContents.objCMethodNames)
             .union(sourceContents.objCPropertyNames)
         let classNames = Set(sourceContents.objCTypeNames)
-        return SourceSymbols(selectors: selectors, classNames: classNames)
+        return ObjectSymbols(selectors: selectors, classNames: classNames)
     }
 }
 
-extension Sequence where Element == SourceSymbols {
-    func flatten() -> SourceSymbols {
-        return reduce(into: SourceSymbols(selectors: [], classNames: [])) { result, nextSymbols in
+extension Sequence where Element == ObjectSymbols {
+    func flatten() -> ObjectSymbols {
+        return reduce(into: ObjectSymbols(selectors: [], classNames: [])) { result, nextSymbols in
             result.classNames.formUnion(nextSymbols.classNames)
             result.selectors.formUnion(nextSymbols.selectors)
         }

@@ -21,9 +21,9 @@
 		84684FC722E5B2F600342566 /* Concurrent_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84684FC622E5B2F600342566 /* Concurrent_Tests.swift */; };
 		84684FCC22E608D900342566 /* Mach+Replacing_methtype_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84684FCB22E608D900342566 /* Mach+Replacing_methtype_Tests.swift */; };
 		84684FCE22E6EDC100342566 /* Mach+Replacing_cstrings_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84684FCD22E6EDC100342566 /* Mach+Replacing_cstrings_Tests.swift */; };
-		847F9585234DD9ED006D0916 /* Mach+Replacing_classname_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847F9584234DD9ED006D0916 /* Mach+Replacing_classname_Tests.swift */; };
 		846EE6872338D87C000EB722 /* Mach+Dumping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 846EE6862338D87C000EB722 /* Mach+Dumping.swift */; };
 		846EE6882338D87C000EB722 /* Mach+Dumping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 846EE6862338D87C000EB722 /* Mach+Dumping.swift */; };
+		847F9585234DD9ED006D0916 /* Mach+Replacing_classname_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847F9584234DD9ED006D0916 /* Mach+Replacing_classname_Tests.swift */; };
 		84ABA3062313FC6D0048B829 /* ObjcSymbols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84ABA3052313FC6D0048B829 /* ObjcSymbols.swift */; };
 		84ABA30723142A700048B829 /* ObjcSymbols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84ABA3052313FC6D0048B829 /* ObjcSymbols.swift */; };
 		84ABA30B2315364B0048B829 /* ObjcSymbols+Impl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84ABA30A2315364B0048B829 /* ObjcSymbols+Impl.swift */; };
@@ -158,7 +158,7 @@
 		D4604E432000DB9700806910 /* ImportStack+Parsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4604E422000DB9700806910 /* ImportStack+Parsing.swift */; };
 		D463844422761E4D00698C2F /* CraftedFramework.framework in Resources */ = {isa = PBXBuildFile; fileRef = D463844022761E3D00698C2F /* CraftedFramework.framework */; };
 		D463844522761E4D00698C2F /* SystemLikeFramework.framework in Resources */ = {isa = PBXBuildFile; fileRef = D463844122761E3D00698C2F /* SystemLikeFramework.framework */; };
-		D46384472276202300698C2F /* SimpleSourceSymbolsLoader_loadFromFrameworkURL_craftedFramework_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46384462276202300698C2F /* SimpleSourceSymbolsLoader_loadFromFrameworkURL_craftedFramework_Tests.swift */; };
+		D46384472276202300698C2F /* SimpleObjectSymbolsLoader_loadFromFrameworkURL_craftedFramework_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46384462276202300698C2F /* SimpleObjectSymbolsLoader_loadFromFrameworkURL_craftedFramework_Tests.swift */; };
 		D46627D621543F4A0050EADA /* Mach+Erasing.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46627D521543F4A0050EADA /* Mach+Erasing.swift */; };
 		D46627D8215446610050EADA /* Data+nullify.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46627D7215446610050EADA /* Data+nullify.swift */; };
 		D46627DA215447460050EADA /* Image+updateMachs.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46627D9215447460050EADA /* Image+updateMachs.swift */; };
@@ -185,7 +185,7 @@
 		D467A1172274FDAD00BA953A /* ObfuscationSymbolsTestSourceSymbolsLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D467A1162274FDAD00BA953A /* ObfuscationSymbolsTestSourceSymbolsLoader.swift */; };
 		D467A1182274FE1100BA953A /* FileRepository+FrameworkLocationResolving.swift in Sources */ = {isa = PBXBuildFile; fileRef = D467A10D227456E600BA953A /* FileRepository+FrameworkLocationResolving.swift */; };
 		D467A11A2275E47800BA953A /* String+asURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = D467A1192275E47800BA953A /* String+asURL.swift */; };
-		D467A11D2275F80D00BA953A /* SimpleSourceSymbolsLoader_loadFromFrameworkURL_systemLikeFramework_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D467A11C2275F80D00BA953A /* SimpleSourceSymbolsLoader_loadFromFrameworkURL_systemLikeFramework_Tests.swift */; };
+		D467A11D2275F80D00BA953A /* SimpleObjectSymbolsLoader_loadFromFrameworkURL_systemLikeFramework_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D467A11C2275F80D00BA953A /* SimpleObjectSymbolsLoader_loadFromFrameworkURL_systemLikeFramework_Tests.swift */; };
 		D467A1242275FC2500BA953A /* URL+SampleFrameworks.swift in Sources */ = {isa = PBXBuildFile; fileRef = D467A1232275FC2500BA953A /* URL+SampleFrameworks.swift */; };
 		D4816064211C6577008671D8 /* ObfuscationPaths+Building_forAllExecutables_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4816063211C6577008671D8 /* ObfuscationPaths+Building_forAllExecutables_Tests.swift */; };
 		D4816065211C69A4008671D8 /* ObfuscationPaths.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A97EF21FB3BD6A00CB3EC2 /* ObfuscationPaths.swift */; };
@@ -236,7 +236,7 @@
 		D49455401FC23C5600969202 /* Trie.swift in Sources */ = {isa = PBXBuildFile; fileRef = D494553F1FC23C5600969202 /* Trie.swift */; };
 		D498737A1FB4FE6E00F33E84 /* SymbolMangling.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49873791FB4FE6E00F33E84 /* SymbolMangling.swift */; };
 		D498737C1FB5056F00F33E84 /* ObfuscationPaths+Building.swift in Sources */ = {isa = PBXBuildFile; fileRef = D498737B1FB5056F00F33E84 /* ObfuscationPaths+Building.swift */; };
-		D49BDB3622C03CD60085C1D6 /* SimpleSourceSymbolsLoader_loadFromSourcesURL_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49BDB3522C03CD60085C1D6 /* SimpleSourceSymbolsLoader_loadFromSourcesURL_Tests.swift */; };
+		D49BDB3622C03CD60085C1D6 /* SimpleObjectSymbolsLoader_loadFromSourcesURL_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49BDB3522C03CD60085C1D6 /* SimpleObjectSymbolsLoader_loadFromSourcesURL_Tests.swift */; };
 		D49BDB3822C03D4F0085C1D6 /* LibrarySourceCode.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D49BDB3722C03D4F0085C1D6 /* LibrarySourceCode.bundle */; };
 		D49C7C271FAD218600B4D03F /* CaesarMangler.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49C7C261FAD218600B4D03F /* CaesarMangler.swift */; };
 		D49C7C291FAE213400B4D03F /* Mach+Replacing.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49C7C281FAE213400B4D03F /* Mach+Replacing.swift */; };
@@ -262,7 +262,7 @@
 		D4D396F620ED79B3004A9AE6 /* UnsafeRawPointer+Leb128_readUleb128_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D396F520ED79B3004A9AE6 /* UnsafeRawPointer+Leb128_readUleb128_Tests.swift */; };
 		D4D396F820ED7B2D004A9AE6 /* UnsafeRawPointer+Leb128_readSleb128_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D396F720ED7B2D004A9AE6 /* UnsafeRawPointer+Leb128_readSleb128_Tests.swift */; };
 		D4D82CF12202547800090614 /* ArraySentenceGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D82CF02202547800090614 /* ArraySentenceGenerator.swift */; };
-		D4E365FA227CF5DE00FF7B9A /* SimpleSourceSymbolsLoader_loadFromFrameworkURL_allSystemFrameworks_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E365F9227CF5DE00FF7B9A /* SimpleSourceSymbolsLoader_loadFromFrameworkURL_allSystemFrameworks_Tests.swift */; };
+		D4E365FA227CF5DE00FF7B9A /* SimpleObjectSymbolsLoader_loadFromFrameworkURL_allSystemFrameworks_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E365F9227CF5DE00FF7B9A /* SimpleObjectSymbolsLoader_loadFromFrameworkURL_allSystemFrameworks_Tests.swift */; };
 		D4E7634F201CDB60004300EB /* NibArchive+Loading.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E7634E201CDB60004300EB /* NibArchive+Loading.swift */; };
 		D4E76351201CDF05004300EB /* NibArchive+Nib.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E76350201CDF05004300EB /* NibArchive+Nib.swift */; };
 		D4F116C121287EEA00364CA2 /* RpathsAccumulator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F116C021287EEA00364CA2 /* RpathsAccumulator.swift */; };
@@ -275,12 +275,12 @@
 		D4FC25211FDBE84D005E351D /* UnsafeRawPointer+CString_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4FC25201FDBE84D005E351D /* UnsafeRawPointer+CString_Tests.swift */; };
 		D4FC25221FDBE98B005E351D /* UnsafeRawPointer+CString.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4FC251E1FDBE72F005E351D /* UnsafeRawPointer+CString.swift */; };
 		D4FC25241FDBF27C005E351D /* Trie+Parsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4FC25231FDBF27C005E351D /* Trie+Parsing.swift */; };
-		D4FFAC9122667B51007684FF /* SourceSymbolsLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4FFAC9022667B51007684FF /* SourceSymbolsLoader.swift */; };
-		D4FFAC9322667BA6007684FF /* SourceSymbols.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4FFAC9222667BA6007684FF /* SourceSymbols.swift */; };
-		D4FFAC9522667DB3007684FF /* SimpleSourceSymbolsLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4FFAC9422667DB3007684FF /* SimpleSourceSymbolsLoader.swift */; };
-		D4FFAC9622667F17007684FF /* SimpleSourceSymbolsLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4FFAC9422667DB3007684FF /* SimpleSourceSymbolsLoader.swift */; };
-		D4FFAC9722667F1D007684FF /* SourceSymbolsLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4FFAC9022667B51007684FF /* SourceSymbolsLoader.swift */; };
-		D4FFAC9822667F21007684FF /* SourceSymbols.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4FFAC9222667BA6007684FF /* SourceSymbols.swift */; };
+		D4FFAC9122667B51007684FF /* ObjectSymbolsLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4FFAC9022667B51007684FF /* ObjectSymbolsLoader.swift */; };
+		D4FFAC9322667BA6007684FF /* ObjectSymbols.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4FFAC9222667BA6007684FF /* ObjectSymbols.swift */; };
+		D4FFAC9522667DB3007684FF /* SimpleObjectSymbolsLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4FFAC9422667DB3007684FF /* SimpleObjectSymbolsLoader.swift */; };
+		D4FFAC9622667F17007684FF /* SimpleObjectSymbolsLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4FFAC9422667DB3007684FF /* SimpleObjectSymbolsLoader.swift */; };
+		D4FFAC9722667F1D007684FF /* ObjectSymbolsLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4FFAC9022667B51007684FF /* ObjectSymbolsLoader.swift */; };
+		D4FFAC9822667F21007684FF /* ObjectSymbols.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4FFAC9222667BA6007684FF /* ObjectSymbols.swift */; };
 		E4F4794533F6F1852D47ECCA /* RealWordsExportTrieMangler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4F471074E734A577931AFBA /* RealWordsExportTrieMangler.swift */; };
 		E4F47DC68C1269260D12D624 /* RealWordsExportTrieMangler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4F471074E734A577931AFBA /* RealWordsExportTrieMangler.swift */; };
 /* End PBXBuildFile section */
@@ -319,8 +319,8 @@
 		84684FC622E5B2F600342566 /* Concurrent_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Concurrent_Tests.swift; sourceTree = "<group>"; };
 		84684FCB22E608D900342566 /* Mach+Replacing_methtype_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Mach+Replacing_methtype_Tests.swift"; sourceTree = "<group>"; };
 		84684FCD22E6EDC100342566 /* Mach+Replacing_cstrings_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Mach+Replacing_cstrings_Tests.swift"; sourceTree = "<group>"; };
-		847F9584234DD9ED006D0916 /* Mach+Replacing_classname_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Mach+Replacing_classname_Tests.swift"; sourceTree = "<group>"; };
 		846EE6862338D87C000EB722 /* Mach+Dumping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Mach+Dumping.swift"; sourceTree = "<group>"; };
+		847F9584234DD9ED006D0916 /* Mach+Replacing_classname_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Mach+Replacing_classname_Tests.swift"; sourceTree = "<group>"; };
 		84ABA3052313FC6D0048B829 /* ObjcSymbols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjcSymbols.swift; sourceTree = "<group>"; };
 		84ABA30A2315364B0048B829 /* ObjcSymbols+Impl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ObjcSymbols+Impl.swift"; sourceTree = "<group>"; };
 		84ABA30D231695380048B829 /* MachStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MachStrings.swift; sourceTree = "<group>"; };
@@ -406,7 +406,7 @@
 		D4604E422000DB9700806910 /* ImportStack+Parsing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ImportStack+Parsing.swift"; sourceTree = "<group>"; };
 		D463844022761E3D00698C2F /* CraftedFramework.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CraftedFramework.framework; sourceTree = "<group>"; };
 		D463844122761E3D00698C2F /* SystemLikeFramework.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SystemLikeFramework.framework; sourceTree = "<group>"; };
-		D46384462276202300698C2F /* SimpleSourceSymbolsLoader_loadFromFrameworkURL_craftedFramework_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleSourceSymbolsLoader_loadFromFrameworkURL_craftedFramework_Tests.swift; sourceTree = "<group>"; };
+		D46384462276202300698C2F /* SimpleObjectSymbolsLoader_loadFromFrameworkURL_craftedFramework_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleObjectSymbolsLoader_loadFromFrameworkURL_craftedFramework_Tests.swift; sourceTree = "<group>"; };
 		D46627D521543F4A0050EADA /* Mach+Erasing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Mach+Erasing.swift"; sourceTree = "<group>"; };
 		D46627D7215446610050EADA /* Data+nullify.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+nullify.swift"; sourceTree = "<group>"; };
 		D46627D9215447460050EADA /* Image+updateMachs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Image+updateMachs.swift"; sourceTree = "<group>"; };
@@ -421,7 +421,7 @@
 		D467A10D227456E600BA953A /* FileRepository+FrameworkLocationResolving.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileRepository+FrameworkLocationResolving.swift"; sourceTree = "<group>"; };
 		D467A1162274FDAD00BA953A /* ObfuscationSymbolsTestSourceSymbolsLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObfuscationSymbolsTestSourceSymbolsLoader.swift; sourceTree = "<group>"; };
 		D467A1192275E47800BA953A /* String+asURL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+asURL.swift"; sourceTree = "<group>"; };
-		D467A11C2275F80D00BA953A /* SimpleSourceSymbolsLoader_loadFromFrameworkURL_systemLikeFramework_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleSourceSymbolsLoader_loadFromFrameworkURL_systemLikeFramework_Tests.swift; sourceTree = "<group>"; };
+		D467A11C2275F80D00BA953A /* SimpleObjectSymbolsLoader_loadFromFrameworkURL_systemLikeFramework_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleObjectSymbolsLoader_loadFromFrameworkURL_systemLikeFramework_Tests.swift; sourceTree = "<group>"; };
 		D467A1232275FC2500BA953A /* URL+SampleFrameworks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+SampleFrameworks.swift"; sourceTree = "<group>"; };
 		D4816063211C6577008671D8 /* ObfuscationPaths+Building_forAllExecutables_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ObfuscationPaths+Building_forAllExecutables_Tests.swift"; sourceTree = "<group>"; };
 		D4816089211C7252008671D8 /* ObfuscationPathsTestRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObfuscationPathsTestRepository.swift; sourceTree = "<group>"; };
@@ -446,7 +446,7 @@
 		D494553F1FC23C5600969202 /* Trie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Trie.swift; sourceTree = "<group>"; };
 		D49873791FB4FE6E00F33E84 /* SymbolMangling.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SymbolMangling.swift; sourceTree = "<group>"; };
 		D498737B1FB5056F00F33E84 /* ObfuscationPaths+Building.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ObfuscationPaths+Building.swift"; sourceTree = "<group>"; };
-		D49BDB3522C03CD60085C1D6 /* SimpleSourceSymbolsLoader_loadFromSourcesURL_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleSourceSymbolsLoader_loadFromSourcesURL_Tests.swift; sourceTree = "<group>"; };
+		D49BDB3522C03CD60085C1D6 /* SimpleObjectSymbolsLoader_loadFromSourcesURL_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleObjectSymbolsLoader_loadFromSourcesURL_Tests.swift; sourceTree = "<group>"; };
 		D49BDB3722C03D4F0085C1D6 /* LibrarySourceCode.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = LibrarySourceCode.bundle; sourceTree = "<group>"; };
 		D49C7C261FAD218600B4D03F /* CaesarMangler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaesarMangler.swift; sourceTree = "<group>"; };
 		D49C7C281FAE213400B4D03F /* Mach+Replacing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Mach+Replacing.swift"; sourceTree = "<group>"; };
@@ -470,7 +470,7 @@
 		D4D396F520ED79B3004A9AE6 /* UnsafeRawPointer+Leb128_readUleb128_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UnsafeRawPointer+Leb128_readUleb128_Tests.swift"; sourceTree = "<group>"; };
 		D4D396F720ED7B2D004A9AE6 /* UnsafeRawPointer+Leb128_readSleb128_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UnsafeRawPointer+Leb128_readSleb128_Tests.swift"; sourceTree = "<group>"; };
 		D4D82CF02202547800090614 /* ArraySentenceGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArraySentenceGenerator.swift; sourceTree = "<group>"; };
-		D4E365F9227CF5DE00FF7B9A /* SimpleSourceSymbolsLoader_loadFromFrameworkURL_allSystemFrameworks_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleSourceSymbolsLoader_loadFromFrameworkURL_allSystemFrameworks_Tests.swift; sourceTree = "<group>"; };
+		D4E365F9227CF5DE00FF7B9A /* SimpleObjectSymbolsLoader_loadFromFrameworkURL_allSystemFrameworks_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleObjectSymbolsLoader_loadFromFrameworkURL_allSystemFrameworks_Tests.swift; sourceTree = "<group>"; };
 		D4E7634E201CDB60004300EB /* NibArchive+Loading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NibArchive+Loading.swift"; sourceTree = "<group>"; };
 		D4E76350201CDF05004300EB /* NibArchive+Nib.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NibArchive+Nib.swift"; sourceTree = "<group>"; };
 		D4F116C021287EEA00364CA2 /* RpathsAccumulator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RpathsAccumulator.swift; sourceTree = "<group>"; };
@@ -482,9 +482,9 @@
 		D4FC251E1FDBE72F005E351D /* UnsafeRawPointer+CString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UnsafeRawPointer+CString.swift"; sourceTree = "<group>"; };
 		D4FC25201FDBE84D005E351D /* UnsafeRawPointer+CString_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UnsafeRawPointer+CString_Tests.swift"; sourceTree = "<group>"; };
 		D4FC25231FDBF27C005E351D /* Trie+Parsing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Trie+Parsing.swift"; sourceTree = "<group>"; };
-		D4FFAC9022667B51007684FF /* SourceSymbolsLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceSymbolsLoader.swift; sourceTree = "<group>"; };
-		D4FFAC9222667BA6007684FF /* SourceSymbols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceSymbols.swift; sourceTree = "<group>"; };
-		D4FFAC9422667DB3007684FF /* SimpleSourceSymbolsLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleSourceSymbolsLoader.swift; sourceTree = "<group>"; };
+		D4FFAC9022667B51007684FF /* ObjectSymbolsLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectSymbolsLoader.swift; sourceTree = "<group>"; };
+		D4FFAC9222667BA6007684FF /* ObjectSymbols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectSymbols.swift; sourceTree = "<group>"; };
+		D4FFAC9422667DB3007684FF /* SimpleObjectSymbolsLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleObjectSymbolsLoader.swift; sourceTree = "<group>"; };
 		E4F471074E734A577931AFBA /* RealWordsExportTrieMangler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RealWordsExportTrieMangler.swift; sourceTree = "<group>"; };
 		E4F4791FC538D665099F39E5 /* CaesarStringMangler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CaesarStringMangler.swift; sourceTree = "<group>"; };
 		E4F47C81529825A2DAB1FCAC /* CaesarExportTrieMangler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CaesarExportTrieMangler.swift; sourceTree = "<group>"; };
@@ -766,10 +766,10 @@
 		D467A0FE2274374900BA953A /* HeadersParsing */ = {
 			isa = PBXGroup;
 			children = (
-				D4FFAC9222667BA6007684FF /* SourceSymbols.swift */,
-				D4FFAC9022667B51007684FF /* SourceSymbolsLoader.swift */,
+				D4FFAC9222667BA6007684FF /* ObjectSymbols.swift */,
+				D4FFAC9022667B51007684FF /* ObjectSymbolsLoader.swift */,
 				D467A1002274375800BA953A /* NSRegularExpression+matches.swift */,
-				D4FFAC9422667DB3007684FF /* SimpleSourceSymbolsLoader.swift */,
+				D4FFAC9422667DB3007684FF /* SimpleObjectSymbolsLoader.swift */,
 				D467A1052274375800BA953A /* String+objCMethodNames.swift */,
 				D467A1012274375800BA953A /* String+objCPropertyNames.swift */,
 				D467A1022274375800BA953A /* String+objCTypeNames.swift */,
@@ -784,10 +784,10 @@
 			isa = PBXGroup;
 			children = (
 				D467A11E2275F85700BA953A /* Samples */,
-				D467A11C2275F80D00BA953A /* SimpleSourceSymbolsLoader_loadFromFrameworkURL_systemLikeFramework_Tests.swift */,
-				D46384462276202300698C2F /* SimpleSourceSymbolsLoader_loadFromFrameworkURL_craftedFramework_Tests.swift */,
-				D49BDB3522C03CD60085C1D6 /* SimpleSourceSymbolsLoader_loadFromSourcesURL_Tests.swift */,
-				D4E365F9227CF5DE00FF7B9A /* SimpleSourceSymbolsLoader_loadFromFrameworkURL_allSystemFrameworks_Tests.swift */,
+				D467A11C2275F80D00BA953A /* SimpleObjectSymbolsLoader_loadFromFrameworkURL_systemLikeFramework_Tests.swift */,
+				D46384462276202300698C2F /* SimpleObjectSymbolsLoader_loadFromFrameworkURL_craftedFramework_Tests.swift */,
+				D49BDB3522C03CD60085C1D6 /* SimpleObjectSymbolsLoader_loadFromSourcesURL_Tests.swift */,
+				D4E365F9227CF5DE00FF7B9A /* SimpleObjectSymbolsLoader_loadFromFrameworkURL_allSystemFrameworks_Tests.swift */,
 			);
 			path = HeaderParsingTests;
 			sourceTree = "<group>";
@@ -1198,7 +1198,7 @@
 				D4065D3822612357004DCA7D /* Pipe.swift in Sources */,
 				D4C98ADB214329F1008340B2 /* SentenceGenerator.swift in Sources */,
 				D49C7C271FAD218600B4D03F /* CaesarMangler.swift in Sources */,
-				D4FFAC9122667B51007684FF /* SourceSymbolsLoader.swift in Sources */,
+				D4FFAC9122667B51007684FF /* ObjectSymbolsLoader.swift in Sources */,
 				D4AAA600201C9A3B009BB8FA /* UnsafeRawPointer+Structs.swift in Sources */,
 				D44D73FD211C637600DE002B /* FileRepository+DylibLocationResolving.swift in Sources */,
 				D432EADA213DDEB100C2ADA0 /* CpuId.swift in Sources */,
@@ -1244,7 +1244,7 @@
 				D45B195D20CC41E0008415FF /* NibArchive+Saving.swift in Sources */,
 				D44722671FABDBF1006B03AA /* SymbolManglingMap.swift in Sources */,
 				D432EAEB213DE0CD00C2ADA0 /* ImageLoaderProtocol.swift in Sources */,
-				D4FFAC9522667DB3007684FF /* SimpleSourceSymbolsLoader.swift in Sources */,
+				D4FFAC9522667DB3007684FF /* SimpleObjectSymbolsLoader.swift in Sources */,
 				D4FC25241FDBF27C005E351D /* Trie+Parsing.swift in Sources */,
 				D42D02B31F8D69450080D12B /* Mach.swift in Sources */,
 				8831AF5122081DFA006BEB91 /* CaesarStringMangler.swift in Sources */,
@@ -1276,7 +1276,7 @@
 				84ABA30B2315364B0048B829 /* ObjcSymbols+Impl.swift in Sources */,
 				D432EAF1213DE83D00C2ADA0 /* LoggerProtocol.swift in Sources */,
 				D44D73A02119FA6300DE002B /* Range+Sugar.swift in Sources */,
-				D4FFAC9322667BA6007684FF /* SourceSymbols.swift in Sources */,
+				D4FFAC9322667BA6007684FF /* ObjectSymbols.swift in Sources */,
 				D439AAC71F916EB900F9582D /* Mach+SectionsLookup.swift in Sources */,
 				D432EAE8213DE06000C2ADA0 /* Image+Savable.swift in Sources */,
 				D410A6CD20CF1FC3006A31E5 /* Obfuscator.swift in Sources */,
@@ -1292,7 +1292,7 @@
 				D44D731B2118590C00DE002B /* UnsafeRawPointer+Structs.swift in Sources */,
 				8831AF4E22081DA5006BEB91 /* CaesarCypher.swift in Sources */,
 				D44D73192118504100DE002B /* Data+Structs_getStruct_Tests.swift in Sources */,
-				D4FFAC9822667F21007684FF /* SourceSymbols.swift in Sources */,
+				D4FFAC9822667F21007684FF /* ObjectSymbols.swift in Sources */,
 				D467A1172274FDAD00BA953A /* ObfuscationSymbolsTestSourceSymbolsLoader.swift in Sources */,
 				8416FC0D22FEDA8E00963596 /* Mach+Loading_MachoMac10_14_Tests.swift in Sources */,
 				D467A11A2275E47800BA953A /* String+asURL.swift in Sources */,
@@ -1317,7 +1317,7 @@
 				D481609821205D6C008671D8 /* SymbolsSourceLoader.swift in Sources */,
 				84B46C3122FD524F00BD4984 /* Options+ObfuscableFilesFilter_Tests.swift in Sources */,
 				84ABA30F231695630048B829 /* MachStrings.swift in Sources */,
-				D4E365FA227CF5DE00FF7B9A /* SimpleSourceSymbolsLoader_loadFromFrameworkURL_allSystemFrameworks_Tests.swift in Sources */,
+				D4E365FA227CF5DE00FF7B9A /* SimpleObjectSymbolsLoader_loadFromFrameworkURL_allSystemFrameworks_Tests.swift in Sources */,
 				D4C48E9421E2B5A700498A62 /* Image+updateMachs_Tests.swift in Sources */,
 				8416FC0F22FEDF3900963596 /* Mach+Loading_MachoIos12_0_Tests.swift in Sources */,
 				D44D732F2118890100DE002B /* Sequence+uniq.swift in Sources */,
@@ -1325,7 +1325,7 @@
 				D432EAE3213DE02400C2ADA0 /* Image+machs.swift in Sources */,
 				D44D732B2118875700DE002B /* URL+containsURL_Tests.swift in Sources */,
 				D467A1242275FC2500BA953A /* URL+SampleFrameworks.swift in Sources */,
-				D4FFAC9622667F17007684FF /* SimpleSourceSymbolsLoader.swift in Sources */,
+				D4FFAC9622667F17007684FF /* SimpleObjectSymbolsLoader.swift in Sources */,
 				D4816069211C69A4008671D8 /* DependencyNodeLoader.swift in Sources */,
 				D4B2C83722FF793800BF89C8 /* RealWordsExportTrieMangler_emptyLabeledNodes_Tests.swift in Sources */,
 				D412C67A214076A200AA9A07 /* Options.swift in Sources */,
@@ -1339,7 +1339,7 @@
 				D41A66C020F0B87300FB19EB /* UnsafeRawPointer+Leb128_readNibUleb128_Tests.swift in Sources */,
 				D481606D211C69AA008671D8 /* Trie+Parsing.swift in Sources */,
 				D481606A211C69A4008671D8 /* DependencyNodeLoader+isMachOExecutable.swift in Sources */,
-				D49BDB3622C03CD60085C1D6 /* SimpleSourceSymbolsLoader_loadFromSourcesURL_Tests.swift in Sources */,
+				D49BDB3622C03CD60085C1D6 /* SimpleObjectSymbolsLoader_loadFromSourcesURL_Tests.swift in Sources */,
 				8831AF4C22081D63006BEB91 /* main.swift in Sources */,
 				D481609D2120CF8C008671D8 /* DependencyNode.swift in Sources */,
 				D455EB29223E637100E4B1E7 /* Mach+classNames.swift in Sources */,
@@ -1362,7 +1362,7 @@
 				8831AF4D22081D93006BEB91 /* CaesarExportTrieMangler.swift in Sources */,
 				D46627E021544E590050EADA /* Paths.swift in Sources */,
 				D44D738A2119EBD100DE002B /* NibPlist+Saving.swift in Sources */,
-				D46384472276202300698C2F /* SimpleSourceSymbolsLoader_loadFromFrameworkURL_craftedFramework_Tests.swift in Sources */,
+				D46384472276202300698C2F /* SimpleObjectSymbolsLoader_loadFromFrameworkURL_craftedFramework_Tests.swift in Sources */,
 				D467A1132274FD3E00BA953A /* String+subscriptNSRange.swift in Sources */,
 				D48160A02120D000008671D8 /* SymbolMangling.swift in Sources */,
 				D4F116C221297F7300364CA2 /* RpathsAccumulator.swift in Sources */,
@@ -1386,7 +1386,7 @@
 				D467A1152274FD3E00BA953A /* String+withoutComments.swift in Sources */,
 				D432EAF4213DEAD900C2ADA0 /* LoggerProtocol.swift in Sources */,
 				D481608E211CF19D008671D8 /* ObfuscationSymbols+Building_buildForObfuscationPaths_Tests.swift in Sources */,
-				D4FFAC9722667F1D007684FF /* SourceSymbolsLoader.swift in Sources */,
+				D4FFAC9722667F1D007684FF /* ObjectSymbolsLoader.swift in Sources */,
 				D4816076211C69B1008671D8 /* Mach+SectionsLookup.swift in Sources */,
 				D4816075211C69B1008671D8 /* Mach+Saving.swift in Sources */,
 				D46627DB215448890050EADA /* Mach+Erasing.swift in Sources */,
@@ -1450,7 +1450,7 @@
 				D481609E2120CFD2008671D8 /* Obfuscator.swift in Sources */,
 				D467A1182274FE1100BA953A /* FileRepository+FrameworkLocationResolving.swift in Sources */,
 				D467A1102274FD3E00BA953A /* String+objCMethodNames.swift in Sources */,
-				D467A11D2275F80D00BA953A /* SimpleSourceSymbolsLoader_loadFromFrameworkURL_systemLikeFramework_Tests.swift in Sources */,
+				D467A11D2275F80D00BA953A /* SimpleObjectSymbolsLoader_loadFromFrameworkURL_systemLikeFramework_Tests.swift in Sources */,
 				D432EAE2213DE00300C2ADA0 /* SimpleImageLoader.swift in Sources */,
 				D432EADD213DDFA000C2ADA0 /* CpuId.swift in Sources */,
 				E4F4794533F6F1852D47ECCA /* RealWordsExportTrieMangler.swift in Sources */,
