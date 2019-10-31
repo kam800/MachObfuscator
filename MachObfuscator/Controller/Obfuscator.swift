@@ -45,13 +45,15 @@ class Obfuscator {
 
         LOGGER.info("Collecting symbols...")
 
-        let symbols = time(withTag: "Build obfuscation symbols") {
+        let symbols: ObfuscationSymbols = time(withTag: "Build obfuscation symbols") {
             autoreleasepool {
-                ObfuscationSymbols.buildFor(obfuscationPaths: paths,
-                                            loader: loader,
-                                            sourceSymbolsLoader: sourceSymbolsLoader,
-                                            skippedSymbolsSources: options.skippedSymbolsSources,
-                                            objcOptions: options.objcOptions)
+                let skippedSymbols = ObjectSymbols.blacklist(skippedSymbolsSources: options.skippedSymbolsSources,
+                                                             sourceSymbolsLoader: sourceSymbolsLoader)
+                return ObfuscationSymbols.buildFor(obfuscationPaths: paths,
+                                                   loader: loader,
+                                                   sourceSymbolsLoader: sourceSymbolsLoader,
+                                                   skippedSymbols: skippedSymbols,
+                                                   objcOptions: options.objcOptions)
             }
         }
         LOGGER.info("\(symbols.whitelist.selectors.count) obfuscable selectors")

@@ -56,10 +56,6 @@ class ObfuscationSymbols_Building_buildForObfuscationPaths_Tests: XCTestCase {
             selectors: ["sys2s"],
             classNames: ["sys2c"]
         )
-        testSymbolsLoader["/tmp/githubLibrary"] = ObjectSymbols(
-            selectors: ["sourceSelector"],
-            classNames: ["sourceClass"]
-        )
 
         sut = buildSUT()
     }
@@ -68,7 +64,7 @@ class ObfuscationSymbols_Building_buildForObfuscationPaths_Tests: XCTestCase {
         return ObfuscationSymbols.buildFor(obfuscationPaths: sampleObfuscationPaths,
                                            loader: testLoader,
                                            sourceSymbolsLoader: testSymbolsLoader,
-                                           skippedSymbolsSources: ["/tmp/githubLibrary/".asURL], // TODO!!!!
+                                           skippedSymbols: ObjectSymbols.sample,
                                            objcOptions: objcOptions)
     }
 
@@ -138,4 +134,9 @@ class ObfuscationSymbols_Building_buildForObfuscationPaths_Tests: XCTestCase {
         XCTAssertEqual(ob2TriePerCpuId.count, 1)
         XCTAssertEqual(ob2TriePerCpuId[0x17_0000_0042]?.labelString, "ob2")
     }
+}
+
+private extension ObjectSymbols {
+    static let sample = ObjectSymbols(selectors: ["sourceSelector"],
+                                      classNames: ["sourceClass"])
 }

@@ -4,7 +4,7 @@ extension ObfuscationSymbols {
     static func buildFor(obfuscationPaths: ObfuscationPaths,
                          loader: SymbolsSourceLoader,
                          sourceSymbolsLoader: SourceSymbolsLoader,
-                         skippedSymbolsSources: [URL],
+                         skippedSymbols: ObjectSymbols,
                          objcOptions: ObjcOptions = ObjcOptions()) -> ObfuscationSymbols {
         let systemSources = time(withTag: "systemSources") { try! obfuscationPaths.unobfuscableDependencies.flatMap { try loader.load(forURL: $0) } }
 
@@ -23,10 +23,6 @@ extension ObfuscationSymbols {
             .concurrentMap(sourceSymbolsLoader.forceLoad(forFrameworkURL:))
             .flatten()
         }
-
-        let skippedSymbols = skippedSymbolsSources
-            .map(sourceSymbolsLoader.forceLoad(forFrameworkURL:))
-            .flatten()
 
         // TODO: Array(userCStrings) should be opt-in
         let blackListGetters: Set<String> =
@@ -95,16 +91,5 @@ private extension String {
             return self
         }
         return "set\(capitalizedOnFirstLetter):"
-    }
-}
-
-private extension SourceSymbolsLoader {
-    func forceLoad(forFrameworkURL url: URL) -> ObjectSymbols {
-        do {
-            LOGGER.info("Collecting symbols from \(url)")
-            return try load(forFrameworkURL: url)
-        } catch {
-            fatalError("Error while reading symbols from path '\(url)': \(error)")
-        }
     }
 }
