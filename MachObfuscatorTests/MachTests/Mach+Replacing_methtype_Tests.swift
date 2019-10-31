@@ -47,19 +47,15 @@ class Mach_Replacing_methtype_Tests: XCTestCase {
         var sut = try! Image.load(url: URL.machoMacExecutable)
 
         // Prepare test obfuscation configuration satisfying requirements of replaceSymbols
-        let emptyTrie = Trie(exportsSymbol: false, labelRange: 0 ..< 0, label: [], children: [])
-        let firstImportEntry = sut.machs[0].importStack[0]
-        let symbolDylib = sut.machs[0].dylibs[firstImportEntry.dylibOrdinal - 1]
-
         let map = SymbolManglingMap(selectors: [:], classNames: testMap.classNames, exportTrieObfuscationMap: [
             URL.machoMacExecutable: [
                 sut.machs[0].cpu.asCpuId:
-                    (unobfuscated: emptyTrie,
-                     obfuscated: emptyTrie),
+                    (unobfuscated: Trie.empty,
+                     obfuscated: Trie.empty),
             ],
         ])
         var paths = ObfuscationPaths()
-        paths.resolvedDylibMapPerImageURL = [URL.machoMacExecutable: [symbolDylib: URL(fileURLWithPath: "/tmp/testlib")]]
+        paths.resolvedDylibMapPerImageURL = [URL.machoMacExecutable: [:]]
 
         // When
         sut.replaceSymbols(withMap: map, paths: paths)

@@ -123,8 +123,11 @@ private extension Array where Element == UInt8 {
     }
 }
 
-private extension Trie {
+extension Trie {
     static let empty = Trie(exportsSymbol: false, labelRange: 0 ..< 0, label: [], children: [])
+}
+
+private extension Trie {
     static func with(labelBytes: [UInt8]) -> Trie {
         return Trie(exportsSymbol: false,
                     labelRange: 0 ..< 0,

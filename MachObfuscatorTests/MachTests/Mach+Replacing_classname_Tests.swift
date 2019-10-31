@@ -21,21 +21,18 @@ class Mach_Replacing_classname_Tests: XCTestCase {
         var sut = try! Image.load(url: URL.machoMacExecutable)
 
         // Prepare test obfuscation configuration satisfying requirements of replaceSymbols
-        let emptyTrie = Trie(exportsSymbol: false, labelRange: 0 ..< 0, label: [], children: [])
-        let firstImportEntry = sut.machs[0].importStack[0]
-        let symbolDylib = sut.machs[0].dylibs[firstImportEntry.dylibOrdinal - 1]
-
+        //
         // "Cat" is a category name, but it is not referenced in compiled metadata,
         // so use it as example of __objc_classname section entry that should not be changed.
         let map = SymbolManglingMap(selectors: [:], classNames: ["SampleClass": "ObfsctClazz", "Cat": "Bad", "NotExistingClass": "ShouldNotUse"], exportTrieObfuscationMap: [
             URL.machoMacExecutable: [
                 sut.machs[0].cpu.asCpuId:
-                    (unobfuscated: emptyTrie,
-                     obfuscated: emptyTrie),
+                    (unobfuscated: Trie.empty,
+                     obfuscated: Trie.empty),
             ],
         ])
         var paths = ObfuscationPaths()
-        paths.resolvedDylibMapPerImageURL = [URL.machoMacExecutable: [symbolDylib: URL(fileURLWithPath: "/tmp/testlib")]]
+        paths.resolvedDylibMapPerImageURL = [URL.machoMacExecutable: [:]]
 
         // When
         sut.replaceSymbols(withMap: map, paths: paths)
