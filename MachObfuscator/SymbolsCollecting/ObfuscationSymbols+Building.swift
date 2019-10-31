@@ -3,7 +3,7 @@ import Foundation
 extension ObfuscationSymbols {
     static func buildFor(obfuscationPaths: ObfuscationPaths,
                          loader: SymbolsSourceLoader,
-                         sourceSymbolsLoader: ObjectSymbolsLoader,
+                         sourceSymbolsLoader: SourceSymbolsLoader,
                          skippedSymbolsSources: [URL],
                          objcOptions: ObjcOptions = ObjcOptions()) -> ObfuscationSymbols {
         let systemSources = time(withTag: "systemSources") { try! obfuscationPaths.unobfuscableDependencies.flatMap { try loader.load(forURL: $0) } }
@@ -98,7 +98,7 @@ private extension String {
     }
 }
 
-private extension ObjectSymbolsLoader {
+private extension SourceSymbolsLoader {
     func forceLoad(forFrameworkURL url: URL) -> ObjectSymbols {
         do {
             LOGGER.info("Collecting symbols from \(url)")

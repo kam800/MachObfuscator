@@ -1,12 +1,12 @@
 import XCTest
 
-class SimpleObjectSymbolsLoader_loadFromSourcesURL_Tests: XCTestCase {
+class SimpleSourceSymbolsLoader_loadFromSourcesURL_Tests: XCTestCase {
     var symbols: ObjectSymbols!
 
     override func setUp() {
         super.setUp()
 
-        let sut = SimpleObjectSymbolsLoader()
+        let sut = SimpleSourceSymbolsLoader()
         symbols = try! sut.load(forFrameworkURL: URL.librarySourceCode)
     }
 

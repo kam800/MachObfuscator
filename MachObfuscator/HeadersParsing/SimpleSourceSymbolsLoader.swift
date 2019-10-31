@@ -1,6 +1,6 @@
 import Foundation
 
-class SimpleObjectSymbolsLoader: ObjectSymbolsLoader {
+class SimpleSourceSymbolsLoader: SourceSymbolsLoader {
     func load(forFrameworkURL frameworkURL: URL) throws -> ObjectSymbols {
         return try load(forFrameworkURL: frameworkURL, fileManager: FileManager.default)
     }

@@ -17,7 +17,7 @@ class ObfuscationSymbolsTestSourceSymbolsLoader {
     }
 }
 
-extension ObfuscationSymbolsTestSourceSymbolsLoader: ObjectSymbolsLoader {
+extension ObfuscationSymbolsTestSourceSymbolsLoader: SourceSymbolsLoader {
     func load(forFrameworkURL frameworkURL: URL) throws -> ObjectSymbols {
         let path = frameworkURL.resolvingSymlinksInPath().path
         if let symbols = symbolsPerUrl[path] {
