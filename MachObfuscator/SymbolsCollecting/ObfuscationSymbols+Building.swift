@@ -99,7 +99,7 @@ private extension String {
 }
 
 private extension SourceSymbolsLoader {
-    func forceLoad(forFrameworkURL url: URL) -> SourceSymbols {
+    func forceLoad(forFrameworkURL url: URL) -> ObjectSymbols {
         do {
             LOGGER.info("Collecting symbols from \(url)")
             return try load(forFrameworkURL: url)

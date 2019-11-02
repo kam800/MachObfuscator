@@ -1,5 +1,5 @@
 import Foundation
 
 protocol SourceSymbolsLoader {
-    func load(forFrameworkURL frameworkURL: URL) throws -> SourceSymbols
+    func load(forFrameworkURL frameworkURL: URL) throws -> ObjectSymbols
 }
