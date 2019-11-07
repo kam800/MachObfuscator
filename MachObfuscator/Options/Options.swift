@@ -44,6 +44,7 @@ struct Options {
     var analyzeDependencies = true
     var manglerType: SymbolManglers? = SymbolManglers.defaultMangler
     var skippedSymbolsSources: [URL] = []
+    var skippedSymbolsLists: [URL] = []
     var appDirectoryOrFile: URL?
 }
 
@@ -87,6 +88,7 @@ extension Options {
             case skipFramework
             case skipAllFrameworks
             case skipSymbolsFromSources
+            case skipSymbolsFromList
             case dryrun
             case replaceCstring
             case replaceWith
@@ -123,7 +125,7 @@ extension Options {
             option(name: Options.newCCharPtrFromStaticString("skip-all-frameworks"), has_arg: no_argument, flag: nil, val: OptLongCases.skipAllFrameworks.rawValue),
             option(name: Options.newCCharPtrFromStaticString("mangler"), has_arg: required_argument, flag: nil, val: OptLongChars.manglerKey),
             option(name: Options.newCCharPtrFromStaticString("skip-symbols-from-sources"), has_arg: required_argument, flag: nil, val: OptLongCases.skipSymbolsFromSources.rawValue),
-
+            option(name: Options.newCCharPtrFromStaticString("skip-symbols-from-list"), has_arg: required_argument, flag: nil, val: OptLongCases.skipSymbolsFromList.rawValue),
             // extra options
             option(name: Options.newCCharPtrFromStaticString("xx-no-analyze-dependencies"), has_arg: no_argument, flag: nil, val: OptLongCases.xxNoAnalyzeDependencies.rawValue),
             option(name: Options.newCCharPtrFromStaticString("xx-dump-metadata"), has_arg: no_argument, flag: nil, val: OptLongCases.xxDumpMetadata.rawValue),
@@ -192,7 +194,9 @@ extension Options {
             case OptLongCases.skipSymbolsFromSources.rawValue:
                 let sourcesPath = URL(fileURLWithPath: String(cString: optarg))
                 skippedSymbolsSources.append(sourcesPath)
-
+            case OptLongCases.skipSymbolsFromList.rawValue:
+                let listPath = URL(fileURLWithPath: String(cString: optarg))
+                skippedSymbolsLists.append(listPath)
             // extra options
             case OptLongCases.xxNoAnalyzeDependencies.rawValue:
                 analyzeDependencies = false
@@ -266,7 +270,11 @@ extension Options {
           --skip-symbols-from-sources PATH
                                   Don't obfuscate all the symbols found in PATH (searches for all nested *.[hm] files).
                                   This option can be used multiple times to add multiple paths.
-        
+          --skip-symbols-from-list PATH
+                                  Don't obfuscate all the symbols from the list in PATH (symbols need to be new-line
+                                  separated). This option can be used multiple times to add multiple lists. `strings`
+                                  output can be used as a symbols list.
+
         Development options:
           --xx-no-analyze-dependencies       do not analyze dependencies
           --xx-dump-metadata                 dump ObjC metadata of images being obfuscated

@@ -7,7 +7,7 @@ class SimpleSourceSymbolsLoader_loadFromFrameworkURL_allSystemFrameworks_Tests: 
         let sut = SimpleSourceSymbolsLoader()
 
         // When
-        let header = try! sut.load(forFrameworkURL: Paths.iosFrameworksRoot.asURL)
+        let header = try! sut.load(from: Paths.iosFrameworksRoot.asURL)
 
         // Assert
         XCTAssertFalse(header.selectors.isEmpty)

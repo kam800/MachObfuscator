@@ -7,7 +7,7 @@ class SimpleSourceSymbolsLoader_loadFromFrameworkURL_systemLikeFramework_Tests: 
         super.setUp()
 
         let sut = SimpleSourceSymbolsLoader()
-        symbols = try! sut.load(forFrameworkURL: URL.systemLikeFramework)
+        symbols = try! sut.load(from: .systemLikeFramework)
     }
 
     override func tearDown() {

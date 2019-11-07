@@ -2,8 +2,8 @@ import XCTest
 
 class ObfuscationSymbols_Building_buildForObfuscationPaths_Tests: XCTestCase {
     var sampleObfuscationPaths: ObfuscationPaths! = ObfuscationPaths()
-    var testLoader: ObfuscationSymbolsTestSymbolsSourceLoader! = ObfuscationSymbolsTestSymbolsSourceLoader()
-    var testSymbolsLoader: ObfuscationSymbolsTestSourceSymbolsLoader! = ObfuscationSymbolsTestSourceSymbolsLoader()
+    var testLoader: SymbolsSourceLoaderMock! = SymbolsSourceLoaderMock()
+    var testSymbolsLoader: ObjectSymbolsLoaderMock! = ObjectSymbolsLoaderMock()
     var sut: ObfuscationSymbols!
 
     override func setUp() {

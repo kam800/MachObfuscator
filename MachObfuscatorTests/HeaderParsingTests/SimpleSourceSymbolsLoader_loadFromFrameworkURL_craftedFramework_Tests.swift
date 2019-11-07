@@ -7,7 +7,7 @@ class SimpleSourceSymbolsLoader_loadFromFrameworkURL_craftedFramework_Tests: XCT
         super.setUp()
 
         let sut = SimpleSourceSymbolsLoader()
-        symbols = try! sut.load(forFrameworkURL: URL.craftedFramework)
+        symbols = try! sut.load(from: URL.craftedFramework)
     }
 
     override func tearDown() {

@@ -7,7 +7,7 @@ class SimpleSourceSymbolsLoader_loadFromSourcesURL_Tests: XCTestCase {
         super.setUp()
 
         let sut = SimpleSourceSymbolsLoader()
-        symbols = try! sut.load(forFrameworkURL: URL.librarySourceCode)
+        symbols = try! sut.load(from: URL.librarySourceCode)
     }
 
     override func tearDown() {

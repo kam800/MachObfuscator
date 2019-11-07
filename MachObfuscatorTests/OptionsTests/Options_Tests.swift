@@ -6,9 +6,7 @@ class Options_Tests: OptionsTestsSupport {
         setUp(with: [])
 
         // When
-        let sut = Options(argc: argc,
-                          unsafeArgv: unsafePtr,
-                          argv: argv)
+        let sut = createSut()
 
         // Then
         XCTAssertFalse(sut.quiet)
@@ -21,9 +19,7 @@ class Options_Tests: OptionsTestsSupport {
         setUp(with: ["-q"])
 
         // When
-        let sut = Options(argc: argc,
-                          unsafeArgv: unsafePtr,
-                          argv: argv)
+        let sut = createSut()
 
         // Then
         XCTAssertTrue(sut.quiet)
@@ -34,9 +30,7 @@ class Options_Tests: OptionsTestsSupport {
         setUp(with: ["-v"])
 
         // When
-        let sut = Options(argc: argc,
-                          unsafeArgv: unsafePtr,
-                          argv: argv)
+        let sut = createSut()
 
         // Then
         XCTAssertTrue(sut.verbose)
@@ -48,11 +42,21 @@ class Options_Tests: OptionsTestsSupport {
         setUp(with: ["-v", expectedAppDirectory])
 
         // When
-        let sut = Options(argc: argc,
-                          unsafeArgv: unsafePtr,
-                          argv: argv)
+        let sut = createSut()
 
         // Then
         XCTAssertEqual(sut.appDirectoryOrFile?.path, expectedAppDirectory)
+    }
+
+    func test_init_withCommandLineParams_shouldSetSkippedSymbolsLists() {
+        // Given
+        let expectedFilePath = "/some/path/to/file.txt"
+        setUp(with: ["--skip-symbols-from-list", expectedFilePath])
+
+        // When
+        let sut = createSut()
+
+        // Then
+        XCTAssertEqual(sut.skippedSymbolsLists, [URL(fileURLWithPath: expectedFilePath)])
     }
 }

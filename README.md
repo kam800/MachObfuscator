@@ -80,6 +80,14 @@ Options:
   -m mangler_key,
   --mangler mangler_key   select mangler to generate obfuscated symbols
 
+  --skip-symbols-from-sources PATH
+                          Don't obfuscate all the symbols found in PATH (searches for all nested *.[hm] files).
+                          This option can be used multiple times to add multiple paths.
+  --skip-symbols-from-list PATH
+                          Don't obfuscate all the symbols from the list in PATH (symbols need to be new-line
+                          separated). This option can be used multiple times to add multiple lists. `strings`
+                          output can be used as a symbols list.
+
 Development options:
   --xx-no-analyze-dependencies       do not analyze dependencies
   --xx-dump-metadata                 dump ObjC metadata of images being obfuscated

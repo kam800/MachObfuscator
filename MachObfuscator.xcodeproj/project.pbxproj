@@ -183,7 +183,7 @@
 		D467A1132274FD3E00BA953A /* String+subscriptNSRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = D467A0FF2274375800BA953A /* String+subscriptNSRange.swift */; };
 		D467A1142274FD3E00BA953A /* String+subscriptRegexp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D467A1032274375800BA953A /* String+subscriptRegexp.swift */; };
 		D467A1152274FD3E00BA953A /* String+withoutComments.swift in Sources */ = {isa = PBXBuildFile; fileRef = D467A1042274375800BA953A /* String+withoutComments.swift */; };
-		D467A1172274FDAD00BA953A /* ObfuscationSymbolsTestSourceSymbolsLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D467A1162274FDAD00BA953A /* ObfuscationSymbolsTestSourceSymbolsLoader.swift */; };
+		D467A1172274FDAD00BA953A /* ObjectSymbolsLoaderMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = D467A1162274FDAD00BA953A /* ObjectSymbolsLoaderMock.swift */; };
 		D467A1182274FE1100BA953A /* FileRepository+FrameworkLocationResolving.swift in Sources */ = {isa = PBXBuildFile; fileRef = D467A10D227456E600BA953A /* FileRepository+FrameworkLocationResolving.swift */; };
 		D467A11A2275E47800BA953A /* String+asURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = D467A1192275E47800BA953A /* String+asURL.swift */; };
 		D467A11D2275F80D00BA953A /* SimpleSourceSymbolsLoader_loadFromFrameworkURL_systemLikeFramework_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D467A11C2275F80D00BA953A /* SimpleSourceSymbolsLoader_loadFromFrameworkURL_systemLikeFramework_Tests.swift */; };
@@ -208,7 +208,7 @@
 		D4816077211C69B1008671D8 /* MachO+StringsParsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A7E1891F891C0500646688 /* MachO+StringsParsing.swift */; };
 		D481608A211C7252008671D8 /* ObfuscationPathsTestRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4816089211C7252008671D8 /* ObfuscationPathsTestRepository.swift */; };
 		D481608E211CF19D008671D8 /* ObfuscationSymbols+Building_buildForObfuscationPaths_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D481608D211CF19D008671D8 /* ObfuscationSymbols+Building_buildForObfuscationPaths_Tests.swift */; };
-		D4816092211F907B008671D8 /* ObfuscationSymbolsTestSymbolsSourceLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4816091211F907B008671D8 /* ObfuscationSymbolsTestSymbolsSourceLoader.swift */; };
+		D4816092211F907B008671D8 /* SymbolsSourceLoaderMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4816091211F907B008671D8 /* SymbolsSourceLoaderMock.swift */; };
 		D481609421205CEF008671D8 /* SymbolsSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D481609321205CEF008671D8 /* SymbolsSource.swift */; };
 		D481609621205CFC008671D8 /* SymbolsSourceLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D481609521205CFC008671D8 /* SymbolsSourceLoader.swift */; };
 		D481609721205D6C008671D8 /* SymbolsSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D481609321205CEF008671D8 /* SymbolsSource.swift */; };
@@ -269,6 +269,11 @@
 		D4EEC7D1236B3B58008D0E8A /* ObjectSymbols+Blacklisting.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4EEC7D0236B3B58008D0E8A /* ObjectSymbols+Blacklisting.swift */; };
 		D4EEC7D2236B3B7B008D0E8A /* ObjectSymbols+Blacklisting.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4EEC7D0236B3B58008D0E8A /* ObjectSymbols+Blacklisting.swift */; };
 		D4EEC7D4236B7E00008D0E8A /* ObjectSymbols+Blacklisting_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4EEC7D3236B7E00008D0E8A /* ObjectSymbols+Blacklisting_Tests.swift */; };
+		D4EEC7D6236B8507008D0E8A /* ObjectSymbolsLoader+forceLoad.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4EEC7D5236B8507008D0E8A /* ObjectSymbolsLoader+forceLoad.swift */; };
+		D4EEC7D7236B8649008D0E8A /* ObjectSymbolsLoader+forceLoad.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4EEC7D5236B8507008D0E8A /* ObjectSymbolsLoader+forceLoad.swift */; };
+		D4EEC7DC236B8858008D0E8A /* SimpleSymbolsListLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4EEC7DB236B8858008D0E8A /* SimpleSymbolsListLoader.swift */; };
+		D4EEC7DD236B886B008D0E8A /* SimpleSymbolsListLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4EEC7DB236B8858008D0E8A /* SimpleSymbolsListLoader.swift */; };
+		D4EEC7E6236B98EC008D0E8A /* SimpleSymbolsListLoader_load_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4EEC7E5236B98EC008D0E8A /* SimpleSymbolsListLoader_load_Tests.swift */; };
 		D4F116C121287EEA00364CA2 /* RpathsAccumulator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F116C021287EEA00364CA2 /* RpathsAccumulator.swift */; };
 		D4F116C221297F7300364CA2 /* RpathsAccumulator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F116C021287EEA00364CA2 /* RpathsAccumulator.swift */; };
 		D4F792651FD7543F00EE6EBE /* UnsafeRawPointer+Leb128.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F792641FD7543F00EE6EBE /* UnsafeRawPointer+Leb128.swift */; };
@@ -279,11 +284,11 @@
 		D4FC25211FDBE84D005E351D /* UnsafeRawPointer+CString_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4FC25201FDBE84D005E351D /* UnsafeRawPointer+CString_Tests.swift */; };
 		D4FC25221FDBE98B005E351D /* UnsafeRawPointer+CString.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4FC251E1FDBE72F005E351D /* UnsafeRawPointer+CString.swift */; };
 		D4FC25241FDBF27C005E351D /* Trie+Parsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4FC25231FDBF27C005E351D /* Trie+Parsing.swift */; };
-		D4FFAC9122667B51007684FF /* SourceSymbolsLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4FFAC9022667B51007684FF /* SourceSymbolsLoader.swift */; };
+		D4FFAC9122667B51007684FF /* ObjectSymbolsLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4FFAC9022667B51007684FF /* ObjectSymbolsLoader.swift */; };
 		D4FFAC9322667BA6007684FF /* ObjectSymbols.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4FFAC9222667BA6007684FF /* ObjectSymbols.swift */; };
 		D4FFAC9522667DB3007684FF /* SimpleSourceSymbolsLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4FFAC9422667DB3007684FF /* SimpleSourceSymbolsLoader.swift */; };
 		D4FFAC9622667F17007684FF /* SimpleSourceSymbolsLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4FFAC9422667DB3007684FF /* SimpleSourceSymbolsLoader.swift */; };
-		D4FFAC9722667F1D007684FF /* SourceSymbolsLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4FFAC9022667B51007684FF /* SourceSymbolsLoader.swift */; };
+		D4FFAC9722667F1D007684FF /* ObjectSymbolsLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4FFAC9022667B51007684FF /* ObjectSymbolsLoader.swift */; };
 		D4FFAC9822667F21007684FF /* ObjectSymbols.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4FFAC9222667BA6007684FF /* ObjectSymbols.swift */; };
 		E4F4794533F6F1852D47ECCA /* RealWordsExportTrieMangler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4F471074E734A577931AFBA /* RealWordsExportTrieMangler.swift */; };
 		E4F47DC68C1269260D12D624 /* RealWordsExportTrieMangler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4F471074E734A577931AFBA /* RealWordsExportTrieMangler.swift */; };
@@ -424,14 +429,14 @@
 		D467A1042274375800BA953A /* String+withoutComments.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+withoutComments.swift"; sourceTree = "<group>"; };
 		D467A1052274375800BA953A /* String+objCMethodNames.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+objCMethodNames.swift"; sourceTree = "<group>"; };
 		D467A10D227456E600BA953A /* FileRepository+FrameworkLocationResolving.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileRepository+FrameworkLocationResolving.swift"; sourceTree = "<group>"; };
-		D467A1162274FDAD00BA953A /* ObfuscationSymbolsTestSourceSymbolsLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObfuscationSymbolsTestSourceSymbolsLoader.swift; sourceTree = "<group>"; };
+		D467A1162274FDAD00BA953A /* ObjectSymbolsLoaderMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectSymbolsLoaderMock.swift; sourceTree = "<group>"; };
 		D467A1192275E47800BA953A /* String+asURL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+asURL.swift"; sourceTree = "<group>"; };
 		D467A11C2275F80D00BA953A /* SimpleSourceSymbolsLoader_loadFromFrameworkURL_systemLikeFramework_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleSourceSymbolsLoader_loadFromFrameworkURL_systemLikeFramework_Tests.swift; sourceTree = "<group>"; };
 		D467A1232275FC2500BA953A /* URL+SampleFrameworks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+SampleFrameworks.swift"; sourceTree = "<group>"; };
 		D4816063211C6577008671D8 /* ObfuscationPaths+Building_forAllExecutables_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ObfuscationPaths+Building_forAllExecutables_Tests.swift"; sourceTree = "<group>"; };
 		D4816089211C7252008671D8 /* ObfuscationPathsTestRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObfuscationPathsTestRepository.swift; sourceTree = "<group>"; };
 		D481608D211CF19D008671D8 /* ObfuscationSymbols+Building_buildForObfuscationPaths_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ObfuscationSymbols+Building_buildForObfuscationPaths_Tests.swift"; sourceTree = "<group>"; };
-		D4816091211F907B008671D8 /* ObfuscationSymbolsTestSymbolsSourceLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObfuscationSymbolsTestSymbolsSourceLoader.swift; sourceTree = "<group>"; };
+		D4816091211F907B008671D8 /* SymbolsSourceLoaderMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolsSourceLoaderMock.swift; sourceTree = "<group>"; };
 		D481609321205CEF008671D8 /* SymbolsSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolsSource.swift; sourceTree = "<group>"; };
 		D481609521205CFC008671D8 /* SymbolsSourceLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolsSourceLoader.swift; sourceTree = "<group>"; };
 		D481609B2120A9D9008671D8 /* DependencyNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DependencyNode.swift; sourceTree = "<group>"; };
@@ -480,6 +485,9 @@
 		D4E76350201CDF05004300EB /* NibArchive+Nib.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NibArchive+Nib.swift"; sourceTree = "<group>"; };
 		D4EEC7D0236B3B58008D0E8A /* ObjectSymbols+Blacklisting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ObjectSymbols+Blacklisting.swift"; sourceTree = "<group>"; };
 		D4EEC7D3236B7E00008D0E8A /* ObjectSymbols+Blacklisting_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ObjectSymbols+Blacklisting_Tests.swift"; sourceTree = "<group>"; };
+		D4EEC7D5236B8507008D0E8A /* ObjectSymbolsLoader+forceLoad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ObjectSymbolsLoader+forceLoad.swift"; sourceTree = "<group>"; };
+		D4EEC7DB236B8858008D0E8A /* SimpleSymbolsListLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleSymbolsListLoader.swift; sourceTree = "<group>"; };
+		D4EEC7E5236B98EC008D0E8A /* SimpleSymbolsListLoader_load_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleSymbolsListLoader_load_Tests.swift; sourceTree = "<group>"; };
 		D4F116C021287EEA00364CA2 /* RpathsAccumulator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RpathsAccumulator.swift; sourceTree = "<group>"; };
 		D4F792581FD74E4800EE6EBE /* MachObfuscatorTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MachObfuscatorTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4F7925C1FD74E4800EE6EBE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -489,7 +497,7 @@
 		D4FC251E1FDBE72F005E351D /* UnsafeRawPointer+CString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UnsafeRawPointer+CString.swift"; sourceTree = "<group>"; };
 		D4FC25201FDBE84D005E351D /* UnsafeRawPointer+CString_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UnsafeRawPointer+CString_Tests.swift"; sourceTree = "<group>"; };
 		D4FC25231FDBF27C005E351D /* Trie+Parsing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Trie+Parsing.swift"; sourceTree = "<group>"; };
-		D4FFAC9022667B51007684FF /* SourceSymbolsLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceSymbolsLoader.swift; sourceTree = "<group>"; };
+		D4FFAC9022667B51007684FF /* ObjectSymbolsLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectSymbolsLoader.swift; sourceTree = "<group>"; };
 		D4FFAC9222667BA6007684FF /* ObjectSymbols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectSymbols.swift; sourceTree = "<group>"; };
 		D4FFAC9422667DB3007684FF /* SimpleSourceSymbolsLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleSourceSymbolsLoader.swift; sourceTree = "<group>"; };
 		E4F471074E734A577931AFBA /* RealWordsExportTrieMangler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RealWordsExportTrieMangler.swift; sourceTree = "<group>"; };
@@ -754,6 +762,7 @@
 				D4EEC7D0236B3B58008D0E8A /* ObjectSymbols+Blacklisting.swift */,
 				D481609321205CEF008671D8 /* SymbolsSource.swift */,
 				D481609521205CFC008671D8 /* SymbolsSourceLoader.swift */,
+				D4EEC7D5236B8507008D0E8A /* ObjectSymbolsLoader+forceLoad.swift */,
 			);
 			path = SymbolsCollecting;
 			sourceTree = "<group>";
@@ -775,7 +784,7 @@
 			isa = PBXGroup;
 			children = (
 				D4FFAC9222667BA6007684FF /* ObjectSymbols.swift */,
-				D4FFAC9022667B51007684FF /* SourceSymbolsLoader.swift */,
+				D4FFAC9022667B51007684FF /* ObjectSymbolsLoader.swift */,
 				D467A1002274375800BA953A /* NSRegularExpression+matches.swift */,
 				D4FFAC9422667DB3007684FF /* SimpleSourceSymbolsLoader.swift */,
 				D467A1052274375800BA953A /* String+objCMethodNames.swift */,
@@ -824,8 +833,8 @@
 			isa = PBXGroup;
 			children = (
 				D481608D211CF19D008671D8 /* ObfuscationSymbols+Building_buildForObfuscationPaths_Tests.swift */,
-				D4816091211F907B008671D8 /* ObfuscationSymbolsTestSymbolsSourceLoader.swift */,
-				D467A1162274FDAD00BA953A /* ObfuscationSymbolsTestSourceSymbolsLoader.swift */,
+				D4816091211F907B008671D8 /* SymbolsSourceLoaderMock.swift */,
+				D467A1162274FDAD00BA953A /* ObjectSymbolsLoaderMock.swift */,
 				D4EEC7D3236B7E00008D0E8A /* ObjectSymbols+Blacklisting_Tests.swift */,
 			);
 			path = SymbolsCollectingTests;
@@ -917,6 +926,7 @@
 				D41FCFEE2152FC1A00BE3C7A /* Options */,
 				D439AAC31F9152F100F9582D /* SymbolMangling */,
 				D44D73FB211C632800DE002B /* SymbolsCollecting */,
+				D4EEC7D8236B87BC008D0E8A /* SymbolsListParsing */,
 			);
 			path = MachObfuscator;
 			sourceTree = "<group>";
@@ -1031,6 +1041,22 @@
 			path = DataAccessTests;
 			sourceTree = "<group>";
 		};
+		D4EEC7D8236B87BC008D0E8A /* SymbolsListParsing */ = {
+			isa = PBXGroup;
+			children = (
+				D4EEC7DB236B8858008D0E8A /* SimpleSymbolsListLoader.swift */,
+			);
+			path = SymbolsListParsing;
+			sourceTree = "<group>";
+		};
+		D4EEC7E4236B98D0008D0E8A /* SymbolsListParsing */ = {
+			isa = PBXGroup;
+			children = (
+				D4EEC7E5236B98EC008D0E8A /* SimpleSymbolsListLoader_load_Tests.swift */,
+			);
+			path = SymbolsListParsing;
+			sourceTree = "<group>";
+		};
 		D4F792591FD74E4800EE6EBE /* MachObfuscatorTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -1046,6 +1072,7 @@
 				D41FCFF02152FC4600BE3C7A /* OptionsTests */,
 				D41FCFE62152FAC100BE3C7A /* SymbolManglingTests */,
 				D481608C211CF16E008671D8 /* SymbolsCollectingTests */,
+				D4EEC7E4236B98D0008D0E8A /* SymbolsListParsing */,
 			);
 			path = MachObfuscatorTests;
 			sourceTree = "<group>";
@@ -1208,7 +1235,7 @@
 				D4065D3822612357004DCA7D /* Pipe.swift in Sources */,
 				D4C98ADB214329F1008340B2 /* SentenceGenerator.swift in Sources */,
 				D49C7C271FAD218600B4D03F /* CaesarMangler.swift in Sources */,
-				D4FFAC9122667B51007684FF /* SourceSymbolsLoader.swift in Sources */,
+				D4FFAC9122667B51007684FF /* ObjectSymbolsLoader.swift in Sources */,
 				D4AAA600201C9A3B009BB8FA /* UnsafeRawPointer+Structs.swift in Sources */,
 				D44D73FD211C637600DE002B /* FileRepository+DylibLocationResolving.swift in Sources */,
 				D432EADA213DDEB100C2ADA0 /* CpuId.swift in Sources */,
@@ -1266,6 +1293,7 @@
 				D467A1072274375800BA953A /* NSRegularExpression+matches.swift in Sources */,
 				D498737A1FB4FE6E00F33E84 /* SymbolMangling.swift in Sources */,
 				D453DB671F9D49AC006FE316 /* ObfuscationSymbols.swift in Sources */,
+				D4EEC7D6236B8507008D0E8A /* ObjectSymbolsLoader+forceLoad.swift in Sources */,
 				D4BACD6C2156E109009F6E34 /* SymbolManglers.swift in Sources */,
 				D481609621205CFC008671D8 /* SymbolsSourceLoader.swift in Sources */,
 				D4604E432000DB9700806910 /* ImportStack+Parsing.swift in Sources */,
@@ -1283,6 +1311,7 @@
 				84684FC422E1CECD00342566 /* Concurrent.swift in Sources */,
 				D467A10E227456E600BA953A /* FileRepository+FrameworkLocationResolving.swift in Sources */,
 				84684FC122E1CE5100342566 /* Profiling.swift in Sources */,
+				D4EEC7DC236B8858008D0E8A /* SimpleSymbolsListLoader.swift in Sources */,
 				D4CA46A220CB2E8F00A31809 /* CFKeyedArchiverUIDGetValue.swift in Sources */,
 				84ABA30B2315364B0048B829 /* ObjcSymbols+Impl.swift in Sources */,
 				D432EAF1213DE83D00C2ADA0 /* LoggerProtocol.swift in Sources */,
@@ -1304,10 +1333,10 @@
 				8831AF4E22081DA5006BEB91 /* CaesarCypher.swift in Sources */,
 				D44D73192118504100DE002B /* Data+Structs_getStruct_Tests.swift in Sources */,
 				D4FFAC9822667F21007684FF /* ObjectSymbols.swift in Sources */,
-				D467A1172274FDAD00BA953A /* ObfuscationSymbolsTestSourceSymbolsLoader.swift in Sources */,
+				D467A1172274FDAD00BA953A /* ObjectSymbolsLoaderMock.swift in Sources */,
 				8416FC0D22FEDA8E00963596 /* Mach+Loading_MachoMac10_14_Tests.swift in Sources */,
 				D467A11A2275E47800BA953A /* String+asURL.swift in Sources */,
-				D4816092211F907B008671D8 /* ObfuscationSymbolsTestSymbolsSourceLoader.swift in Sources */,
+				D4816092211F907B008671D8 /* SymbolsSourceLoaderMock.swift in Sources */,
 				D44D73872119EBD100DE002B /* NibPlist.swift in Sources */,
 				D44D73882119EBD100DE002B /* NibPlist+Loading.swift in Sources */,
 				D48160A82120D9D9008671D8 /* Trie+Loading_Tests.swift in Sources */,
@@ -1397,20 +1426,23 @@
 				D44D7328211885CC00DE002B /* UnsafeRawPointer+Structs_readStructs_Tests.swift in Sources */,
 				D432EAF5213DEADE00C2ADA0 /* SoutLogger.swift in Sources */,
 				D467A1152274FD3E00BA953A /* String+withoutComments.swift in Sources */,
+				D4EEC7DD236B886B008D0E8A /* SimpleSymbolsListLoader.swift in Sources */,
 				D432EAF4213DEAD900C2ADA0 /* LoggerProtocol.swift in Sources */,
 				D481608E211CF19D008671D8 /* ObfuscationSymbols+Building_buildForObfuscationPaths_Tests.swift in Sources */,
-				D4FFAC9722667F1D007684FF /* SourceSymbolsLoader.swift in Sources */,
+				D4FFAC9722667F1D007684FF /* ObjectSymbolsLoader.swift in Sources */,
 				D4816076211C69B1008671D8 /* Mach+SectionsLookup.swift in Sources */,
 				D4816075211C69B1008671D8 /* Mach+Saving.swift in Sources */,
 				D46627DB215448890050EADA /* Mach+Erasing.swift in Sources */,
 				D4BACD6D2156E5D5009F6E34 /* SymbolManglers.swift in Sources */,
 				D44D731D21186E6700DE002B /* Data+Structs_getStructs_Tests.swift in Sources */,
 				D44D739E2119F9D400DE002B /* NibArchive+Saving.swift in Sources */,
+				D4EEC7D7236B8649008D0E8A /* ObjectSymbolsLoader+forceLoad.swift in Sources */,
 				84684FC722E5B2F600342566 /* Concurrent_Tests.swift in Sources */,
 				D44D73892119EBD100DE002B /* NibPlist+Nib.swift in Sources */,
 				D4816070211C69AD008671D8 /* ImportStack+Parsing.swift in Sources */,
 				D432EAEC213DE0F200C2ADA0 /* ImageLoaderProtocol.swift in Sources */,
 				8444A5C622A9204400941940 /* ObfuscableFilesFilter.swift in Sources */,
+				D4EEC7E6236B98EC008D0E8A /* SimpleSymbolsListLoader_load_Tests.swift in Sources */,
 				D4D82CF12202547800090614 /* ArraySentenceGenerator.swift in Sources */,
 				D481617721256771008671D8 /* Mach+Loading_FatIos_Tests.swift in Sources */,
 				D432EADE213DDFBE00C2ADA0 /* SimpleImageLoader+DependencyNodeLoader.swift in Sources */,

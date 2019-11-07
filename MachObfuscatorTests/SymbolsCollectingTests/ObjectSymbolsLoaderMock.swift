@@ -1,6 +1,6 @@
 import Foundation
 
-class ObfuscationSymbolsTestSourceSymbolsLoader {
+class ObjectSymbolsLoaderMock {
     private enum Error: Swift.Error {
         case noEntryForPath
     }
@@ -17,9 +17,9 @@ class ObfuscationSymbolsTestSourceSymbolsLoader {
     }
 }
 
-extension ObfuscationSymbolsTestSourceSymbolsLoader: SourceSymbolsLoader {
-    func load(forFrameworkURL frameworkURL: URL) throws -> ObjectSymbols {
-        let path = frameworkURL.resolvingSymlinksInPath().path
+extension ObjectSymbolsLoaderMock: ObjectSymbolsLoader {
+    func load(from url: URL) throws -> ObjectSymbols {
+        let path = url.resolvingSymlinksInPath().path
         if let symbols = symbolsPerUrl[path] {
             return symbols
         } else {

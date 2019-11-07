@@ -3,7 +3,7 @@ import Foundation
 extension ObfuscationSymbols {
     static func buildFor(obfuscationPaths: ObfuscationPaths,
                          loader: SymbolsSourceLoader,
-                         sourceSymbolsLoader: SourceSymbolsLoader,
+                         sourceSymbolsLoader: ObjectSymbolsLoader,
                          skippedSymbols: ObjectSymbols,
                          objcOptions: ObjcOptions = ObjcOptions()) -> ObfuscationSymbols {
         let systemSources = time(withTag: "systemSources") { try! obfuscationPaths.unobfuscableDependencies.flatMap { try loader.load(forURL: $0) } }
@@ -20,7 +20,7 @@ extension ObfuscationSymbols {
         let systemCStrings = systemSources.flatMap { $0.cstrings }.uniq
 
         let systemHeaderSymbols = time(withTag: "systemHeaderSymbols") { obfuscationPaths.systemFrameworks
-            .concurrentMap(sourceSymbolsLoader.forceLoad(forFrameworkURL:))
+            .concurrentMap(sourceSymbolsLoader.forceLoad(from:))
             .flatten()
         }
 
