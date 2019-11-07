@@ -1,6 +1,6 @@
 import XCTest
 
-class ObjectSymbols_blacklist_Tests: XCTestCase {
+class ObjectSymbols_Blacklisting_Tests: XCTestCase {
     var testSymbolsLoader: ObfuscationSymbolsTestSourceSymbolsLoader! = ObfuscationSymbolsTestSourceSymbolsLoader()
     var sut: ObjectSymbols!
 
