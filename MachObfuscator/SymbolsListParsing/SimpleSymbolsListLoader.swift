@@ -20,21 +20,19 @@ class SimpleSymbolsListLoader: ObjectSymbolsLoader {
 
 private extension StringProtocol {
     var couldBeSelector: Bool {
-        return rangeOfCharacter(from: CharacterSet.selectorAllowed.inverted) == nil
+        return rangeOfCharacter(from: CharacterSet.selectorForbidden) == nil
     }
 
     var couldBeClassName: Bool {
-        return rangeOfCharacter(from: CharacterSet.classNameAllowed.inverted) == nil
+        return rangeOfCharacter(from: CharacterSet.classNameForbidden) == nil
     }
 }
 
 private extension CharacterSet {
-    static let selectorAllowed =
+    static let selectorForbidden =
         CharacterSet.whitespaces
         .union(.init(charactersIn: "!@#$%^&*()+-={}[]\"|;'\\<>?,./"))
-        .inverted
-    static let classNameAllowed =
+    static let classNameForbidden =
         CharacterSet.whitespaces
         .union(.init(charactersIn: "!@#$%^&*()+-={}[]:\"|;'\\<>?,./"))
-        .inverted
 }
