@@ -1,12 +1,12 @@
 import XCTest
 
-class SimpleSymbolsListLoader_load_Tests: XCTestCase {
-    var sut: SimpleSymbolsListLoader!
+class TextFileSymbolListLoader_load_Tests: XCTestCase {
+    var sut: TextFileSymbolListLoader!
 
     override func setUp() {
         super.setUp()
 
-        sut = SimpleSymbolsListLoader()
+        sut = TextFileSymbolListLoader()
     }
 
     override func tearDown() {

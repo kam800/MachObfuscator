@@ -1,6 +1,6 @@
 import Foundation
 
-class SimpleSymbolsListLoader: ObjectSymbolsLoader {
+class TextFileSymbolListLoader: ObjectSymbolsLoader {
     func load(from url: URL) throws -> ObjectSymbols {
         return try load(from: url, stringWithContentsOf: String.init(contentsOf:))
     }
