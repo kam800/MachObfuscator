@@ -313,13 +313,12 @@ class ObfuscationPaths_Building_forAllExecutables_Tests: XCTestCase {
                                     isExecutable: false,
                                     dylibs: [externalDependency2DylibEntry])
 
-        let runtimePrefixedExternalDependency1Path = "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/Library/CoreSimulator/Profiles/Runtimes/iOS.simruntime/Contents/Resources/RuntimeRoot/usr/lib/libobjc.A.dylib"
+        let runtimePrefixedExternalDependency1Path = Paths.iosRuntimeRoot + "/usr/lib/libobjc.A.dylib"
         testRepository.addMachOPath(runtimePrefixedExternalDependency1Path, platform: .ios, isExecutable: false)
 
-        let runtimePrefixedExternalDependency2Path = "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/Library/CoreSimulator/Profiles/Runtimes/iOS.simruntime/Contents/Resources/RuntimeRoot/System/Library/Frameworks/UIKit.framework/UIKit"
+        let runtimePrefixedExternalDependency2Path = Paths.iosRuntimeRoot + "/System/Library/Frameworks/UIKit.framework/UIKit"
         testRepository.addMachOPath(runtimePrefixedExternalDependency2Path, platform: .ios, isExecutable: false)
-        let runtimePrefixedExternalLibrary =
-            "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/Library/CoreSimulator/Profiles/Runtimes/iOS.simruntime/Contents/Resources/RuntimeRoot/MockSystem/Library/Frameworks/AdSupport.framework/AdSupport"
+        let runtimePrefixedExternalLibrary = Paths.iosRuntimeRoot + "/MockSystem/Library/Frameworks/AdSupport.framework/AdSupport"
         testRepository.addMachOPath(runtimePrefixedExternalLibrary, platform: .ios, isExecutable: false)
 
         let externalFrameworkSDKPath = Paths.iosFrameworksRoot + externalFramework
