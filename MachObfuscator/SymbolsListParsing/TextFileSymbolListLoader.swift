@@ -13,8 +13,8 @@ class TextFileSymbolListLoader: ObjectSymbolsLoader {
 
         // Following lines filtering is just an optimisation, removing those filters will not affect the MachObfuscator
         // output. Why optimising? `strings` produces a lot of garbage.
-        return ObjectSymbols(selectors: lines.filter { $0.couldBeSelector }.uniq,
-                             classNames: lines.filter { $0.couldBeClassName }.uniq)
+        return ObjectSymbols(selectors: lines.filter { $0.couldBeSelector },
+                             classNames: lines.filter { $0.couldBeClassName })
     }
 }
 
