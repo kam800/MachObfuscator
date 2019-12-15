@@ -2,15 +2,16 @@ import Foundation
 
 extension ObjectSymbols {
     static func blacklist(skippedSymbolsSources: [URL],
-                          skippedSymbolsLists: [URL],
-                          sourceSymbolsLoader: ObjectSymbolsLoader,
-                          symbolsListLoader: ObjectSymbolsLoader) -> ObjectSymbols {
-        let skippedSourceSymbols = skippedSymbolsSources
+                          sourceSymbolsLoader: ObjectSymbolsLoader) -> ObjectSymbols {
+        skippedSymbolsSources
             .map(sourceSymbolsLoader.forceLoad(from:))
+            .flatten()
+    }
 
-        let skippedListSymbols = skippedSymbolsLists
+    static func blacklist(skippedSymbolsLists: [URL],
+                          symbolsListLoader: ObjectSymbolsLoader) -> ObjectSymbols {
+        skippedSymbolsLists
             .map(symbolsListLoader.forceLoad(from:))
-
-        return (skippedSourceSymbols + skippedListSymbols).flatten()
+            .flatten()
     }
 }

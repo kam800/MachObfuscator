@@ -48,10 +48,12 @@ class Obfuscator {
 
         let symbols: ObfuscationSymbols = time(withTag: "Build obfuscation symbols") {
             autoreleasepool {
-                let skippedSymbols = ObjectSymbols.blacklist(skippedSymbolsSources: options.skippedSymbolsSources,
-                                                             skippedSymbolsLists: options.skippedSymbolsLists,
-                                                             sourceSymbolsLoader: sourceSymbolsLoader,
-                                                             symbolsListLoader: symbolListLoader)
+                let skippedSymbols = [
+                    ObjectSymbols.blacklist(skippedSymbolsSources: options.skippedSymbolsSources,
+                                            sourceSymbolsLoader: sourceSymbolsLoader),
+                    ObjectSymbols.blacklist(skippedSymbolsLists: options.skippedSymbolsLists,
+                                            symbolsListLoader: symbolListLoader),
+                ].flatten()
                 return ObfuscationSymbols.buildFor(obfuscationPaths: paths,
                                                    loader: loader,
                                                    sourceSymbolsLoader: sourceSymbolsLoader,
