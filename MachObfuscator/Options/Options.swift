@@ -42,6 +42,7 @@ struct Options {
     var cstringsReplacements: [String: String] = [:]
     var obfuscableFilesFilter = ObfuscableFilesFilter.defaultObfuscableFilesFilter()
     var analyzeDependencies = true
+    var findSymbols: [String] = []
     var manglerType: SymbolManglers? = SymbolManglers.defaultMangler
     var skippedSymbolsSources: [URL] = []
     var appDirectoryOrFile: URL?
@@ -94,6 +95,7 @@ extension Options {
             // extra/development options
             case xxNoAnalyzeDependencies
             case xxDumpMetadata
+            case xxFindSymbol
         }
 
         var currentCstringToReplace: String?
@@ -127,6 +129,7 @@ extension Options {
             // extra options
             option(name: Options.newCCharPtrFromStaticString("xx-no-analyze-dependencies"), has_arg: no_argument, flag: nil, val: OptLongCases.xxNoAnalyzeDependencies.rawValue),
             option(name: Options.newCCharPtrFromStaticString("xx-dump-metadata"), has_arg: no_argument, flag: nil, val: OptLongCases.xxDumpMetadata.rawValue),
+            option(name: Options.newCCharPtrFromStaticString("xx-find-symbol"), has_arg: required_argument, flag: nil, val: OptLongCases.xxFindSymbol.rawValue),
 
             option(), // { NULL, NULL, NULL, NULL }
         ]
@@ -198,6 +201,8 @@ extension Options {
                 analyzeDependencies = false
             case OptLongCases.xxDumpMetadata.rawValue:
                 dumpMetadata = true
+            case OptLongCases.xxFindSymbol.rawValue:
+                findSymbols += String(cString: optarg).split(separator: ",").map { String($0) }
 
             case OptLongChars.unknownOption:
                 unknownOption = true
@@ -270,6 +275,7 @@ extension Options {
         Development options:
           --xx-no-analyze-dependencies       do not analyze dependencies
           --xx-dump-metadata                 dump ObjC metadata of images being obfuscated
+          --xx-find-symbol NAME[,NAME...]    find given ObjC symbol in all analysed images
 
         \(SymbolManglers.helpSummary)
         """

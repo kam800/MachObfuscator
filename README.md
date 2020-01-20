@@ -83,6 +83,7 @@ Options:
 Development options:
   --xx-no-analyze-dependencies       do not analyze dependencies
   --xx-dump-metadata                 dump ObjC metadata of images being obfuscated
+  --xx-find-symbol NAME[,NAME...]    find given ObjC symbol in all analysed images
 
 Available manglers by mangler_key:
   caesar - ROT13 all objc symbols and dyld info
