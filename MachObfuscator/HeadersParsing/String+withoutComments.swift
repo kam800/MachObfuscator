@@ -9,7 +9,7 @@ extension String {
             .withoutOccurences(of: multilineCommentExpr)
     }
 
-    private func withoutOccurences(of regex: NSRegularExpression) -> String {
+    func withoutOccurences(of regex: NSRegularExpression) -> String {
         let fullRange = NSRange(location: 0, length: count)
         return regex
             .matches(in: self, options: [], range: fullRange)
