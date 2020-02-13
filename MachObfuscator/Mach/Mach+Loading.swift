@@ -97,7 +97,7 @@ private extension Mach {
                 let rpath = data.getCString(atOffset: cursor + Int(rpath_command.path.offset))
                 rpaths.append(rpath)
             // TODO: handle weaks
-            case UInt32(LC_LOAD_DYLIB), UInt32(LC_LOAD_WEAK_DYLIB), UInt32(LC_REEXPORT_DYLIB):
+            case UInt32(LC_LOAD_DYLIB), UInt32(LC_LOAD_WEAK_DYLIB), UInt32(LC_LOAD_UPWARD_DYLIB), UInt32(LC_REEXPORT_DYLIB):
                 let dylibCommand: dylib_command = data.getStruct(atOffset: cursor)
                 let dylibPath = data.getCString(atOffset: cursor + Int(dylibCommand.dylib.name.offset))
                 dylibs.append(dylibPath)
@@ -151,7 +151,7 @@ private extension Mach {
                 let rpath = data.getCString(atOffset: cursor + Int(rpath_command.path.offset))
                 rpaths.append(rpath)
             // TODO: handle weaks
-            case UInt32(LC_LOAD_DYLIB), UInt32(LC_LOAD_WEAK_DYLIB), UInt32(LC_REEXPORT_DYLIB):
+            case UInt32(LC_LOAD_DYLIB), UInt32(LC_LOAD_WEAK_DYLIB), UInt32(LC_LOAD_UPWARD_DYLIB), UInt32(LC_REEXPORT_DYLIB):
                 let dylibCommand: dylib_command = data.getStruct(atOffset: cursor)
                 let dylibPath = data.getCString(atOffset: cursor + Int(dylibCommand.dylib.name.offset))
                 dylibs.append(dylibPath)
