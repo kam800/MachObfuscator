@@ -80,6 +80,8 @@ Options:
   -m mangler_key,
   --mangler mangler_key   select mangler to generate obfuscated symbols
 
+  --report-to-console     report obfuscated symbols mapping to console
+
 Development options:
   --xx-no-analyze-dependencies       do not analyze dependencies
   --xx-dump-metadata                 dump ObjC metadata of images being obfuscated

@@ -45,7 +45,7 @@ class RealWordsMangler_Tests: XCTestCase {
         // Given
         let whitelist = ObjCSymbols(selectors: ["user", "view", "setUser:", "setView:"], classes: [])
         let blacklist = ObjCSymbols(selectors: [""], classes: [])
-        let symbols = ObfuscationSymbols(whitelist: whitelist, blacklist: blacklist, exportTriesPerCpuIdPerURL: [:])
+        let symbols = ObfuscationSymbols(whitelist: whitelist, blacklist: blacklist, removedList: blacklist, exportTriesPerCpuIdPerURL: [:])
 
         // When
         let mangledSymbols = when(symbols: symbols)
@@ -73,6 +73,7 @@ class RealWordsMangler_Tests: XCTestCase {
         let blacklist = ObjCSymbols(selectors: ["bla2"], classes: [])
         let symbols = ObfuscationSymbols(whitelist: whitelist,
                                          blacklist: blacklist,
+                                         removedList: blacklist,
                                          exportTriesPerCpuIdPerURL: [:])
 
         // When
@@ -100,7 +101,7 @@ class RealWordsMangler_Tests: XCTestCase {
 
         let whitelist = ObjCSymbols(selectors: ["asdf"], classes: ["Asdf"])
         let blacklist = ObjCSymbols(selectors: [""], classes: [])
-        let symbols = ObfuscationSymbols(whitelist: whitelist, blacklist: blacklist, exportTriesPerCpuIdPerURL: [:])
+        let symbols = ObfuscationSymbols(whitelist: whitelist, blacklist: blacklist, removedList: blacklist, exportTriesPerCpuIdPerURL: [:])
 
         // When
         let mangledSymbols = when(symbols: symbols)
@@ -116,7 +117,7 @@ class RealWordsMangler_Tests: XCTestCase {
 
         let whitelist = ObjCSymbols(selectors: ["zażółć:gęślą:jaźń"], classes: ["Zażółć_gęślą_jaźń"])
         let blacklist = ObjCSymbols(selectors: [""], classes: [])
-        let symbols = ObfuscationSymbols(whitelist: whitelist, blacklist: blacklist, exportTriesPerCpuIdPerURL: [:])
+        let symbols = ObfuscationSymbols(whitelist: whitelist, blacklist: blacklist, removedList: blacklist, exportTriesPerCpuIdPerURL: [:])
 
         // When
         let mangledSymbols = when(symbols: symbols)
