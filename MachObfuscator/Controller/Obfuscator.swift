@@ -45,6 +45,10 @@ class Obfuscator {
 
         LOGGER.info("Collecting symbols...")
 
+        options.findSymbols.forEach {
+            LOGGER.info("\($0) found in \(ObfuscationSymbols.findSymbol(obfuscationPaths: paths, loader: loader, symbol: $0))")
+        }
+
         let symbols: ObfuscationSymbols = time(withTag: "Build obfuscation symbols") {
             autoreleasepool {
                 let skippedSymbols = ObjectSymbols.blacklist(skippedSymbolsSources: options.skippedSymbolsSources,
