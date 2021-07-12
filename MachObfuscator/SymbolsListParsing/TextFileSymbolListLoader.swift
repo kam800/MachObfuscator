@@ -1,11 +1,20 @@
 import Foundation
 
-class TextFileSymbolListLoader: ObjectSymbolsLoader {
-    func load(from url: URL) throws -> ObjectSymbols {
-        return try load(from: url, stringWithContentsOf: String.init(contentsOf:))
+protocol TextFileSymbolListLoaderProtocol {
+    func load(fromTextFile url: URL) -> ObjectSymbols
+}
+
+class TextFileSymbolListLoader: TextFileSymbolListLoaderProtocol {
+    func load(fromTextFile url: URL) -> ObjectSymbols {
+        do {
+            LOGGER.info("Collecting symbols from text file \(url)")
+            return try load(fromTextFile: url, stringWithContentsOf: String.init(contentsOf:))
+        } catch {
+            fatalError("Error while reading symbols from text file '\(url)': \(error)")
+        }
     }
 
-    func load(from url: URL, stringWithContentsOf: (URL) throws -> String) throws -> ObjectSymbols {
+    func load(fromTextFile url: URL, stringWithContentsOf: (URL) throws -> String) throws -> ObjectSymbols {
         let contents = try stringWithContentsOf(url)
         let lines = contents.split(separator: "\n")
             .map { $0.trimmingCharacters(in: .whitespaces) }

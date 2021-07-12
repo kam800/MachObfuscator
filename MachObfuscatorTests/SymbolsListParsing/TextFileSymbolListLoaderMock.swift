@@ -1,10 +1,6 @@
 import Foundation
 
-class ObjectSymbolsLoaderMock {
-    private enum Error: Swift.Error {
-        case noEntryForPath
-    }
-
+class TextFileSymbolListLoaderMock {
     private var symbolsPerUrl: [String: ObjectSymbols] = [:]
 
     subscript(path: String) -> ObjectSymbols? {
@@ -17,13 +13,13 @@ class ObjectSymbolsLoaderMock {
     }
 }
 
-extension ObjectSymbolsLoaderMock: ObjectSymbolsLoader {
-    func load(from url: URL) throws -> ObjectSymbols {
+extension TextFileSymbolListLoaderMock : TextFileSymbolListLoaderProtocol {
+    func load(fromTextFile url: URL) -> ObjectSymbols {
         let path = url.resolvingSymlinksInPath().path
         if let symbols = symbolsPerUrl[path] {
             return symbols
         } else {
-            throw Error.noEntryForPath
+            return ObjectSymbols(selectors: [], classNames: [])
         }
     }
 }

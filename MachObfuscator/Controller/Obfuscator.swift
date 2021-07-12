@@ -30,8 +30,8 @@ class Obfuscator {
     }
 
     func run(loader: ImageLoader & SymbolsSourceLoader & DependencyNodeLoader = SimpleImageLoader(),
-             sourceSymbolsLoader: ObjectSymbolsLoader = SimpleSourceSymbolsLoader(),
-             symbolListLoader: ObjectSymbolsLoader = TextFileSymbolListLoader()) {
+             sourceSymbolsLoader: RecursiveSourceSymbolsLoaderProtocol = RecursiveSourceSymbolsLoader(),
+             symbolListLoader: TextFileSymbolListLoaderProtocol = TextFileSymbolListLoader()) {
         reporter.report(options: options)
 
         LOGGER.info("Will obfuscate \(directoryOrFileURL)")
@@ -62,16 +62,12 @@ class Obfuscator {
 
         let symbols: ObfuscationSymbols = time(withTag: "Build obfuscation symbols") {
             autoreleasepool {
-                let skippedSymbols = [
-                    ObjectSymbols.blacklist(skippedSymbolsSources: options.skippedSymbolsSources,
-                                            sourceSymbolsLoader: sourceSymbolsLoader),
-                    ObjectSymbols.blacklist(skippedSymbolsLists: options.skippedSymbolsLists,
-                                            symbolsListLoader: symbolListLoader),
-                ].flatten()
                 return ObfuscationSymbols.buildFor(obfuscationPaths: paths,
                                                    loader: loader,
                                                    sourceSymbolsLoader: sourceSymbolsLoader,
-                                                   skippedSymbols: skippedSymbols,
+                                                   symbolListLoader: symbolListLoader,
+                                                   skippedSymbolsSources: options.skippedSymbolsSources,
+                                                   skippedSymbolsLists: options.skippedSymbolsLists,
                                                    objcOptions: options.objcOptions)
             }
         }

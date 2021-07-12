@@ -20,7 +20,7 @@ class TextFileSymbolListLoader_load_Tests: XCTestCase {
         let exp = expectation(description: "stringWithContentsOf expected")
         var capturedUrl: URL!
         // When
-        _ = try sut.load(from: .sample, stringWithContentsOf: { url in
+        _ = try sut.load(fromTextFile: .sample, stringWithContentsOf: { url in
             capturedUrl = url
             exp.fulfill()
             return "contents"
@@ -33,7 +33,7 @@ class TextFileSymbolListLoader_load_Tests: XCTestCase {
 
     func test_load_shouldReturnOnlyPotentialClassNames() throws {
         // When
-        let result = try sut.load(from: .sample, stringWithContentsOf: { _ in
+        let result = try sut.load(fromTextFile: .sample, stringWithContentsOf: { _ in
             """
                    Class_1_żółć_ok
                Class  WithSpace
@@ -58,7 +58,7 @@ class TextFileSymbolListLoader_load_Tests: XCTestCase {
 
     func test_load_shouldReturnOnlyPotentialSelectors() throws {
         // When
-        let result = try sut.load(from: .sample, stringWithContentsOf: { _ in
+        let result = try sut.load(fromTextFile: .sample, stringWithContentsOf: { _ in
             """
                     getter
                    selectors_are_great:lol:

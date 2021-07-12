@@ -1,13 +1,13 @@
 import XCTest
 
-class SimpleSourceSymbolsLoader_loadFromSourcesURL_Tests: XCTestCase {
+class RecursiveSourceSymbolsLoader_loadFromSourcesURL_Tests: XCTestCase {
     var symbols: ObjectSymbols!
 
     override func setUp() {
         super.setUp()
 
-        let sut = SimpleSourceSymbolsLoader()
-        symbols = try! sut.load(from: URL.librarySourceCode)
+        let sut = RecursiveSourceSymbolsLoader()
+        symbols = try! sut.load(fromDirectory: URL.librarySourceCode)
     }
 
     override func tearDown() {

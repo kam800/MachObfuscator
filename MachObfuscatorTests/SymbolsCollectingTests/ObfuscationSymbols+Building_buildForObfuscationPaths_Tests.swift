@@ -2,8 +2,9 @@ import XCTest
 
 class ObfuscationSymbols_Building_buildForObfuscationPaths_Tests: XCTestCase {
     var sampleObfuscationPaths: ObfuscationPaths! = ObfuscationPaths()
-    var testLoader: SymbolsSourceLoaderMock! = SymbolsSourceLoaderMock()
-    var testSymbolsLoader: ObjectSymbolsLoaderMock! = ObjectSymbolsLoaderMock()
+    var testImageSymbolsLoader: SymbolsSourceLoaderMock! = SymbolsSourceLoaderMock()
+    var testSourceSymbolsLoader: RecursiveSourceSymbolsLoaderMock! = RecursiveSourceSymbolsLoaderMock()
+    var testListSymbolsLoader: TextFileSymbolListLoaderMock! = TextFileSymbolListLoaderMock()
     var sut: ObfuscationSymbols!
 
     override func setUp() {
@@ -18,7 +19,7 @@ class ObfuscationSymbols_Building_buildForObfuscationPaths_Tests: XCTestCase {
         sampleObfuscationPaths.systemFrameworks = [
             "/tmp/sys1.framework".asURL, "/tmp/sys2.framework".asURL,
         ]
-        testLoader["/tmp/ob1"] = [
+        testImageSymbolsLoader["/tmp/ob1"] = [
             SymbolsSourceMock.with(selectors: ["s1", "s2", "d1"],
                                    classNames: ["c1", "c2"],
                                    exportedTrie: Trie.with(label: "ob1t1"),
@@ -31,7 +32,7 @@ class ObfuscationSymbols_Building_buildForObfuscationPaths_Tests: XCTestCase {
                                    cpuType: 0x17,
                                    cpuSubtype: 0x43),
         ]
-        testLoader["/tmp/ob2"] = [
+        testImageSymbolsLoader["/tmp/ob2"] = [
             SymbolsSourceMock.with(selectors: ["s1", "s2", "s5", "s6", "s7"],
                                    classNames: ["c1", "c2", "c5", "c6", "c7"],
                                    dynamicPropertyNames: ["d1"],
@@ -39,22 +40,31 @@ class ObfuscationSymbols_Building_buildForObfuscationPaths_Tests: XCTestCase {
                                    cpuType: 0x17,
                                    cpuSubtype: 0x42),
         ]
-        testLoader["/tmp/x1"] = [
+        testImageSymbolsLoader["/tmp/x1"] = [
             SymbolsSourceMock.with(selectors: ["s2"],
                                    classNames: ["c2"]),
         ]
-        testLoader["/tmp/x2"] = [
+        testImageSymbolsLoader["/tmp/x2"] = [
             SymbolsSourceMock.with(selectors: ["s5"],
                                    classNames: ["c5"],
                                    cstrings: ["s6", "c6"]),
         ]
-        testSymbolsLoader["/tmp/sys1.framework"] = ObjectSymbols(
+        testSourceSymbolsLoader["/tmp/sys1.framework"] = ObjectSymbols(
             selectors: ["sys1s"],
             classNames: ["sys1c"]
         )
-        testSymbolsLoader["/tmp/sys2.framework"] = ObjectSymbols(
+        testSourceSymbolsLoader["/tmp/sys2.framework"] = ObjectSymbols(
             selectors: ["sys2s"],
             classNames: ["sys2c"]
+        )
+        
+        testSourceSymbolsLoader["/tmp/githubRepo"] = ObjectSymbols(
+            selectors: ["sourceSelector"],
+            classNames: ["sourceClass"]
+        )
+        testListSymbolsLoader["/tmp/forbiddenList"] = ObjectSymbols(
+            selectors: ["listSelector"],
+            classNames: ["listClass"]
         )
 
         sut = buildSUT()
@@ -62,9 +72,11 @@ class ObfuscationSymbols_Building_buildForObfuscationPaths_Tests: XCTestCase {
 
     func buildSUT(objcOptions: ObjcOptions = ObjcOptions()) -> ObfuscationSymbols {
         return ObfuscationSymbols.buildFor(obfuscationPaths: sampleObfuscationPaths,
-                                           loader: testLoader,
-                                           sourceSymbolsLoader: testSymbolsLoader,
-                                           skippedSymbols: ObjectSymbols.sample,
+                                           loader: testImageSymbolsLoader,
+                                           sourceSymbolsLoader: testSourceSymbolsLoader,
+                                           symbolListLoader: testListSymbolsLoader,
+                                           skippedSymbolsSources: [URL(fileURLWithPath: "/tmp/githubRepo")],
+                                           skippedSymbolsLists: [URL(fileURLWithPath: "/tmp/forbiddenList")],
                                            objcOptions: objcOptions)
     }
 
@@ -123,13 +135,15 @@ class ObfuscationSymbols_Building_buildForObfuscationPaths_Tests: XCTestCase {
         let unobfuscableDependenciesSymbols: Set<String> = ["s2", "setS2:", "s5", "setS5:"]
         let cstringsSymbols: Set<String> = ["s4", "setS4:", "c4", "setC4:", "s6", "setS6:", "c6", "setC6:"]
         let frameworkHeaderSymbols: Set<String> = ["sys1s", "setSys1s:", "sys2s", "setSys2s:"]
-        let skippedSymbols: Set<String> = ["sourceSelector", "setSourceSelector:"]
+        let sourceSymbols: Set<String> = ["sourceSelector", "setSourceSelector:"]
+        let listSymbols: Set<String> = ["listSelector", "setListSelector:"]
         XCTAssertEqual(sut.blacklist.selectors,
                        dynamicPropertySymbols
                            .union(unobfuscableDependenciesSymbols)
                            .union(cstringsSymbols)
                            .union(frameworkHeaderSymbols)
-                           .union(skippedSymbols)
+                           .union(sourceSymbols)
+                           .union(listSymbols)
                            .union(Mach.libobjcSelectors))
     }
 
@@ -137,12 +151,14 @@ class ObfuscationSymbols_Building_buildForObfuscationPaths_Tests: XCTestCase {
         let unobfuscableDependenciesClassNames: Set<String> = ["c2", "c5"]
         let cstringsClassNames: Set<String> = ["s4", "c4", "s6", "c6"]
         let frameworkHeaderClassNames: Set<String> = ["sys1c", "sys2c"]
-        let skippedSymbols: Set<String> = ["sourceClass"]
+        let sourceSymbols: Set<String> = ["sourceClass"]
+        let listSymbols: Set<String> = ["listClass"]
         XCTAssertEqual(sut.blacklist.classes,
                        unobfuscableDependenciesClassNames
                            .union(cstringsClassNames)
                            .union(frameworkHeaderClassNames)
-                           .union(skippedSymbols))
+                           .union(sourceSymbols)
+                           .union(listSymbols))
     }
 
     func test_exportTriesPerURL_shouldContainTriesOfObfuscableImages() {
