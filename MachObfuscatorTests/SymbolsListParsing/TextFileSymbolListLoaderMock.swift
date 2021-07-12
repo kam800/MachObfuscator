@@ -1,10 +1,6 @@
 import Foundation
 
-class ObfuscationSymbolsTestSourceSymbolsLoader {
-    private enum Error: Swift.Error {
-        case noEntryForPath
-    }
-
+class TextFileSymbolListLoaderMock {
     private var symbolsPerUrl: [String: ObjectSymbols] = [:]
 
     subscript(path: String) -> ObjectSymbols? {
@@ -17,13 +13,13 @@ class ObfuscationSymbolsTestSourceSymbolsLoader {
     }
 }
 
-extension ObfuscationSymbolsTestSourceSymbolsLoader: SourceSymbolsLoader {
-    func load(forFrameworkURL frameworkURL: URL) throws -> ObjectSymbols {
-        let path = frameworkURL.resolvingSymlinksInPath().path
+extension TextFileSymbolListLoaderMock : TextFileSymbolListLoaderProtocol {
+    func load(fromTextFile url: URL) -> ObjectSymbols {
+        let path = url.resolvingSymlinksInPath().path
         if let symbols = symbolsPerUrl[path] {
             return symbols
         } else {
-            throw Error.noEntryForPath
+            return ObjectSymbols(selectors: [], classNames: [])
         }
     }
 }

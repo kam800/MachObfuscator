@@ -55,6 +55,7 @@ struct Options {
     var findSymbols: [String] = []
     var manglerType: SymbolManglers? = SymbolManglers.defaultMangler
     var skippedSymbolsSources: [URL] = []
+    var skippedSymbolsLists: [URL] = []
     var appDirectoryOrFile: URL?
 
     var reportTarget: ReportTarget = .None
@@ -102,6 +103,7 @@ extension Options {
             case skipFramework
             case skipAllFrameworks
             case skipSymbolsFromSources
+            case skipSymbolsFromList
             case dryrun
             case replaceCstring
             case replaceWith
@@ -143,6 +145,7 @@ extension Options {
             option(name: Options.newCCharPtrFromStaticString("skip-all-frameworks"), has_arg: no_argument, flag: nil, val: OptLongCases.skipAllFrameworks.rawValue),
             option(name: Options.newCCharPtrFromStaticString("mangler"), has_arg: required_argument, flag: nil, val: OptLongChars.manglerKey),
             option(name: Options.newCCharPtrFromStaticString("skip-symbols-from-sources"), has_arg: required_argument, flag: nil, val: OptLongCases.skipSymbolsFromSources.rawValue),
+            option(name: Options.newCCharPtrFromStaticString("skip-symbols-from-list"), has_arg: required_argument, flag: nil, val: OptLongCases.skipSymbolsFromList.rawValue),
 
             // reporting options
             option(name: Options.newCCharPtrFromStaticString("report-to-console"), has_arg: no_argument, flag: nil, val: OptLongCases.reportToConsole.rawValue),
@@ -225,6 +228,9 @@ extension Options {
             case OptLongCases.skipSymbolsFromSources.rawValue:
                 let sourcesPath = URL(fileURLWithPath: String(cString: optarg))
                 skippedSymbolsSources.append(sourcesPath)
+            case OptLongCases.skipSymbolsFromList.rawValue:
+                let listPath = URL(fileURLWithPath: String(cString: optarg))
+                skippedSymbolsLists.append(listPath)
 
             // reporting options
             case OptLongCases.reportToConsole.rawValue:
@@ -307,6 +313,10 @@ extension Options {
           --skip-symbols-from-sources PATH
                                   Don't obfuscate all the symbols found in PATH (searches for all nested *.[hm] files).
                                   This option can be used multiple times to add multiple paths.
+          --skip-symbols-from-list PATH
+                                  Don't obfuscate all the symbols from the list in PATH (symbols need to be new-line
+                                  separated). This option can be used multiple times to add multiple lists. `strings`
+                                  output can be used as a symbols list.
         
           --report-to-console     report obfuscated symbols mapping to console
 

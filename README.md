@@ -85,6 +85,10 @@ Options:
   --skip-symbols-from-sources PATH
                           Don't obfuscate all the symbols found in PATH (searches for all nested *.[hm] files).
                           This option can be used multiple times to add multiple paths.
+  --skip-symbols-from-list PATH
+                          Don't obfuscate all the symbols from the list in PATH (symbols need to be new-line
+                          separated). This option can be used multiple times to add multiple lists. `strings`
+                          output can be used as a symbols list.
 
   --report-to-console     report obfuscated symbols mapping to console
 

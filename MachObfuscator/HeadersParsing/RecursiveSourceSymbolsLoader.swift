@@ -1,12 +1,21 @@
 import Foundation
 
-class SimpleSourceSymbolsLoader: SourceSymbolsLoader {
-    func load(forFrameworkURL frameworkURL: URL) throws -> ObjectSymbols {
-        return try load(forFrameworkURL: frameworkURL, fileManager: FileManager.default)
+protocol RecursiveSourceSymbolsLoaderProtocol {
+    func load(fromDirectory url: URL) -> ObjectSymbols
+}
+
+class RecursiveSourceSymbolsLoader: RecursiveSourceSymbolsLoaderProtocol {
+    func load(fromDirectory url: URL) -> ObjectSymbols {
+        do {
+            LOGGER.info("Collecting symbols from source directory \(url)")
+            return try load(fromDirectory: url, fileManager: FileManager.default)
+        } catch {
+            fatalError("Error while reading symbols from source directory '\(url)': \(error)")
+        }
     }
 
-    func load(forFrameworkURL frameworkURL: URL, fileManager: FileManager) throws -> ObjectSymbols {
-        let headers = fileManager.listSourceFilesRecursively(atURL: frameworkURL)
+    func load(fromDirectory url: URL, fileManager: FileManager) throws -> ObjectSymbols {
+        let headers = fileManager.listSourceFilesRecursively(atURL: url)
         return headers.map(ObjectSymbols.load(url:)).flatten()
     }
 }

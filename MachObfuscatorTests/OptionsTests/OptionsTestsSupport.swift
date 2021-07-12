@@ -43,4 +43,10 @@ class OptionsTestsSupport: XCTestCase {
 
         super.tearDown()
     }
+
+    func createSut() -> Options {
+        return Options(argc: argc,
+                       unsafeArgv: unsafePtr,
+                       argv: argv)
+    }
 }

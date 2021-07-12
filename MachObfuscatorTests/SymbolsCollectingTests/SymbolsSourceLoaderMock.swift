@@ -39,7 +39,7 @@ extension Trie {
     }
 }
 
-class ObfuscationSymbolsTestSymbolsSourceLoader {
+class SymbolsSourceLoaderMock {
     private enum Error: Swift.Error {
         case noEntryForPath
     }
@@ -56,7 +56,7 @@ class ObfuscationSymbolsTestSymbolsSourceLoader {
     }
 }
 
-extension ObfuscationSymbolsTestSymbolsSourceLoader: SymbolsSourceLoader {
+extension SymbolsSourceLoaderMock: SymbolsSourceLoader {
     func load(forURL url: URL) throws -> [SymbolsSource] {
         let path = url.resolvingSymlinksInPath().path
         if let sources = sourcesPerUrl[path] {

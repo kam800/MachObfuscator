@@ -1,13 +1,13 @@
 import XCTest
 
-class SimpleSourceSymbolsLoader_loadFromFrameworkURL_systemLikeFramework_Tests: XCTestCase {
+class RecursiveSourceSymbolsLoader_loadFromFrameworkURL_systemLikeFramework_Tests: XCTestCase {
     var symbols: ObjectSymbols!
 
     override func setUp() {
         super.setUp()
 
-        let sut = SimpleSourceSymbolsLoader()
-        symbols = try! sut.load(forFrameworkURL: URL.systemLikeFramework)
+        let sut = RecursiveSourceSymbolsLoader()
+        symbols = try! sut.load(fromDirectory: .systemLikeFramework)
     }
 
     override func tearDown() {
