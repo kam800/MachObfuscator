@@ -49,7 +49,7 @@ extension ObfuscableFilesFilter {
 
     static func onlyFiles(in obfuscableDirectory: URL) -> ObfuscableFilesFilter {
         return ObfuscableFilesFilter { url in
-            obfuscableDirectory.contains(url)
+            obfuscableDirectory.standardizedFileURL.contains(url.standardizedFileURL)
         }
     }
 

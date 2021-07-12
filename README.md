@@ -62,9 +62,11 @@ Options:
   -D, --machoview-doom    MachOViewDoom, MachOView crashes after trying to open your binary (doesn't work with caesarMangler)
   --swift-reflection      obfuscate Swift reflection sections (typeref and reflstr). May cause problems for Swift >= 4.2
 
-  --objc-blacklist-selector NAME[,NAME...]  do not obfuscate given selectors
-  --objc-blacklist-selector-regex REGEXP    do not obfuscate selectors matching given regular expression
-
+  --objc-blacklist-class NAME[,NAME...]     do not obfuscate given classes. Option may occur mutliple times.
+  --objc-blacklist-class-regex REGEXP       do not obfuscate classes matching given regular expression. Option may occur mutliple times.
+  --objc-blacklist-selector NAME[,NAME...]  do not obfuscate given selectors. Option may occur mutliple times.
+  --objc-blacklist-selector-regex REGEXP    do not obfuscate selectors matching given regular expression. Option may occur mutliple times.
+ 
   --preserve-symtab       do not erase SYMTAB strings
   --erase-section SEGMENT,SECTION    erase given section, for example: __TEXT,__swift5_reflstr
   
@@ -72,11 +74,11 @@ Options:
                                      by replacing them by constant string
   --replace-cstring STRING           replace arbitrary __cstring with given replacement (use with caution). Matches entire string,
   --replace-cstring-with STRING      adds padding 0's if needed. These options must be used as a pair.
-  
+
   --skip-all-frameworks              do not obfuscate frameworks
   --skip-framework framework         do not obfuscate given framework
   --obfuscate-framework framework    obfuscate given framework (whitelist for --skip-all-frameworks)
-  
+
   -m mangler_key,
   --mangler mangler_key   select mangler to generate obfuscated symbols
 
@@ -88,13 +90,16 @@ Options:
                           separated). This option can be used multiple times to add multiple lists. `strings`
                           output can be used as a symbols list.
 
+  --report-to-console     report obfuscated symbols mapping to console
+
 Development options:
   --xx-no-analyze-dependencies       do not analyze dependencies
   --xx-dump-metadata                 dump ObjC metadata of images being obfuscated
+  --xx-find-symbol NAME[,NAME...]    find given ObjC symbol in all analysed images
 
 Available manglers by mangler_key:
   caesar - ROT13 all objc symbols and dyld info
-  realWords - replace objc symbols with random words (dyld info obfuscation supported)
+  realWords - replace objc symbols with random words and fill dyld info symbols with numbers
 ```
 
 ## Integration with fastlane 🚀

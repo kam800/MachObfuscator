@@ -1,5 +1,7 @@
 import Foundation
 
+/// Remove __unsafe_unretained, _Nullable, _Nonnull and their variations and arrays, eg. [_Nonnull]
+private let removedParameterAttributes = try! NSRegularExpression(pattern: "\\b(__unsafe_unretained)|(\\[?__?[nN]ullable\\]?)|(\\[?__?[nN]onnull\\]?)\\b")
 private let methodStartRegexp = try! NSRegularExpression(pattern: "^\\s*[-+]\\s*\\([^\\(\\)]*(\\([^\\(\\)]+\\)[^\\(\\)]*)*[^\\(\\)]*\\)", options: [.anchorsMatchLines])
 private let methodSuffixRegexp = try! NSRegularExpression(pattern: "\\s([A-Z_]+_[A-Z_]+\\b)|(__[a-z_]+\\b)", options: [])
 private let namedParameterRegexp = try! NSRegularExpression(pattern: "\\b(\\w+:)", options: [])
@@ -11,6 +13,7 @@ extension String {
     var objCMethodNames: [String] {
         let headerWithoutComments = withoutComments
         let allLines = headerWithoutComments.components(separatedBy: methodNameDelimiters)
+            .map { $0.withoutOccurences(of: removedParameterAttributes) }
         return allLines.compactMap { $0.objCMethodNameFromLine }
     }
 

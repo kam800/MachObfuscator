@@ -8,6 +8,8 @@ class Obfuscator {
 
     private let options: Options
 
+    private let reporter: SymbolsReporter
+
     init(directoryOrFileURL: URL, mangler: SymbolMangling, options: Options) {
         var isDir: ObjCBool = false
         guard FileManager.default.fileExists(atPath: directoryOrFileURL.path, isDirectory: &isDir) else {
@@ -18,13 +20,21 @@ class Obfuscator {
 
         self.mangler = mangler
         self.options = options
+
+        switch options.reportTarget {
+        case .Console:
+            reporter = ConsoleReporter()
+        default:
+            reporter = NoReporter()
+        }
     }
 
     func run(loader: ImageLoader & SymbolsSourceLoader & DependencyNodeLoader = SimpleImageLoader(),
              sourceSymbolsLoader: ObjectSymbolsLoader = SimpleSourceSymbolsLoader(),
              symbolListLoader: ObjectSymbolsLoader = TextFileSymbolListLoader()) {
-        LOGGER.info("Will obfuscate \(directoryOrFileURL)")
+        reporter.report(options: options)
 
+        LOGGER.info("Will obfuscate \(directoryOrFileURL)")
         LOGGER.info("Looking for dependencies...")
         let paths = time(withTag: "Looking for dependencies") { () -> ObfuscationPaths in
             if isDirectory {
@@ -45,6 +55,10 @@ class Obfuscator {
         LOGGER.info("\(paths.nibs.count) obfuscable NIBs")
 
         LOGGER.info("Collecting symbols...")
+
+        options.findSymbols.forEach {
+            LOGGER.info("\($0) found in \(ObfuscationSymbols.findSymbol(obfuscationPaths: paths, loader: loader, symbol: $0))")
+        }
 
         let symbols: ObfuscationSymbols = time(withTag: "Build obfuscation symbols") {
             autoreleasepool {
@@ -70,6 +84,10 @@ class Obfuscator {
         let manglingMap = mangler.mangleSymbols(symbols)
         LOGGER.info("\(manglingMap.selectors.count) mangled selectors")
         LOGGER.info("\(manglingMap.classNames.count) mangled classes")
+
+        reporter.reportObjcMangling(map: manglingMap)
+        reporter.reportBlacklistedSymbols(symbolKind: "ObjC selectors", symbols: Array(symbols.removedList.selectors))
+        reporter.reportBlacklistedSymbols(symbolKind: "ObjC classes", symbols: Array(symbols.removedList.classes))
 
         if options.swiftReflectionObfuscation {
             LOGGER.info("Will obfuscate Swift reflection sections")

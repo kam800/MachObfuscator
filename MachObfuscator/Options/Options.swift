@@ -16,10 +16,20 @@ private extension EraseSectionConfiguration {
 }
 
 struct ObjcOptions {
-    // Do not obfuscate given selector
+    /// Do not obfuscate given classes
+    var classesBlacklist: [String] = []
+    /// Do not obfuscate classes matching regexes
+    var classesBlacklistRegex: [NSRegularExpression] = []
+
+    /// Do not obfuscate given selectors
     var selectorsBlacklist: [String] = []
     // Do not obfuscate selectors matching regexes
     var selectorsBlacklistRegex: [NSRegularExpression] = []
+}
+
+enum ReportTarget {
+    case None
+    case Console
 }
 
 struct Options {
@@ -42,10 +52,13 @@ struct Options {
     var cstringsReplacements: [String: String] = [:]
     var obfuscableFilesFilter = ObfuscableFilesFilter.defaultObfuscableFilesFilter()
     var analyzeDependencies = true
+    var findSymbols: [String] = []
     var manglerType: SymbolManglers? = SymbolManglers.defaultMangler
     var skippedSymbolsSources: [URL] = []
     var skippedSymbolsLists: [URL] = []
     var appDirectoryOrFile: URL?
+
+    var reportTarget: ReportTarget = .None
 }
 
 extension Options {
@@ -79,6 +92,8 @@ extension Options {
             case OPT_FIRST = 256
             case preserveSymtab
             case swiftReflection
+            case objcBlacklistClass
+            case objcBlacklistClassRegex
             case objcBlacklistSelector
             case objcBlacklistSelectorRegex
             case eraseSection
@@ -93,9 +108,13 @@ extension Options {
             case replaceCstring
             case replaceWith
 
+            // reporting options
+            case reportToConsole
+
             // extra/development options
             case xxNoAnalyzeDependencies
             case xxDumpMetadata
+            case xxFindSymbol
         }
 
         var currentCstringToReplace: String?
@@ -113,7 +132,8 @@ extension Options {
             option(name: Options.newCCharPtrFromStaticString("erase-methtype"), has_arg: no_argument, flag: nil, val: OptLongCases.eraseMethType.rawValue),
             option(name: Options.newCCharPtrFromStaticString("machoview-doom"), has_arg: no_argument, flag: nil, val: OptLongChars.machOViewDoom),
             option(name: Options.newCCharPtrFromStaticString("preserve-symtab"), has_arg: no_argument, flag: nil, val: OptLongCases.preserveSymtab.rawValue),
-            option(name: Options.newCCharPtrFromStaticString("swift-reflection"), has_arg: no_argument, flag: nil, val: OptLongCases.swiftReflection.rawValue),
+            option(name: Options.newCCharPtrFromStaticString("objc-blacklist-class"), has_arg: required_argument, flag: nil, val: OptLongCases.objcBlacklistClass.rawValue),
+            option(name: Options.newCCharPtrFromStaticString("objc-blacklist-class-regex"), has_arg: required_argument, flag: nil, val: OptLongCases.objcBlacklistClassRegex.rawValue),
             option(name: Options.newCCharPtrFromStaticString("objc-blacklist-selector"), has_arg: required_argument, flag: nil, val: OptLongCases.objcBlacklistSelector.rawValue),
             option(name: Options.newCCharPtrFromStaticString("objc-blacklist-selector-regex"), has_arg: required_argument, flag: nil, val: OptLongCases.objcBlacklistSelectorRegex.rawValue),
             option(name: Options.newCCharPtrFromStaticString("erase-section"), has_arg: required_argument, flag: nil, val: OptLongCases.eraseSection.rawValue),
@@ -126,9 +146,14 @@ extension Options {
             option(name: Options.newCCharPtrFromStaticString("mangler"), has_arg: required_argument, flag: nil, val: OptLongChars.manglerKey),
             option(name: Options.newCCharPtrFromStaticString("skip-symbols-from-sources"), has_arg: required_argument, flag: nil, val: OptLongCases.skipSymbolsFromSources.rawValue),
             option(name: Options.newCCharPtrFromStaticString("skip-symbols-from-list"), has_arg: required_argument, flag: nil, val: OptLongCases.skipSymbolsFromList.rawValue),
+
+            // reporting options
+            option(name: Options.newCCharPtrFromStaticString("report-to-console"), has_arg: no_argument, flag: nil, val: OptLongCases.reportToConsole.rawValue),
+
             // extra options
             option(name: Options.newCCharPtrFromStaticString("xx-no-analyze-dependencies"), has_arg: no_argument, flag: nil, val: OptLongCases.xxNoAnalyzeDependencies.rawValue),
             option(name: Options.newCCharPtrFromStaticString("xx-dump-metadata"), has_arg: no_argument, flag: nil, val: OptLongCases.xxDumpMetadata.rawValue),
+            option(name: Options.newCCharPtrFromStaticString("xx-find-symbol"), has_arg: required_argument, flag: nil, val: OptLongCases.xxFindSymbol.rawValue),
 
             option(), // { NULL, NULL, NULL, NULL }
         ]
@@ -155,6 +180,15 @@ extension Options {
                 eraseSymtab = false
             case OptLongCases.swiftReflection.rawValue:
                 swiftReflectionObfuscation = true
+            case OptLongCases.objcBlacklistClass.rawValue:
+                objcOptions.classesBlacklist += String(cString: optarg).split(separator: ",").map { String($0) }
+            case OptLongCases.objcBlacklistClassRegex.rawValue:
+                do {
+                    let regex = try NSRegularExpression(pattern: String(cString: optarg), options: [])
+                    objcOptions.classesBlacklistRegex.append(regex)
+                } catch {
+                    fatalError("Class blacklist regex '\(String(cString: optarg))' is invalid: \(error.localizedDescription)")
+                }
             case OptLongCases.objcBlacklistSelector.rawValue:
                 objcOptions.selectorsBlacklist += String(cString: optarg).split(separator: ",").map { String($0) }
             case OptLongCases.objcBlacklistSelectorRegex.rawValue:
@@ -197,11 +231,18 @@ extension Options {
             case OptLongCases.skipSymbolsFromList.rawValue:
                 let listPath = URL(fileURLWithPath: String(cString: optarg))
                 skippedSymbolsLists.append(listPath)
+
+            // reporting options
+            case OptLongCases.reportToConsole.rawValue:
+                reportTarget = .Console
+
             // extra options
             case OptLongCases.xxNoAnalyzeDependencies.rawValue:
                 analyzeDependencies = false
             case OptLongCases.xxDumpMetadata.rawValue:
                 dumpMetadata = true
+            case OptLongCases.xxFindSymbol.rawValue:
+                findSymbols += String(cString: optarg).split(separator: ",").map { String($0) }
 
             case OptLongChars.unknownOption:
                 unknownOption = true
@@ -248,9 +289,11 @@ extension Options {
           --erase-methtype        erase methType section (objc/runtime.h methods may work incorrectly)
           -D, --machoview-doom    MachOViewDoom, MachOView crashes after trying to open your binary (doesn't work with caesarMangler)
           --swift-reflection      obfuscate Swift reflection sections (typeref and reflstr). May cause problems for Swift >= 4.2
-        
-          --objc-blacklist-selector NAME[,NAME...]  do not obfuscate given selectors
-          --objc-blacklist-selector-regex REGEXP    do not obfuscate selectors matching given regular expression
+
+          --objc-blacklist-class NAME[,NAME...]     do not obfuscate given classes. Option may occur mutliple times.
+          --objc-blacklist-class-regex REGEXP       do not obfuscate classes matching given regular expression. Option may occur mutliple times.
+          --objc-blacklist-selector NAME[,NAME...]  do not obfuscate given selectors. Option may occur mutliple times.
+          --objc-blacklist-selector-regex REGEXP    do not obfuscate selectors matching given regular expression. Option may occur mutliple times.
 
           --preserve-symtab       do not erase SYMTAB strings
           --erase-section SEGMENT,SECTION    erase given section, for example: __TEXT,__swift5_reflstr
@@ -274,10 +317,13 @@ extension Options {
                                   Don't obfuscate all the symbols from the list in PATH (symbols need to be new-line
                                   separated). This option can be used multiple times to add multiple lists. `strings`
                                   output can be used as a symbols list.
+        
+          --report-to-console     report obfuscated symbols mapping to console
 
         Development options:
           --xx-no-analyze-dependencies       do not analyze dependencies
           --xx-dump-metadata                 dump ObjC metadata of images being obfuscated
+          --xx-find-symbol NAME[,NAME...]    find given ObjC symbol in all analysed images
 
         \(SymbolManglers.helpSummary)
         """

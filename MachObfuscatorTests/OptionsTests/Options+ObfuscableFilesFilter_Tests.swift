@@ -6,12 +6,94 @@
 import XCTest
 
 private extension URL {
-    init(forFramework framework: String) {
-        self.init(fileURLWithPath: "AppDir/Frameworks/\(framework).framework/\(framework)")
+    init(forFramework framework: String, withPrefix prefix: String = "") {
+        self.init(fileURLWithPath: "\(prefix)AppDir/Frameworks/\(framework).framework/\(framework)")
     }
 }
 
 class Options_ObfuscableFilesFilter_Tests: OptionsTestsSupport {
+    private func assertAllUserFilesAreObfuscable(_ withWhitelist: ObfuscableFilesFilter, withPrefix prefix: String = "", file: StaticString = #file, line: UInt = #line) {
+        XCTAssert(withWhitelist.isObfuscable(URL(fileURLWithPath: "\(prefix)AppDir/App")), "Application should be obfuscable", file: file, line: line)
+
+        XCTAssert(withWhitelist.isObfuscable(URL(forFramework: "GoodFramework", withPrefix: prefix)), "GoodFramework should be obfuscable", file: file, line: line)
+        XCTAssert(withWhitelist.isObfuscable(URL(forFramework: "BadFramework", withPrefix: prefix)), "BadFramework should be obfuscable", file: file, line: line)
+        XCTAssertFalse(withWhitelist.isObfuscable(URL(fileURLWithPath: "\(prefix)AppDir/libswiftcore.dylib")), "Embedded Swift runtime should not be obfuscable", file: file, line: line) // embedded lib
+        XCTAssertFalse(withWhitelist.isObfuscable(URL(fileURLWithPath: "/usr/lib/system/SystemFrawework.framework/SystemFramework")), "System framework should not be obfuscable", file: file, line: line)
+        XCTAssertFalse(withWhitelist.isObfuscable(URL(fileURLWithPath: "/usr/lib/system/libswift.dylib")), "Swift runtime should not be obfuscable", file: file, line: line)
+    }
+
+    func test_shouldObfuscateAppAndFrameworks_whenNoOptionsAreGiven() {
+        // Given
+        setUp(with: ["AppDir/App"])
+
+        // When
+        let sut = Options(argc: argc,
+                          unsafeArgv: unsafePtr,
+                          argv: argv)
+
+        // Then
+        let withWhitelist = sut.obfuscableFilesFilter
+            // last condition is added automatically by Obfuscator
+            .and(ObfuscableFilesFilter.onlyFiles(in: URL(fileURLWithPath: "AppDir")))
+
+        // should obfuscate app and frameworks
+        assertAllUserFilesAreObfuscable(withWhitelist)
+    }
+
+    func test_shouldObfuscateAppAndFrameworks_whenNoOptionsAreGiven_whenPathContainsDot() {
+        // Given
+        setUp(with: ["./AppDir"])
+
+        // When
+        let sut = Options(argc: argc,
+                          unsafeArgv: unsafePtr,
+                          argv: argv)
+
+        // Then
+        let withWhitelist = sut.obfuscableFilesFilter
+            // last condition is added automatically by Obfuscator
+            .and(ObfuscableFilesFilter.onlyFiles(in: URL(fileURLWithPath: "./AppDir")))
+
+        // should obfuscate app and frameworks
+        assertAllUserFilesAreObfuscable(withWhitelist)
+    }
+
+    func test_shouldObfuscateAppAndFrameworks_whenNoOptionsAreGiven_whenPathContainsDoubleDots() {
+        // Given
+        setUp(with: ["otherdir/../AppDir"])
+
+        // When
+        let sut = Options(argc: argc,
+                          unsafeArgv: unsafePtr,
+                          argv: argv)
+
+        // Then
+        let withWhitelist = sut.obfuscableFilesFilter
+            // last condition is added automatically by Obfuscator
+            .and(ObfuscableFilesFilter.onlyFiles(in: URL(fileURLWithPath: "otherdir/../AppDir")))
+
+        // should obfuscate app and frameworks
+        assertAllUserFilesAreObfuscable(withWhitelist)
+    }
+
+    func test_shouldObfuscateAppAndFrameworks_whenNoOptionsAreGiven_whenAbsolutePathContainsDoubleDots() {
+        // Given
+        setUp(with: ["/otherdir/../AppDir"])
+
+        // When
+        let sut = Options(argc: argc,
+                          unsafeArgv: unsafePtr,
+                          argv: argv)
+
+        // Then
+        let withWhitelist = sut.obfuscableFilesFilter
+            // last condition is added automatically by Obfuscator
+            .and(ObfuscableFilesFilter.onlyFiles(in: URL(fileURLWithPath: "/otherdir/../AppDir")))
+
+        // should obfuscate app and frameworks
+        assertAllUserFilesAreObfuscable(withWhitelist, withPrefix: "/")
+    }
+
     func test_shouldObfuscateOnlyApp_whenSkipAllFrameworks() {
         // Given
         setUp(with: ["--skip-all-frameworks",

@@ -44,6 +44,10 @@ private extension Mach.Platform {
             return Paths.iosFrameworksRoot.appending(path)
         case .macos:
             return Paths.macosFrameworksRoot.appending(path)
+        case .watchos:
+            return Paths.watchosFrameworksRoot.appending(path)
+        case .tvos:
+            return Paths.tvosFrameworksRoot.appending(path)
         }
     }
 }

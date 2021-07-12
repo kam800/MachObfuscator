@@ -42,6 +42,8 @@ struct Mach {
     enum Platform {
         case macos
         case ios
+        case watchos
+        case tvos
     }
 
     var platform: Platform

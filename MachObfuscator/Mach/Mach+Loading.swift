@@ -50,6 +50,12 @@ private extension Fat.Architecture {
     }
 }
 
+extension Mach {
+    var hasBitCode: Bool {
+        return segments.contains { $0.name == "__LLVM" }
+    }
+}
+
 private extension Mach {
     init(data: Data, url: URL) {
         switch data.magic {
@@ -97,11 +103,11 @@ private extension Mach {
                 let rpath = data.getCString(atOffset: cursor + Int(rpath_command.path.offset))
                 rpaths.append(rpath)
             // TODO: handle weaks
-            case UInt32(LC_LOAD_DYLIB), UInt32(LC_LOAD_WEAK_DYLIB), UInt32(LC_REEXPORT_DYLIB):
+            case UInt32(LC_LOAD_DYLIB), UInt32(LC_LOAD_WEAK_DYLIB), UInt32(LC_LOAD_UPWARD_DYLIB), UInt32(LC_REEXPORT_DYLIB):
                 let dylibCommand: dylib_command = data.getStruct(atOffset: cursor)
                 let dylibPath = data.getCString(atOffset: cursor + Int(dylibCommand.dylib.name.offset))
                 dylibs.append(dylibPath)
-            case UInt32(LC_VERSION_MIN_IPHONEOS), UInt32(LC_VERSION_MIN_MACOSX):
+            case UInt32(LC_VERSION_MIN_IPHONEOS), UInt32(LC_VERSION_MIN_MACOSX), UInt32(LC_VERSION_MIN_WATCHOS), UInt32(LC_VERSION_MIN_TVOS):
                 let version_min_command: version_min_command = data.getStruct(atOffset: cursor)
                 platform = Platform(version_min_command)
             case UInt32(LC_BUILD_VERSION):
@@ -151,7 +157,7 @@ private extension Mach {
                 let rpath = data.getCString(atOffset: cursor + Int(rpath_command.path.offset))
                 rpaths.append(rpath)
             // TODO: handle weaks
-            case UInt32(LC_LOAD_DYLIB), UInt32(LC_LOAD_WEAK_DYLIB), UInt32(LC_REEXPORT_DYLIB):
+            case UInt32(LC_LOAD_DYLIB), UInt32(LC_LOAD_WEAK_DYLIB), UInt32(LC_LOAD_UPWARD_DYLIB), UInt32(LC_REEXPORT_DYLIB):
                 let dylibCommand: dylib_command = data.getStruct(atOffset: cursor)
                 let dylibPath = data.getCString(atOffset: cursor + Int(dylibCommand.dylib.name.offset))
                 dylibs.append(dylibPath)
@@ -178,6 +184,11 @@ private extension Mach.Platform {
             self = .macos
         case UInt32(LC_VERSION_MIN_IPHONEOS):
             self = .ios
+        case UInt32(LC_VERSION_MIN_WATCHOS):
+            self = .watchos
+        case UInt32(LC_VERSION_MIN_TVOS):
+            self = .tvos
+            self = .ios
         default:
             fatalError("unsupported version_min_command.cmd = \(String(versionMin.cmd, radix: 0x10, uppercase: true))")
         }
@@ -198,6 +209,10 @@ private extension Mach.Platform {
             case UInt32(PLATFORM_IOSMAC):
                 self = .macos
         #endif
+        case UInt32(PLATFORM_WATCHOS):
+            self = .watchos
+        case UInt32(PLATFORM_TVOS):
+            self = .tvos
         default:
             fatalError("unsupported build_version_command.platform = \(String(buildVersion.platform, uppercase: true))")
         }

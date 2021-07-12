@@ -21,6 +21,8 @@ class SimpleSourceSymbolsLoader_loadFromFrameworkURL_systemLikeFramework_Tests: 
             "UIApplication",
             "UIUserNotificationSettings",
             "UIApplicationDelegate",
+            "NSDictionary",
+            "NSOrderedSet",
         ]
         XCTAssertEqual(symbols.classNames, expectedClassNames)
     }
@@ -35,6 +37,15 @@ class SimpleSourceSymbolsLoader_loadFromFrameworkURL_systemLikeFramework_Tests: 
             "applicationDidFinishLaunching:",
             "application:didFinishLaunchingWithOptions:",
             "application:handleActionWithIdentifier:forLocalNotification:completionHandler:",
+            // "NSDictionary.h"
+            "countByEnumeratingWithState:objects:count:",
+            // "NSOrderedSet.h"
+            "count",
+            "objectAtIndex:",
+            "indexOfObject:",
+            "init",
+            "initWithObjects:count:",
+            "initWithCoder:",
         ]
         XCTAssertEqual(symbols.selectors, expectedSelectors)
     }
