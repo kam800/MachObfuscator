@@ -60,6 +60,9 @@ private extension Mach {
             for obfuscatedNode in obfuscatedTrie.flatNodes {
                 data.replaceBytes(inRange: obfuscatedNode.labelRange.intRange, withBytes: obfuscatedNode.label)
             }
+        } else if hasBitCode {
+            // LLVM-IR (Bitcode) images may not have export trie
+            LOGGER.info("Image '\(imageURL)' contains bitcode for \(cpu). Not obfuscating export trie.")
         } else {
             fatalError()
         }
@@ -88,6 +91,9 @@ private extension Mach {
                     data.replaceBytes(inRange: importEntry.symbolRange.intRange, withBytes: obfuscatedSymbol)
                 }
             }
+        } else if hasBitCode {
+            // LLVM-IR (Bitcode) images may not have import trie
+            LOGGER.info("Image '\(imageURL)' contains bitcode for \(cpu). Not obfuscating import stack.")
         } else {
             fatalError("Didn't resolve dylibs for '\(imageURL)'. Probably a bug.")
         }

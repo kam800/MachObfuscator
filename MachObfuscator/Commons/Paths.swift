@@ -41,6 +41,8 @@ enum Paths {
 
     static let macosFrameworksRoot: String = xcodeRoot + "/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk"
     static let iosFrameworksRoot: String = xcodeRoot + "/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk"
+    static let watchosFrameworksRoot: String = xcodeRoot + "/Platforms/WatchOS.platform/Developer/SDKs/WatchOS.sdk"
+    static let tvosFrameworksRoot: String = xcodeRoot + "/Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS.sdk"
 
     static let iosRuntimeRoot: String = {
         guard let iosRoot = possibleIosRuntimeRoots.first(where: FileManager.default.fileExists(atPath:)) else {

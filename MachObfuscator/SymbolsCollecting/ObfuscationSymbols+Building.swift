@@ -61,7 +61,9 @@ extension ObfuscationSymbols {
 
         let whitelistExportTriePerCpuIdPerURL: [URL: [CpuId: Trie]] =
             userSourcesPerPath.mapValues { symbolsSources in
-                [CpuId: Trie](symbolsSources.map { ($0.cpu.asCpuId, $0.exportedTrie!) },
+                // LLVM-IR (Bitcode) images may not have export trie
+                [CpuId: Trie](symbolsSources.filter { $0.exportedTrie != nil }
+                    .map { ($0.cpu.asCpuId, $0.exportedTrie!) },
                               uniquingKeysWith: { _, _ in fatalError("Duplicated cpuId") })
             }
 
