@@ -35,7 +35,9 @@
 		84ABA30F231695630048B829 /* MachStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84ABA30D231695380048B829 /* MachStrings.swift */; };
 		84B46C3122FD524F00BD4984 /* Options+ObfuscableFilesFilter_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B46C3022FD524F00BD4984 /* Options+ObfuscableFilesFilter_Tests.swift */; };
 		84A378D522EEFAC900F53C35 /* SymbolsReporting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A378D422EEFAC900F53C35 /* SymbolsReporting.swift */; };
-		84A378D622EEFAC900F53C35 /* SymbolsReporting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A378D422EEFAC900F53C35 /* SymbolsReporting.swift */; };            
+		84A378D622EEFAC900F53C35 /* SymbolsReporting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A378D422EEFAC900F53C35 /* SymbolsReporting.swift */; };         
+		84EEA38D2343A4C70041C754 /* Regex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84EEA38C2343A4C70041C754 /* Regex.swift */; };
+		84EEA38E2343A4C70041C754 /* Regex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84EEA38C2343A4C70041C754 /* Regex.swift */; };   
 		8831AF4C22081D63006BEB91 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48B8F471F7FEBC200E73BBD /* main.swift */; };
 		8831AF4D22081D93006BEB91 /* CaesarExportTrieMangler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4F47C81529825A2DAB1FCAC /* CaesarExportTrieMangler.swift */; };
 		8831AF4E22081DA5006BEB91 /* CaesarCypher.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4F47D828D5B299A6471F1BA /* CaesarCypher.swift */; };
@@ -336,6 +338,8 @@
 		84ABA30D231695380048B829 /* MachStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MachStrings.swift; sourceTree = "<group>"; };
 		84B46C3022FD524F00BD4984 /* Options+ObfuscableFilesFilter_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Options+ObfuscableFilesFilter_Tests.swift"; sourceTree = "<group>"; };
         84A378D422EEFAC900F53C35 /* SymbolsReporting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolsReporting.swift; sourceTree = "<group>"; };
+		84EEA38C2343A4C70041C754 /* Regex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Regex.swift; sourceTree = "<group>"; };
+
 		88A1F2AD21F5F1FD00C8389E /* RealWordsExportTrieMangler_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealWordsExportTrieMangler_Tests.swift; sourceTree = "<group>"; };
 		D403A4F1217FACB300285492 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		D4065D3722612357004DCA7D /* Pipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pipe.swift; sourceTree = "<group>"; };
@@ -649,6 +653,7 @@
 				D4065D3722612357004DCA7D /* Pipe.swift */,
 				84684FC022E1CE5100342566 /* Profiling.swift */,
 				84684FC322E1CECD00342566 /* Concurrent.swift */,
+				84EEA38C2343A4C70041C754 /* Regex.swift */,
 			);
 			path = Commons;
 			sourceTree = "<group>";
@@ -1294,6 +1299,7 @@
 				D467A10E227456E600BA953A /* FileRepository+FrameworkLocationResolving.swift in Sources */,
 				84684FC122E1CE5100342566 /* Profiling.swift in Sources */,
 				D4CA46A220CB2E8F00A31809 /* CFKeyedArchiverUIDGetValue.swift in Sources */,
+				84EEA38D2343A4C70041C754 /* Regex.swift in Sources */,
 				84ABA30B2315364B0048B829 /* ObjcSymbols+Impl.swift in Sources */,
 				D432EAF1213DE83D00C2ADA0 /* LoggerProtocol.swift in Sources */,
 				D44D73A02119FA6300DE002B /* Range+Sugar.swift in Sources */,
@@ -1415,6 +1421,7 @@
 				D4816075211C69B1008671D8 /* Mach+Saving.swift in Sources */,
 				D46627DB215448890050EADA /* Mach+Erasing.swift in Sources */,
 				D4BACD6D2156E5D5009F6E34 /* SymbolManglers.swift in Sources */,
+				84EEA38E2343A4C70041C754 /* Regex.swift in Sources */,
 				D44D731D21186E6700DE002B /* Data+Structs_getStructs_Tests.swift in Sources */,
 				D44D739E2119F9D400DE002B /* NibArchive+Saving.swift in Sources */,
 				84684FC722E5B2F600342566 /* Concurrent_Tests.swift in Sources */,
