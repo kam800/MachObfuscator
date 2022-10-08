@@ -1,5 +1,11 @@
 # MachObfuscator 🔏
 
+> ❗️❗️❗️
+>
+> MachObfuscator does not currently support binaries with minimum Deployment Target >= 12.X,
+>
+> MachObfuscator does not currently run on macOS Deployment Target >= 12.X.
+
 MachObfuscator is a programming-language-agnostic [Mach-O](https://en.wikipedia.org/wiki/Mach-O) apps obfuscator (for Apple platforms).
 
 ## Current status 🏃‍♂️
